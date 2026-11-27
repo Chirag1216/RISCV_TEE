@@ -22,11 +22,14 @@ void verifier_return(long verdict) __attribute__((noreturn));
 extern const char verifier_blob_start[], verifier_blob_end[];
 
 #define VERIFIER_BUDGET_US  5000    /* the verifier must finish within 5 ms */
+#define DEADMAN_TIMEOUT_US  500000  /* 500 ms without an accepted flight command -> failsafe */
 
 static volatile struct actuator *const act = (volatile struct actuator *)ACT_BASE;
 
 static uint64_t shared_pa;          /* 0 = not registered yet */
 static int trusted;                 /* 1 while the verifier is running */
+static int deadman_active;          /* 1 while armed in MODE_FLIGHT */
+static uint64_t deadman_deadline_us;
 
 int in_trusted_world(void)
 {
@@ -56,6 +59,15 @@ static void failsafe(void)
 {
     act->mode = MODE_LAND;
     act->failsafe_count++;
+    deadman_active = 0;
+}
+
+/* M-mode dead-man's timer expired while the normal world was running. */
+void deadman_expired(void)
+{
+    watchdog_disarm();
+    if (deadman_active && act->mode == MODE_FLIGHT)
+        failsafe();
 }
 
 /*
@@ -118,13 +130,27 @@ long dtee_submit(long *verdict)
     /* 5. Switch back to the normal world. */
     trusted = 0;
     watchdog_disarm();
-    csr_write(mie, saved_mie);
+    csr_write(mie, saved_mie & ~MIE_MTIE);
     csr_write(mideleg, saved_mideleg);
     csr_write(medeleg, saved_medeleg);
     csr_write(satp, saved_satp);
     pmp_set_view(PMP_VIEW_NORMAL);
     csr_write(mstatus, saved_mstatus);
     csr_write(mepc, saved_mepc);
+
+    if (v == V_ACCEPT && act->mode == MODE_FLIGHT) {
+        deadman_active = 1;
+        deadman_deadline_us = time_now_us() + DEADMAN_TIMEOUT_US;
+        watchdog_arm_deadline(deadman_deadline_us);
+    } else if (act->mode != MODE_FLIGHT) {
+        deadman_active = 0;
+        watchdog_disarm();
+    } else if (deadman_active) {
+        if (time_now_us() >= deadman_deadline_us)
+            failsafe();
+        else
+            watchdog_arm_deadline(deadman_deadline_us);
+    }
 
     *verdict = v;
     return SBI_SUCCESS;

@@ -193,8 +193,22 @@ static void secure_call_tests(void)
     send("verifier touches normal memory ", V_FAULT,        6,   310, 0, 1000, 0xBAD);
     result(debug(DEBUG_FID_FAILSAFE) == 2, "fault forced the safe state");
 
-    /* The system still works afterwards. */
-    send("valid command after recovery   ", V_ACCEPT,       6,   400, 0, 1000, MODE_FLIGHT);
+    /* Post-failsafe state lockout: immediate FLIGHT must be rejected. */
+    send("flight blocked after failsafe  ", V_REJECT_MODE,  6,   400, 0, 1000, MODE_FLIGHT);
+
+    /* Clean recovery: DISARMED -> ARMED -> FLIGHT. */
+    delay_ms(50);
+    send("recover: disarm after failsafe ", V_ACCEPT,       6,   300, 0, 1000, MODE_DISARMED);
+    delay_ms(50);
+    send("recover: arm                   ", V_ACCEPT,       7,   300, 0, 1000, MODE_ARMED);
+    delay_ms(50);
+    send("recover: take off              ", V_ACCEPT,       8,   400, 0, 1000, MODE_FLIGHT);
+
+    /* Dead-man's switch: sleeping 600 ms in FLIGHT without commands triggers failsafe. */
+    delay_ms(600);
+    result(debug(DEBUG_FID_FAILSAFE) == 3, "deadman forced safe state after 600 ms");
+    send("flight blocked after deadman   ", V_REJECT_MODE,  9,   400, 0, 1000, MODE_FLIGHT);
+    send("land after deadman             ", V_ACCEPT,       9,   400, 0, 1000, MODE_LAND);
 }
 
 void payload_main(void)

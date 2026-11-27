@@ -55,6 +55,12 @@ void trap_handler(struct trap_frame *tf)
     if (in_trusted_world() && !from_m)
         trusted_trap(tf, mcause);
 
+    /* ---- M-mode dead-man's timer expired while normal world was running ---- */
+    if (!in_trusted_world() && is_interrupt && !from_m && code == IRQ_M_TIMER) {
+        deadman_expired();
+        return;
+    }
+
     /* ---- Service request from the normal-world kernel ---- */
     if (!is_interrupt && !from_m && code == EXC_ECALL_S) {
         sbi_handle(tf);

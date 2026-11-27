@@ -23,6 +23,12 @@ void watchdog_arm(uint64_t budget_us)
     csr_set(mie, MIE_MTIE);
 }
 
+void watchdog_arm_deadline(uint64_t deadline_us)
+{
+    MTIMECMP = deadline_us * TICKS_PER_US;
+    csr_set(mie, MIE_MTIE);
+}
+
 void watchdog_disarm(void)
 {
     csr_clear(mie, MIE_MTIE);
