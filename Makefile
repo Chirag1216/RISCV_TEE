@@ -15,7 +15,7 @@ MON_OBJ := $(patsubst %,$(BUILD)/%.o,$(MON_SRC))
 
 # The verifier: trusted U-mode code. Its binary is embedded in the monitor.
 # VERIFIER_TEST_HOOKS adds the "hang" and "fault" test commands: remove for a real build.
-VER_SRC := verifier/entry.S verifier/verifier.c common/string.c
+VER_SRC := verifier/entry.S verifier/verifier.c verifier/hmac_sha256.c common/string.c
 VER_OBJ := $(patsubst %,$(BUILD)/ver/%.o,$(VER_SRC))
 VER_CFLAGS := $(CFLAGS) -DVERIFIER_TEST_HOOKS
 

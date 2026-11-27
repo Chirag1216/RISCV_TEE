@@ -26,6 +26,7 @@
 #define SBI_EID_DTEE            0x08000001UL    /* the secure call */
 #define DTEE_FID_REGISTER       0               /* a0 = physical address of the shared page */
 #define DTEE_FID_SUBMIT         1               /* verify the pose_cmd in the shared page   */
+#define DTEE_FID_MISSION        2               /* verify & load signed gcs_mission         */
 
 #define SBI_EID_DEBUG           0x08000002UL    /* test only */
 #define DEBUG_FID_ACCEPTED      1               /* commands that reached the actuator    */
@@ -59,10 +60,38 @@ struct pose_cmd {
     uint32_t reserved;
 };
 
+/* ---- Signed GCS mission corridor ---- */
+#define MAX_WAYPOINTS   16
+
+struct waypoint {
+    int32_t x_mm;
+    int32_t y_mm;
+    int32_t z_mm;
+};
+
+struct gcs_mission {
+    uint64_t mission_seq;
+    int32_t  fence_x_min, fence_x_max;
+    int32_t  fence_y_min, fence_y_max;
+    int32_t  fence_z_min, fence_z_max;
+    uint32_t v_max_mm_s;                /* 0 = keep default V_MAX_MM_S */
+    uint32_t corridor_radius_mm;        /* 0 = box-only geofence */
+    uint32_t wp_count;
+    struct waypoint wps[MAX_WAYPOINTS];
+    uint8_t  hmac[32];                  /* HMAC-SHA256 over all preceding bytes */
+};
+
+#define REQ_POSE        0
+#define REQ_MISSION     1
+
 /* ---- What the monitor hands the verifier (in the mailbox) ---- */
 struct verifier_req {
-    struct pose_cmd cmd;    /* private copy of the command                        */
+    uint32_t req_type;      /* REQ_POSE or REQ_MISSION                            */
     uint64_t now_us;        /* trusted time, read by the monitor from the CLINT   */
+    union {
+        struct pose_cmd    cmd;
+        struct gcs_mission mission;
+    };
 };
 
 /* ---- Verdicts ---- */
@@ -75,7 +104,8 @@ struct verifier_req {
 #define V_REJECT_SPEED  6   /* step too large for the time that has passed        */
 #define V_TIMEOUT       7   /* verifier overran its time budget (set by monitor)  */
 #define V_FAULT         8   /* verifier faulted or misbehaved (set by monitor)    */
-#define V_COUNT         9
+#define V_REJECT_AUTH   9   /* mission HMAC authentication failed                 */
+#define V_COUNT         10
 
 /* ---- The mock actuator: a block of registers at ACT_BASE ---- */
 struct actuator {

@@ -92,7 +92,7 @@ long dtee_register(uint64_t pa)
 }
 
 /* One secure call. Runs with the normal world stopped, inside its ecall trap. */
-long dtee_submit(long *verdict)
+static long run_trusted_req(uint32_t req_type, long *verdict)
 {
     if (shared_pa == 0)
         return SBI_ERR_DENIED;
@@ -101,7 +101,11 @@ long dtee_submit(long *verdict)
      *    The verifier only ever sees the copy, so the normal world cannot
      *    change the command after it has been checked. */
     struct verifier_req *req = (struct verifier_req *)MAILBOX_BASE;
-    memcpy(&req->cmd, (const void *)shared_pa, sizeof(req->cmd));
+    req->req_type = req_type;
+    if (req_type == REQ_POSE)
+        memcpy(&req->cmd, (const void *)shared_pa, sizeof(req->cmd));
+    else
+        memcpy(&req->mission, (const void *)shared_pa, sizeof(req->mission));
     req->now_us = time_now_us();
 
     if (deadman_active && req->now_us >= deadman_deadline_us) {
@@ -157,19 +161,34 @@ long dtee_submit(long *verdict)
         v = V_TIMEOUT;
     }
 
-    if (v == V_ACCEPT && act->mode == MODE_FLIGHT) {
-        deadman_active = 1;
-        deadman_deadline_us = now_after + DEADMAN_TIMEOUT_US;
-        watchdog_arm_deadline(deadman_deadline_us);
-    } else if (act->mode != MODE_FLIGHT) {
-        deadman_active = 0;
-        watchdog_disarm();
+    if (req_type == REQ_POSE) {
+        if (v == V_ACCEPT && act->mode == MODE_FLIGHT) {
+            deadman_active = 1;
+            deadman_deadline_us = now_after + DEADMAN_TIMEOUT_US;
+            watchdog_arm_deadline(deadman_deadline_us);
+        } else if (act->mode != MODE_FLIGHT) {
+            deadman_active = 0;
+            watchdog_disarm();
+        } else if (deadman_active) {
+            watchdog_arm_deadline(deadman_deadline_us);
+        }
     } else if (deadman_active) {
+        /* Mission updates never extend the flight dead-man's deadline. */
         watchdog_arm_deadline(deadman_deadline_us);
     }
 
     *verdict = v;
     return SBI_SUCCESS;
+}
+
+long dtee_submit(long *verdict)
+{
+    return run_trusted_req(REQ_POSE, verdict);
+}
+
+long dtee_mission(long *verdict)
+{
+    return run_trusted_req(REQ_MISSION, verdict);
 }
 
 /*
@@ -183,7 +202,8 @@ void trusted_trap(struct trap_frame *tf, uint64_t mcause)
 {
     long verdict;
 
-    if (mcause == EXC_ECALL_U && tf->regs[REG_A0] < V_TIMEOUT) {
+    if (mcause == EXC_ECALL_U &&
+        (tf->regs[REG_A0] < V_TIMEOUT || tf->regs[REG_A0] == V_REJECT_AUTH)) {
         verdict = (long)tf->regs[REG_A0];
     } else if (mcause == (MCAUSE_INTERRUPT | IRQ_M_TIMER)) {
         failsafe();

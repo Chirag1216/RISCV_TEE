@@ -76,6 +76,8 @@ void sbi_handle(struct trap_frame *tf)
             err = dtee_register(arg0);
         else if (fid == DTEE_FID_SUBMIT)
             err = dtee_submit(&val);
+        else if (fid == DTEE_FID_MISSION)
+            err = dtee_mission(&val);
         break;
 
     /* ---- Standard services ---- */
