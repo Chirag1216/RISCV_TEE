@@ -1439,7 +1439,7 @@ Disassembly of section .text:
     80001072:	00001497          	auipc	s1,0x1
     80001076:	8d648493          	addi	s1,s1,-1834 # 80001948 <verifier_blob_start>
     8000107a:	00001417          	auipc	s0,0x1
-    8000107e:	65640413          	addi	s0,s0,1622 # 800026d0 <verifier_blob_end>
+    8000107e:	65e40413          	addi	s0,s0,1630 # 800026d8 <verifier_blob_end>
     80001082:	8c05                	sub	s0,s0,s1
     80001084:	7ff00513          	li	a0,2047
     80001088:	8622                	mv	a2,s0

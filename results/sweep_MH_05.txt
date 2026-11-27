@@ -1,0 +1,13 @@
+teleport_mm    step_mm    result     reason
+20             31         accepted   -
+40             47         accepted   -
+60             65         accepted   -
+80             84         accepted   -
+100            103        accepted   -
+120            123        accepted   -
+140            143        accepted   -
+160            163        accepted   -
+200            202        accepted   -
+300            302        rejected   SPEED
+500            501        rejected   SPEED
+d_min from policy.h: 259.0 mm

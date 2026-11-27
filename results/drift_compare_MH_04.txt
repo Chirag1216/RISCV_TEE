@@ -1,0 +1,8 @@
+Drift Comparison: MH_04 (1976 frames, 5 legs x 400 fr, lateral +Y drift at frame 988, R=500 mm, V_MAX=4180 mm/s)
+Clean FPR: Phase1_Box=800/1976 (40.49%)  Phase2_Corridor=0/1976 (0.00%)
+
+drift_m/s  box_TPR    box_latency        box_max_err   corr_TPR   corr_latency       corr_max_err
+0.1        53.34    % 122 fr (6.10 s)    0.61        m 83.91    % 135 fr (6.75 s)    0.68 m
+0.2        59.11    % 122 fr (6.10 s)    1.22        m 89.68    % 66 fr (3.30 s)     0.66 m
+0.3        87.65    % 122 fr (6.10 s)    1.83        m 94.53    % 54 fr (2.70 s)     0.81 m
+0.5        87.65    % 122 fr (6.10 s)    3.05        m 96.76    % 32 fr (1.60 s)     0.80 m

@@ -23,6 +23,8 @@ from traj import load_tum, resample, speeds, DT
 
 ap = argparse.ArgumentParser()
 ap.add_argument("files", nargs="+")
+ap.add_argument("--fence-from", nargs="+", default=None,
+                help="optional separate trajectory files for geofence bounds")
 ap.add_argument("--write", action="store_true", help="write verifier/policy.h")
 ap.add_argument("--speed-margin", type=float, default=1.5)
 ap.add_argument("--fence-margin-m", type=float, default=1.0)
@@ -37,15 +39,24 @@ for path in args.files:
     s = resample(load_tum(path))
     v = speeds(s)
     peak = max(peak, max(v))
-    for p in s:
-        for k in range(3):
-            lo[k] = min(lo[k], p[1 + k])
-            hi[k] = max(hi[k], p[1 + k])
+    if args.fence_from is None:
+        for p in s:
+            for k in range(3):
+                lo[k] = min(lo[k], p[1 + k])
+                hi[k] = max(hi[k], p[1 + k])
     total += len(s)
     print(f"{path}: {len(s)} samples at 20 Hz, peak speed {max(v):.2f} m/s, "
           f"x [{min(q[1] for q in s):.1f}, {max(q[1] for q in s):.1f}] "
           f"y [{min(q[2] for q in s):.1f}, {max(q[2] for q in s):.1f}] "
           f"z [{min(q[3] for q in s):.1f}, {max(q[3] for q in s):.1f}] m")
+
+if args.fence_from is not None:
+    for path in args.fence_from:
+        s = resample(load_tum(path))
+        for p in s:
+            for k in range(3):
+                lo[k] = min(lo[k], p[1 + k])
+                hi[k] = max(hi[k], p[1 + k])
 
 v_max = int(math.ceil(peak * args.speed_margin * 1000))          # mm/s
 m = args.fence_margin_m

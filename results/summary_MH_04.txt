@@ -1,0 +1,68 @@
+=== clean ===
+attack   : clean  (expected reason: none, source MH_04.txt)
+clean    : 400 frames, 0 rejected  ->  FPR = 0.00 %
+tee_lat  : pose count=400 avg=286891 cyc (117.2 us) max=3749129 cyc (1590.7 us)
+
+=== teleport ===
+attack   : teleport  (expected reason: JUMP, source MH_04.txt)
+clean    : 200 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 200 frames, 200 rejected  ->  TPR = 100.00 %
+           rejected by reason: {'JUMP': 9, 'MODE': 191}
+latency  : first rejection at frame 200 (JUMP), 0 frames = 0.00 s after the attack began
+step     : 2000 mm at frame 200 (rejected)
+tee_lat  : pose count=400 avg=271726 cyc (110.3 us) max=3500017 cyc (1478.4 us)
+
+=== overspeed ===
+attack   : overspeed  (expected reason: SPEED, source MH_04.txt)
+clean    : 200 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 200 frames, 6 rejected  ->  TPR = 3.00 %
+           rejected by reason: {'SPEED': 6}
+latency  : first rejection at frame 200 (SPEED), 0 frames = 0.00 s after the attack began
+step     : 419 mm at frame 200 (rejected)
+tee_lat  : pose count=400 avg=272064 cyc (110.6 us) max=3348704 cyc (1433.9 us)
+
+=== fence ===
+attack   : fence  (expected reason: FENCE, source MH_04.txt)
+clean    : 200 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 200 frames, 200 rejected  ->  TPR = 100.00 %
+           rejected by reason: {'FENCE': 9, 'MODE': 191}
+latency  : first rejection at frame 200 (FENCE), 0 frames = 0.00 s after the attack began
+step     : 9400 mm at frame 200 (rejected)
+tee_lat  : pose count=400 avg=299332 cyc (122.0 us) max=5736155 cyc (2476.9 us)
+
+=== replay ===
+attack   : replay  (expected reason: SEQ, source MH_04.txt)
+clean    : 400 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 1 frames, 1 rejected  ->  TPR = 100.00 %
+           rejected by reason: {'SEQ': 1}
+latency  : first rejection at frame 200 (SEQ), 0 frames = 0.00 s after the attack began
+step     : 17 mm at frame 200 (rejected)
+tee_lat  : pose count=401 avg=283991 cyc (115.7 us) max=3555346 cyc (1506.1 us)
+
+=== flood ===
+attack   : flood  (expected reason: RATE, source MH_04.txt)
+clean    : 400 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 4 frames, 4 rejected  ->  TPR = 100.00 %
+           rejected by reason: {'RATE': 4}
+latency  : first rejection at frame 201 (RATE), 1 frames = 0.05 s after the attack began
+step     : 1 mm at frame 200 (accepted)
+tee_lat  : pose count=404 avg=254257 cyc (103.6 us) max=1952838 cyc (827.8 us)
+
+=== mode ===
+attack   : mode  (expected reason: MODE, source MH_04.txt)
+clean    : 399 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 1 frames, 1 rejected  ->  TPR = 100.00 %
+           rejected by reason: {'MODE': 1}
+latency  : first rejection at frame 200 (MODE), 0 frames = 0.00 s after the attack began
+step     : 1 mm at frame 200 (rejected)
+tee_lat  : pose count=400 avg=272306 cyc (112.1 us) max=1938078 cyc (821.3 us)
+
+=== drift ===
+attack   : drift  (expected reason: none, source MH_04.txt)
+clean    : 200 frames, 0 rejected  ->  FPR = 0.00 %
+attack   : 200 frames, 0 rejected  ->  TPR = 0.00 %
+           rejected by reason: {}
+latency  : never detected
+step     : 15 mm at frame 200 (accepted)
+tee_lat  : pose count=400 avg=285798 cyc (116.7 us) max=3515970 cyc (1493.0 us)
+

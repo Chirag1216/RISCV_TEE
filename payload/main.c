@@ -6,9 +6,11 @@
  *         each one arrives in our own trap handler as an access fault.
  * Part B: sends commands through the secure call and checks each verdict.
  */
+#include <stddef.h>
 #include <stdint.h>
 #include "dtee.h"
 #include "layout.h"
+#include "../verifier/hmac_sha256.h"
 #include "../verifier/policy.h"
 
 /* Positions derived from the policy, so the test works with any calibration. */
@@ -277,11 +279,11 @@ static void mission_corridor_tests(void)
 {
     puts("\n--- Part C: signed GCS mission corridor ---\n");
 
-    static const uint8_t valid_hmac[32] = {
-        0x1b, 0x6c, 0xf5, 0xb8, 0x2b, 0x63, 0xba, 0x60,
-        0x89, 0x10, 0x70, 0x3b, 0xb3, 0xcf, 0x95, 0x1a,
-        0x1f, 0x27, 0x91, 0x1a, 0xa4, 0x44, 0xd0, 0xfd,
-        0x91, 0x07, 0xa5, 0x58, 0x28, 0xb5, 0x5c, 0x0d,
+    static const uint8_t k_gcs[32] = {
+        0x52, 0x56, 0x54, 0x45, 0x45, 0x5f, 0x47, 0x43,
+        0x53, 0x5f, 0x4b, 0x45, 0x59, 0x5f, 0x30, 0x31,
+        0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x01,
+        0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
     };
 
     struct gcs_mission m;
@@ -290,17 +292,22 @@ static void mission_corridor_tests(void)
         mp[i] = 0;
 
     m.mission_seq = 1;
-    m.fence_x_min = -4000;
-    m.fence_x_max = 4000;
-    m.fence_y_min = -2500;
-    m.fence_y_max = 2500;
-    m.fence_z_min = -300;
-    m.fence_z_max = 2300;
+    m.fence_x_min = FENCE_X_MIN;
+    m.fence_x_max = FENCE_X_MAX;
+    m.fence_y_min = FENCE_Y_MIN;
+    m.fence_y_max = FENCE_Y_MAX;
+    m.fence_z_min = FENCE_Z_MIN;
+    m.fence_z_max = FENCE_Z_MAX;
     m.v_max_mm_s = 0;
     m.corridor_radius_mm = 300;
     m.wp_count = 2;
-    m.wps[0].x_mm = 0;    m.wps[0].y_mm = 0; m.wps[0].z_mm = 1000;
-    m.wps[1].x_mm = 1000; m.wps[1].y_mm = 0; m.wps[1].z_mm = 1000;
+    m.wps[0].x_mm = CX;        m.wps[0].y_mm = CY; m.wps[0].z_mm = CZ;
+    m.wps[1].x_mm = CX + 1000; m.wps[1].y_mm = CY; m.wps[1].z_mm = CZ;
+
+    uint8_t valid_hmac[32];
+    hmac_sha256(k_gcs, sizeof(k_gcs),
+                (const uint8_t *)&m, offsetof(struct gcs_mission, hmac),
+                valid_hmac);
 
     /* 1. Forged mission (zeroed HMAC). */
     send_mission("forged mission (zero HMAC)     ", V_REJECT_AUTH, &m);
@@ -320,22 +327,22 @@ static void mission_corridor_tests(void)
 
     /* 5. Enter FLIGHT on the corridor, then drift +10 mm/step in +Y. */
     delay_ms(50);
-    send("mission: disarm                ", V_ACCEPT, 10, CX + 3 * SMALL, 0, 1000, MODE_DISARMED);
+    send("mission: disarm                ", V_ACCEPT, 10, CX + 3 * SMALL, CY, CZ, MODE_DISARMED);
     delay_ms(50);
-    send("mission: arm                   ", V_ACCEPT, 11, CX + 3 * SMALL, 0, 1000, MODE_ARMED);
+    send("mission: arm                   ", V_ACCEPT, 11, CX + 3 * SMALL, CY, CZ, MODE_ARMED);
     delay_ms(50);
-    send("mission: take off              ", V_ACCEPT, 12, CX + 3 * SMALL, 0, 1000, MODE_FLIGHT);
+    send("mission: take off              ", V_ACCEPT, 12, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
 
     uint64_t seq = 13;
     int drift_ok = 1;
-    for (int y = 10; y <= 300; y += 10) {
+    for (int dy = 10; dy <= 300; dy += 10) {
         delay_ms(50);
         struct pose_cmd *c = &shared_page[0];
         c->seq = seq++;
         c->t_us = 0;
         c->x_mm = CX + 3 * SMALL;
-        c->y_mm = y;
-        c->z_mm = 1000;
+        c->y_mm = CY + dy;
+        c->z_mm = CZ;
         c->yaw_mdeg = 0;
         c->mode = MODE_FLIGHT;
         struct sbiret r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
@@ -347,8 +354,8 @@ static void mission_corridor_tests(void)
     result(drift_ok, "slow +Y drift accepted inside y <= 300 mm");
 
     delay_ms(50);
-    send("drift y=310 outside corridor   ", V_REJECT_FENCE, seq++, CX + 3 * SMALL, 310, 1000, MODE_FLIGHT);
-    send("mission: land                  ", V_ACCEPT,       seq++, CX + 3 * SMALL, 300, 1000, MODE_LAND);
+    send("drift y=310 outside corridor   ", V_REJECT_FENCE, seq++, CX + 3 * SMALL, CY + 310, CZ, MODE_FLIGHT);
+    send("mission: land                  ", V_ACCEPT,       seq++, CX + 3 * SMALL, CY + 300, CZ, MODE_LAND);
 }
 
 struct bench_stat {
@@ -416,11 +423,11 @@ static void protc_benchmark_tests(void)
     /* 2. AUTH-FULL: 50 valid DTEE_FID_SUBMIT poses + 10 DTEE_FID_MISSION calls */
     delay_ms(200);
     uint64_t seq = 100;
-    send("bench: disarm                  ", V_ACCEPT, seq++, 100, 0, 1000, MODE_DISARMED);
+    send("bench: disarm                  ", V_ACCEPT, seq++, CX + SMALL, CY, CZ, MODE_DISARMED);
     delay_ms(50);
-    send("bench: arm                     ", V_ACCEPT, seq++, 100, 0, 1000, MODE_ARMED);
+    send("bench: arm                     ", V_ACCEPT, seq++, CX + SMALL, CY, CZ, MODE_ARMED);
     delay_ms(50);
-    send("bench: take off                ", V_ACCEPT, seq++, 100, 0, 1000, MODE_FLIGHT);
+    send("bench: take off                ", V_ACCEPT, seq++, CX + SMALL, CY, CZ, MODE_FLIGHT);
 
     struct bench_stat auth_pose_st = { 0 };
     int auth_pose_ok = 0;
@@ -429,9 +436,9 @@ static void protc_benchmark_tests(void)
         struct pose_cmd *c = &shared_page[0];
         c->seq = seq++;
         c->t_us = 0;
-        c->x_mm = (i & 1) ? 120 : 100;
-        c->y_mm = 0;
-        c->z_mm = 1000;
+        c->x_mm = CX + SMALL + ((i & 1) ? 20 : 0);
+        c->y_mm = CY;
+        c->z_mm = CZ;
         c->yaw_mdeg = 0;
         c->mode = MODE_FLIGHT;
         uint64_t c0 = rdcycle(), t0 = rdtime();
@@ -451,9 +458,9 @@ static void protc_benchmark_tests(void)
         for (unsigned long i = 0; i < sizeof(*dst); i++)
             dp[i] = 0;
         dst->mission_seq = 99;
-        dst->fence_x_min = -4000; dst->fence_x_max = 4000;
-        dst->fence_y_min = -2500; dst->fence_y_max = 2500;
-        dst->fence_z_min = -300;  dst->fence_z_max = 2300;
+        dst->fence_x_min = FENCE_X_MIN; dst->fence_x_max = FENCE_X_MAX;
+        dst->fence_y_min = FENCE_Y_MIN; dst->fence_y_max = FENCE_Y_MAX;
+        dst->fence_z_min = FENCE_Z_MIN; dst->fence_z_max = FENCE_Z_MAX;
         dst->wp_count = 2;
         for (int i = 0; i < 10; i++) {
             uint64_t c0 = rdcycle(), t0 = rdtime();
@@ -475,9 +482,9 @@ static void protc_benchmark_tests(void)
         struct pose_cmd *c = &shared_page[0];
         c->seq = seq++;
         c->t_us = 0;
-        c->x_mm = (i & 1) ? 120 : 100;
-        c->y_mm = 0;
-        c->z_mm = 1000;
+        c->x_mm = CX + SMALL + ((i & 1) ? 20 : 0);
+        c->y_mm = CY;
+        c->z_mm = CZ;
         c->yaw_mdeg = 0;
         c->mode = MODE_FLIGHT;
         struct sbiret r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
@@ -488,17 +495,17 @@ static void protc_benchmark_tests(void)
         int kind = i % 4;
         if (kind == 0) {
             c->seq = seq++;
-            c->x_mm = 100; c->y_mm = 400; c->z_mm = 1000; c->mode = MODE_FLIGHT;
+            c->x_mm = CX + SMALL; c->y_mm = CY + 400; c->z_mm = CZ; c->mode = MODE_FLIGHT;
             r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
             if (r.error == SBI_SUCCESS && r.value == V_REJECT_FENCE) part_rej_ok++;
         } else if (kind == 1) {
             c->seq = seq++;
-            c->x_mm = 400; c->y_mm = 0; c->z_mm = 1000; c->mode = MODE_FLIGHT;
+            c->x_mm = CX + SMALL + FAST; c->y_mm = CY; c->z_mm = CZ; c->mode = MODE_FLIGHT;
             r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
             if (r.error == SBI_SUCCESS && r.value == V_REJECT_SPEED) part_rej_ok++;
         } else if (kind == 2) {
             c->seq = seq++;
-            c->x_mm = 100; c->y_mm = 0; c->z_mm = 1000; c->mode = MODE_DISARMED;
+            c->x_mm = CX + SMALL; c->y_mm = CY; c->z_mm = CZ; c->mode = MODE_DISARMED;
             r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
             if (r.error == SBI_SUCCESS && r.value == V_REJECT_MODE) part_rej_ok++;
         } else {
@@ -507,9 +514,9 @@ static void protc_benchmark_tests(void)
             for (unsigned long k = 0; k < sizeof(*dst); k++)
                 dp[k] = 0;
             dst->mission_seq = 99;
-            dst->fence_x_min = -4000; dst->fence_x_max = 4000;
-            dst->fence_y_min = -2500; dst->fence_y_max = 2500;
-            dst->fence_z_min = -300;  dst->fence_z_max = 2300;
+            dst->fence_x_min = FENCE_X_MIN; dst->fence_x_max = FENCE_X_MAX;
+            dst->fence_y_min = FENCE_Y_MIN; dst->fence_y_max = FENCE_Y_MAX;
+            dst->fence_z_min = FENCE_Z_MIN; dst->fence_z_max = FENCE_Z_MAX;
             r = sbi_call(SBI_EID_DTEE, DTEE_FID_MISSION, 0);
             if (r.error == SBI_SUCCESS && r.value == V_REJECT_AUTH) part_rej_ok++;
         }
@@ -536,7 +543,7 @@ static void protc_benchmark_tests(void)
 
     /* Land cleanly at the end of Part D. */
     delay_ms(25);
-    send("bench: land                    ", V_ACCEPT, seq++, 100, 0, 1000, MODE_LAND);
+    send("bench: land                    ", V_ACCEPT, seq++, CX + SMALL, CY, CZ, MODE_LAND);
 
     puts("\nPROTC micro-benchmark summary (S-mode):\n");
     bench_print("DI-ACCESS       ", &di_st);
