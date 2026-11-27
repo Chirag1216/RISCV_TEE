@@ -1,0 +1,25 @@
+#!/bin/busybox sh
+# First program Linux runs (process 1).
+/bin/busybox --install -s /bin
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t devtmpfs none /dev 2>/dev/null
+
+echo
+echo "rvtee: Linux is up on top of the monitor"
+uname -a
+
+# Load the secure-call driver. It creates /dev/dtee.
+[ -f /lib/dtee.ko ] && insmod /lib/dtee.ko
+
+# Unattended replay: `make replay CMD=...` passes rvtee.replay=<file> on the
+# kernel command line. Play the file, then power off.
+replay=$(sed -n 's/.*rvtee\.replay=\([^ ]*\).*/\1/p' /proc/cmdline)
+if [ -n "$replay" ]; then
+    echo "rvtee: replaying $replay"
+    replayer "$replay"
+    poweroff -f
+fi
+
+echo "Try: dtee_test      Exit: poweroff -f"
+exec setsid cttyhack sh
