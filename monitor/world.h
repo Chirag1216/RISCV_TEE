@@ -8,6 +8,7 @@ void world_init(void);                              /* load the verifier into tr
 long dtee_register(uint64_t shared_pa);             /* normal world registers its shared page */
 long dtee_submit(long *verdict);                    /* run the verifier on the shared page    */
 void trusted_trap(struct trap_frame *tf, uint64_t mcause);   /* any trap while the verifier runs */
+void deadman_expired(void);                                   /* M-mode dead-man's timer expired  */
 int  in_trusted_world(void);
 
 uint64_t actuator_accepted_count(void);

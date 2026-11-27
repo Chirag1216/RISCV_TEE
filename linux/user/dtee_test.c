@@ -128,10 +128,26 @@ int main(void)
     send("verifier touches normal memory ", V_FAULT,        6, CX + 3 * SMALL, CY, CZ, 0xBAD);
     result(stats().failsafe - before.failsafe == 2, "the monitor forced the safe state twice");
 
-    /* Finish cleanly: land and disarm. */
-    send("land                           ", V_ACCEPT,       6, CX + 3 * SMALL, CY, CZ, MODE_LAND);
+    /* Post-failsafe state lockout: immediate FLIGHT must be rejected. */
+    send("flight blocked after failsafe  ", V_REJECT_MODE,  6, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
+
+    /* Clean recovery: DISARMED -> ARMED -> FLIGHT. */
     wait_50ms();
-    send("disarm                         ", V_ACCEPT,       7, CX + 3 * SMALL, CY, CZ, MODE_DISARMED);
+    send("recover: disarm after failsafe ", V_ACCEPT,       6, CX + 3 * SMALL, CY, CZ, MODE_DISARMED);
+    wait_50ms();
+    send("recover: arm                   ", V_ACCEPT,       7, CX + 3 * SMALL, CY, CZ, MODE_ARMED);
+    wait_50ms();
+    send("recover: take off              ", V_ACCEPT,       8, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
+
+    /* Dead-man's switch: sleeping 600 ms in FLIGHT without commands triggers failsafe. */
+    usleep(600000);
+    result(stats().failsafe - before.failsafe == 3, "deadman forced safe state after 600 ms");
+    send("flight blocked after deadman   ", V_REJECT_MODE,  9, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
+
+    /* Finish cleanly: land and disarm. */
+    send("land                           ", V_ACCEPT,       9, CX + 3 * SMALL, CY, CZ, MODE_LAND);
+    wait_50ms();
+    send("disarm                         ", V_ACCEPT,      10, CX + 3 * SMALL, CY, CZ, MODE_DISARMED);
 
     printf("\n%s\n", failures == 0 ? "dtee_test: ALL TESTS PASSED" : "dtee_test: SOME TESTS FAILED");
     close(fd);

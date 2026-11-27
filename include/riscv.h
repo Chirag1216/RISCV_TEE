@@ -30,6 +30,7 @@
 #define MSTATUS_MPP_M           (3UL << MSTATUS_MPP_SHIFT)
 #define MSTATUS_MPIE            (1UL << 7)
 #define MSTATUS_FS_MASK         (3UL << 13)     /* floating-point unit state: 0 = off */
+#define MSTATUS_VS_MASK         (3UL << 9)      /* vector unit state: 0 = off */
 
 /* mie / mip: machine timer interrupt */
 #define MIE_MTIE                (1UL << 7)

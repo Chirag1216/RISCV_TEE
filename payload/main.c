@@ -9,6 +9,16 @@
 #include <stdint.h>
 #include "dtee.h"
 #include "layout.h"
+#include "../verifier/policy.h"
+
+/* Positions derived from the policy, so the test works with any calibration. */
+#define CX     ((FENCE_X_MIN + FENCE_X_MAX) / 2)
+#define CY     ((FENCE_Y_MIN + FENCE_Y_MAX) / 2)
+#define CZ     ((FENCE_Z_MIN + FENCE_Z_MAX) / 2)
+#define LIMIT  (V_MAX_MM_S * 50 / 1000 + EPS_MM)
+#define CAP    (V_MAX_MM_S * DT_CAP_US / 1000000 + EPS_MM)
+#define SMALL  (LIMIT / 2)
+#define FAST   ((LIMIT + CAP) / 2)
 
 /* ---- SBI call: a7 = extension, a6 = function, a0 = argument ---- */
 struct sbiret {
@@ -166,35 +176,49 @@ static void secure_call_tests(void)
     r = sbi_call(SBI_EID_DTEE, DTEE_FID_REGISTER, (unsigned long)shared_page);
     result(r.error == SBI_SUCCESS, "normal-world page accepted as shared page");
 
-    /* Good commands. 50 ms apart = 20 Hz. Limit per step: 3 m/s * 50 ms + 50 mm = 200 mm. */
-    send("arm at the origin              ", V_ACCEPT,       1,     0, 0, 1000, MODE_ARMED);
+    /* Good commands. 50 ms apart = 20 Hz. Each step is half the allowed limit. */
+    send("arm at the centre              ", V_ACCEPT,       1, CX,             CY, CZ, MODE_ARMED);
     delay_ms(50);
-    send("take off, 100 mm step          ", V_ACCEPT,       2,   100, 0, 1000, MODE_FLIGHT);
+    send("take off, small step           ", V_ACCEPT,       2, CX + SMALL,     CY, CZ, MODE_FLIGHT);
     delay_ms(50);
-    send("fly, 100 mm step               ", V_ACCEPT,       3,   200, 0, 1000, MODE_FLIGHT);
+    send("fly, small step                ", V_ACCEPT,       3, CX + 2 * SMALL, CY, CZ, MODE_FLIGHT);
     result(debug(DEBUG_FID_ACCEPTED) == 3, "actuator received exactly 3 commands");
 
     /* Attacks. Each one is 50 ms after the last accepted command unless noted. */
     delay_ms(50);
-    send("replay an old sequence number  ", V_REJECT_SEQ,   2,   300, 0, 1000, MODE_FLIGHT);
-    send("geofence breach (x = 20 m)     ", V_REJECT_FENCE, 4, 20000, 0, 1000, MODE_FLIGHT);
-    send("teleport (5 m jump)            ", V_REJECT_JUMP,  4,  5200, 0, 1000, MODE_FLIGHT);
-    send("overspeed (600 mm in ~50 ms)   ", V_REJECT_SPEED, 4,   800, 0, 1000, MODE_FLIGHT);
-    send("illegal mode change to DISARMED", V_REJECT_MODE,  4,   300, 0, 1000, MODE_DISARMED);
-    send("unknown mode                   ", V_REJECT_MODE,  4,   300, 0, 1000, 77);
-    send("valid command                  ", V_ACCEPT,       4,   300, 0, 1000, MODE_FLIGHT);
-    send("flood (no delay after accept)  ", V_REJECT_RATE,  5,   310, 0, 1000, MODE_FLIGHT);
+    send("replay an old sequence number  ", V_REJECT_SEQ,   2, CX + 3 * SMALL,     CY, CZ, MODE_FLIGHT);
+    send("geofence breach                ", V_REJECT_FENCE, 4, FENCE_X_MAX + 1000, CY, CZ, MODE_FLIGHT);
+    send("teleport                       ", V_REJECT_JUMP,  4, FENCE_X_MAX - 100,  CY, CZ, MODE_FLIGHT);
+    send("overspeed                      ", V_REJECT_SPEED, 4, CX + 2 * SMALL + FAST, CY, CZ, MODE_FLIGHT);
+    send("illegal mode change to DISARMED", V_REJECT_MODE,  4, CX + 3 * SMALL,     CY, CZ, MODE_DISARMED);
+    send("unknown mode                   ", V_REJECT_MODE,  4, CX + 3 * SMALL,     CY, CZ, 77);
+    send("valid command                  ", V_ACCEPT,       4, CX + 3 * SMALL,     CY, CZ, MODE_FLIGHT);
+    send("flood (no delay after accept)  ", V_REJECT_RATE,  5, CX + 3 * SMALL + 10, CY, CZ, MODE_FLIGHT);
     result(debug(DEBUG_FID_ACCEPTED) == 4, "rejected commands never reached the actuator");
 
     /* The verifier itself misbehaves (test hooks). */
     delay_ms(50);
-    send("verifier hangs                 ", V_TIMEOUT,      6,   310, 0, 1000, 0xDEAD);
+    send("verifier hangs                 ", V_TIMEOUT,      6, CX + 3 * SMALL, CY, CZ, 0xDEAD);
     result(debug(DEBUG_FID_FAILSAFE) == 1, "watchdog forced the safe state");
-    send("verifier touches normal memory ", V_FAULT,        6,   310, 0, 1000, 0xBAD);
+    send("verifier touches normal memory ", V_FAULT,        6, CX + 3 * SMALL, CY, CZ, 0xBAD);
     result(debug(DEBUG_FID_FAILSAFE) == 2, "fault forced the safe state");
 
-    /* The system still works afterwards. */
-    send("valid command after recovery   ", V_ACCEPT,       6,   400, 0, 1000, MODE_FLIGHT);
+    /* Post-failsafe state lockout: immediate FLIGHT must be rejected. */
+    send("flight blocked after failsafe  ", V_REJECT_MODE,  6, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
+
+    /* Clean recovery: DISARMED -> ARMED -> FLIGHT. */
+    delay_ms(50);
+    send("recover: disarm after failsafe ", V_ACCEPT,       6, CX + 3 * SMALL, CY, CZ, MODE_DISARMED);
+    delay_ms(50);
+    send("recover: arm                   ", V_ACCEPT,       7, CX + 3 * SMALL, CY, CZ, MODE_ARMED);
+    delay_ms(50);
+    send("recover: take off              ", V_ACCEPT,       8, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
+
+    /* Dead-man's switch: sleeping 600 ms in FLIGHT without commands triggers failsafe. */
+    delay_ms(600);
+    result(debug(DEBUG_FID_FAILSAFE) == 3, "deadman forced safe state after 600 ms");
+    send("flight blocked after deadman   ", V_REJECT_MODE,  9, CX + 3 * SMALL, CY, CZ, MODE_FLIGHT);
+    send("land after deadman             ", V_ACCEPT,       9, CX + 3 * SMALL, CY, CZ, MODE_LAND);
 }
 
 void payload_main(void)

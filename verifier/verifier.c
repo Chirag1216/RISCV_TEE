@@ -19,6 +19,7 @@ static struct {
     uint64_t t_us;          /* trusted time of the last accepted command */
     int32_t  x_mm, y_mm, z_mm;
     uint32_t mode;          /* starts as MODE_DISARMED (0) */
+    uint64_t failsafe_count;
 } last;
 
 /* allowed[from][to] = 1 if the mode change is permitted. */
@@ -92,6 +93,12 @@ long verify(const struct verifier_req *req)
         return *(volatile long *)NORMAL_BASE;
 #endif
 
+    volatile struct actuator *act = (volatile struct actuator *)ACT_BASE;
+    if (act->failsafe_count != last.failsafe_count) {
+        last.mode = act->mode;
+        last.failsafe_count = act->failsafe_count;
+    }
+
     int verdict = check(req);
     if (verdict != V_ACCEPT)
         return verdict;
@@ -106,7 +113,6 @@ long verify(const struct verifier_req *req)
     last.z_mm = c->z_mm;
     last.mode = c->mode;
 
-    volatile struct actuator *act = (volatile struct actuator *)ACT_BASE;
     act->seq      = c->seq;
     act->x_mm     = c->x_mm;
     act->y_mm     = c->y_mm;
