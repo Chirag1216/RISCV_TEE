@@ -279,6 +279,7 @@ static void mission_corridor_tests(void)
 {
     puts("\n--- Part C: signed GCS mission corridor ---\n");
 
+    /* Simulates the off-board GCS test harness; in linux/prebuilt/ and real deployments, Linux never possesses K_GCS. */
     static const uint8_t k_gcs[32] = {
         0x52, 0x56, 0x54, 0x45, 0x45, 0x5f, 0x47, 0x43,
         0x53, 0x5f, 0x4b, 0x45, 0x59, 0x5f, 0x30, 0x31,
