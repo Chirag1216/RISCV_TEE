@@ -45,6 +45,37 @@ static void puts(const char *s)
     }
 }
 
+static void putdec(uint64_t v)
+{
+    char buf[21];
+    int i = 0;
+
+    if (v == 0) {
+        sbi_call(SBI_EID_PUTCHAR, 0, '0');
+        return;
+    }
+    while (v > 0) {
+        buf[i++] = (char)('0' + (v % 10));
+        v /= 10;
+    }
+    while (i > 0)
+        sbi_call(SBI_EID_PUTCHAR, 0, (unsigned long)buf[--i]);
+}
+
+static inline uint64_t rdcycle(void)
+{
+    uint64_t v;
+    asm volatile ("rdcycle %0" : "=r"(v));
+    return v;
+}
+
+static inline uint64_t rdtime(void)
+{
+    uint64_t v;
+    asm volatile ("rdtime %0" : "=r"(v));
+    return v;
+}
+
 static long debug(unsigned long fid)
 {
     return sbi_call(SBI_EID_DEBUG, fid, 0).value;
@@ -320,6 +351,199 @@ static void mission_corridor_tests(void)
     send("mission: land                  ", V_ACCEPT,       seq++, CX + 3 * SMALL, 300, 1000, MODE_LAND);
 }
 
+struct bench_stat {
+    uint64_t count;
+    uint64_t min_cyc, max_cyc, sum_cyc;
+    uint64_t min_ticks, max_ticks, sum_ticks;
+};
+
+static void bench_record(struct bench_stat *st,
+                         uint64_t c0, uint64_t t0, uint64_t c1, uint64_t t1)
+{
+    uint64_t dc = c1 - c0;
+    uint64_t dt = t1 - t0;
+    if (st->count == 0 || dc < st->min_cyc) st->min_cyc = dc;
+    if (dc > st->max_cyc) st->max_cyc = dc;
+    st->sum_cyc += dc;
+    if (st->count == 0 || dt < st->min_ticks) st->min_ticks = dt;
+    if (dt > st->max_ticks) st->max_ticks = dt;
+    st->sum_ticks += dt;
+    st->count++;
+}
+
+static void bench_print(const char *name, const struct bench_stat *st)
+{
+    puts("  ");
+    puts(name);
+    puts(": n=");
+    putdec(st->count);
+    puts("  cyc min/avg/max=");
+    putdec(st->min_cyc);
+    puts("/");
+    putdec(st->count ? st->sum_cyc / st->count : 0);
+    puts("/");
+    putdec(st->max_cyc);
+    puts("  ticks(0.1us) min/avg/max=");
+    putdec(st->min_ticks);
+    puts("/");
+    putdec(st->count ? st->sum_ticks / st->count : 0);
+    puts("/");
+    putdec(st->max_ticks);
+    puts("\n");
+}
+
+static void protc_benchmark_tests(void)
+{
+    puts("\n--- Part D: PROTC micro-benchmarks ---\n");
+
+    /* 1. DI-ACCESS: 50 direct volatile writes in normal-world RAM */
+    volatile struct actuator dummy_act = { 0 };
+    struct bench_stat di_st = { 0 };
+    for (int i = 0; i < 50; i++) {
+        uint64_t c0 = rdcycle(), t0 = rdtime();
+        dummy_act.seq = (uint64_t)(i + 1);
+        dummy_act.x_mm = 100;
+        dummy_act.y_mm = 0;
+        dummy_act.z_mm = 1000;
+        dummy_act.yaw_mdeg = 0;
+        dummy_act.mode = MODE_FLIGHT;
+        dummy_act.accepted_count++;
+        uint64_t c1 = rdcycle(), t1 = rdtime();
+        bench_record(&di_st, c0, t0, c1, t1);
+    }
+    result(dummy_act.accepted_count == 50, "DI-ACCESS: 50/50 direct writes completed");
+
+    /* 2. AUTH-FULL: 50 valid DTEE_FID_SUBMIT poses + 10 DTEE_FID_MISSION calls */
+    delay_ms(200);
+    uint64_t seq = 100;
+    send("bench: disarm                  ", V_ACCEPT, seq++, 100, 0, 1000, MODE_DISARMED);
+    delay_ms(50);
+    send("bench: arm                     ", V_ACCEPT, seq++, 100, 0, 1000, MODE_ARMED);
+    delay_ms(50);
+    send("bench: take off                ", V_ACCEPT, seq++, 100, 0, 1000, MODE_FLIGHT);
+
+    struct bench_stat auth_pose_st = { 0 };
+    int auth_pose_ok = 0;
+    for (int i = 0; i < 50; i++) {
+        delay_ms(25);
+        struct pose_cmd *c = &shared_page[0];
+        c->seq = seq++;
+        c->t_us = 0;
+        c->x_mm = (i & 1) ? 120 : 100;
+        c->y_mm = 0;
+        c->z_mm = 1000;
+        c->yaw_mdeg = 0;
+        c->mode = MODE_FLIGHT;
+        uint64_t c0 = rdcycle(), t0 = rdtime();
+        struct sbiret r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
+        uint64_t c1 = rdcycle(), t1 = rdtime();
+        bench_record(&auth_pose_st, c0, t0, c1, t1);
+        if (r.error == SBI_SUCCESS && r.value == V_ACCEPT)
+            auth_pose_ok++;
+    }
+    result(auth_pose_ok == 50, "AUTH-FULL: 50/50 pose commands accepted");
+
+    struct bench_stat auth_mis_st = { 0 };
+    int auth_mis_ok = 0;
+    {
+        volatile struct gcs_mission *dst = (volatile struct gcs_mission *)shared_page;
+        volatile uint8_t *dp = (volatile uint8_t *)dst;
+        for (unsigned long i = 0; i < sizeof(*dst); i++)
+            dp[i] = 0;
+        dst->mission_seq = 99;
+        dst->fence_x_min = -4000; dst->fence_x_max = 4000;
+        dst->fence_y_min = -2500; dst->fence_y_max = 2500;
+        dst->fence_z_min = -300;  dst->fence_z_max = 2300;
+        dst->wp_count = 2;
+        for (int i = 0; i < 10; i++) {
+            uint64_t c0 = rdcycle(), t0 = rdtime();
+            struct sbiret r = sbi_call(SBI_EID_DTEE, DTEE_FID_MISSION, 0);
+            uint64_t c1 = rdcycle(), t1 = rdtime();
+            bench_record(&auth_mis_st, c0, t0, c1, t1);
+            if (r.error == SBI_SUCCESS && r.value == V_REJECT_AUTH)
+                auth_mis_ok++;
+        }
+    }
+    result(auth_mis_ok == 10, "AUTH-FULL: 10/10 mission HMAC checks timed");
+
+    /* 3. AUTH-PART: 20 mixed commands (10 valid + 10 policy violations) */
+    long before_acc = debug(DEBUG_FID_ACCEPTED);
+    int part_valid_ok = 0;
+    int part_rej_ok = 0;
+    for (int i = 0; i < 10; i++) {
+        delay_ms(25);
+        struct pose_cmd *c = &shared_page[0];
+        c->seq = seq++;
+        c->t_us = 0;
+        c->x_mm = (i & 1) ? 120 : 100;
+        c->y_mm = 0;
+        c->z_mm = 1000;
+        c->yaw_mdeg = 0;
+        c->mode = MODE_FLIGHT;
+        struct sbiret r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
+        if (r.error == SBI_SUCCESS && r.value == V_ACCEPT)
+            part_valid_ok++;
+
+        delay_ms(25);
+        int kind = i % 4;
+        if (kind == 0) {
+            c->seq = seq++;
+            c->x_mm = 100; c->y_mm = 400; c->z_mm = 1000; c->mode = MODE_FLIGHT;
+            r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
+            if (r.error == SBI_SUCCESS && r.value == V_REJECT_FENCE) part_rej_ok++;
+        } else if (kind == 1) {
+            c->seq = seq++;
+            c->x_mm = 400; c->y_mm = 0; c->z_mm = 1000; c->mode = MODE_FLIGHT;
+            r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
+            if (r.error == SBI_SUCCESS && r.value == V_REJECT_SPEED) part_rej_ok++;
+        } else if (kind == 2) {
+            c->seq = seq++;
+            c->x_mm = 100; c->y_mm = 0; c->z_mm = 1000; c->mode = MODE_DISARMED;
+            r = sbi_call(SBI_EID_DTEE, DTEE_FID_SUBMIT, 0);
+            if (r.error == SBI_SUCCESS && r.value == V_REJECT_MODE) part_rej_ok++;
+        } else {
+            volatile struct gcs_mission *dst = (volatile struct gcs_mission *)shared_page;
+            volatile uint8_t *dp = (volatile uint8_t *)dst;
+            for (unsigned long k = 0; k < sizeof(*dst); k++)
+                dp[k] = 0;
+            dst->mission_seq = 99;
+            dst->fence_x_min = -4000; dst->fence_x_max = 4000;
+            dst->fence_y_min = -2500; dst->fence_y_max = 2500;
+            dst->fence_z_min = -300;  dst->fence_z_max = 2300;
+            r = sbi_call(SBI_EID_DTEE, DTEE_FID_MISSION, 0);
+            if (r.error == SBI_SUCCESS && r.value == V_REJECT_AUTH) part_rej_ok++;
+        }
+    }
+    result(part_valid_ok == 10 && part_rej_ok == 10 &&
+           debug(DEBUG_FID_ACCEPTED) == before_acc + 10,
+           "AUTH-PART: 10/10 valid accepted, 10/10 violations blocked");
+
+    /* 4. UNAUTH: 8 direct S-mode memory attacks across MON, TCODE, TDATA, ACT */
+    long acc_before_atk = debug(DEBUG_FID_ACCEPTED);
+    long f0 = (long)fault_count;
+    volatile uint64_t sink = 0;
+    sink += *(volatile uint64_t *)MON_BASE;
+    *(volatile uint64_t *)(MON_BASE + 0x40000) = 0xdeadbeef;
+    sink += *(volatile uint64_t *)TCODE_BASE;
+    *(volatile uint64_t *)TCODE_BASE = 0;
+    sink += *(volatile uint64_t *)TDATA_BASE;
+    *(volatile uint64_t *)TDATA_BASE = 0;
+    sink += *(volatile uint64_t *)ACT_BASE;
+    *(volatile uint64_t *)ACT_BASE = 0x1234;
+    (void)sink;
+    result((long)fault_count == f0 + 8 && debug(DEBUG_FID_ACCEPTED) == acc_before_atk,
+           "UNAUTH: 8/8 direct memory attacks trapped by PMP");
+
+    /* Land cleanly at the end of Part D. */
+    delay_ms(25);
+    send("bench: land                    ", V_ACCEPT, seq++, 100, 0, 1000, MODE_LAND);
+
+    puts("\nPROTC micro-benchmark summary (S-mode):\n");
+    bench_print("DI-ACCESS       ", &di_st);
+    bench_print("AUTH-FULL(pose) ", &auth_pose_st);
+    bench_print("AUTH-FULL(hmac) ", &auth_mis_st);
+}
+
 void payload_main(void)
 {
     puts("payload: running in S-mode\n\n");
@@ -327,6 +551,9 @@ void payload_main(void)
     isolation_tests();
     secure_call_tests();
     mission_corridor_tests();
+    protc_benchmark_tests();
+
+    sbi_call(SBI_EID_DEBUG, DEBUG_FID_PRINT_STATS, 0);
 
     puts(failures == 0 ? "\npayload: ALL TESTS PASSED\n"
                        : "\npayload: SOME TESTS FAILED\n");

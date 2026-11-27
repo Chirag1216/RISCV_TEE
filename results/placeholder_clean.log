@@ -410,3 +410,4 @@ R,398,399,0
 R,399,400,0
 END,sent=400,accepted=400,actuator_writes=400,failsafes=0
 END,verdicts: ACCEPT=400 SEQ=0 RATE=0 MODE=0 FENCE=0 JUMP=0 SPEED=0 TIMEOUT=0 FAULT=0
+[   22.503612] reboot: Power down

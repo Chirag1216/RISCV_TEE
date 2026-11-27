@@ -14,5 +14,6 @@ int  in_trusted_world(void);
 
 uint64_t actuator_accepted_count(void);
 uint64_t actuator_failsafe_count(void);
+void world_print_stats(void);
 
 #endif

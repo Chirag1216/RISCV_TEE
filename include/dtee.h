@@ -31,6 +31,7 @@
 #define SBI_EID_DEBUG           0x08000002UL    /* test only */
 #define DEBUG_FID_ACCEPTED      1               /* commands that reached the actuator    */
 #define DEBUG_FID_FAILSAFE      2               /* times the monitor forced the safe state */
+#define DEBUG_FID_PRINT_STATS   3               /* print monitor latency stats to UART   */
 
 /* SBI error codes, returned in a0. A verdict is returned in a1.
  * (The Linux kernel already defines these in <asm/sbi.h>.) */

@@ -17,10 +17,16 @@ DT = 0.05
 log, labels_file = sys.argv[1], sys.argv[2]
 
 verdicts = {}
+monitor_stats = []
 for line in open(log, errors="replace"):
     if line.startswith("R,"):
         _, idx, seq, v = line.strip().split(",")[:4]
         verdicts[int(idx)] = int(v)
+    elif line.startswith("MONITOR_STATS,"):
+        parts = line.strip().split(",")
+        kind = parts[1]
+        kv = dict(p.split("=", 1) for p in parts[2:] if "=" in p)
+        monitor_stats.append((kind, kv))
 
 meta = {}
 labels = {}
@@ -77,3 +83,10 @@ if attack:
             step = math.dist(pos[first], pos[first - 1])
             print(f"step     : {step:.0f} mm at frame {first} "
                   f"({'rejected' if verdicts.get(first, 0) else 'accepted'})")
+
+for kind, kv in monitor_stats:
+    avg_us = int(kv["avg_ticks"]) / 10.0
+    max_us = int(kv["max_ticks"]) / 10.0
+    print(f"tee_lat  : {kind} count={kv['count']} "
+          f"avg={kv['avg_cyc']} cyc ({avg_us:.1f} us) "
+          f"max={kv['max_cyc']} cyc ({max_us:.1f} us)")

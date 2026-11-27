@@ -5,13 +5,13 @@ build/payload.elf:     file format elf64-littleriscv
 Disassembly of section .text:
 
 0000000080200000 <_start>:
-    80200000:	00007117          	auipc	sp,0x7
-    80200004:	01010113          	addi	sp,sp,16 # 80207010 <__payload_stack_top>
+    80200000:	00008117          	auipc	sp,0x8
+    80200004:	01010113          	addi	sp,sp,16 # 80208010 <__payload_stack_top>
     80200008:	00000297          	auipc	t0,0x0
     8020000c:	01c28293          	addi	t0,t0,28 # 80200024 <s_trap>
     80200010:	10529073          	csrw	stvec,t0
     80200014:	00000097          	auipc	ra,0x0
-    80200018:	654080e7          	jalr	1620(ra) # 80200668 <payload_main>
+    80200018:	7d2080e7          	jalr	2002(ra) # 802007e6 <payload_main>
     8020001c:	10500073          	wfi
     80200020:	bff5                	j	8020001c <_start+0x1c>
 	...
@@ -20,8 +20,8 @@ Disassembly of section .text:
     80200024:	1141                	addi	sp,sp,-16
     80200026:	e016                	sd	t0,0(sp)
     80200028:	e41a                	sd	t1,8(sp)
-    8020002a:	00003297          	auipc	t0,0x3
-    8020002e:	fc628293          	addi	t0,t0,-58 # 80202ff0 <fault_count>
+    8020002a:	00004297          	auipc	t0,0x4
+    8020002e:	fc628293          	addi	t0,t0,-58 # 80203ff0 <fault_count>
     80200032:	0002b303          	ld	t1,0(t0)
     80200036:	0305                	addi	t1,t1,1
     80200038:	0062b023          	sd	t1,0(t0)
@@ -66,10 +66,10 @@ Disassembly of section .text:
     80200098:	ec06                	sd	ra,24(sp)
     8020009a:	842a                	mv	s0,a0
     8020009c:	832e                	mv	t1,a1
-    8020009e:	00002797          	auipc	a5,0x2
-    802000a2:	f6278793          	addi	a5,a5,-158 # 80202000 <shared_page>
-    802000a6:	00002697          	auipc	a3,0x2
-    802000aa:	06a68693          	addi	a3,a3,106 # 80202110 <shared_page+0x110>
+    8020009e:	00003797          	auipc	a5,0x3
+    802000a2:	f6278793          	addi	a5,a5,-158 # 80203000 <shared_page>
+    802000a6:	00003697          	auipc	a3,0x3
+    802000aa:	06a68693          	addi	a3,a3,106 # 80203110 <shared_page+0x110>
     802000ae:	00064703          	lbu	a4,0(a2)
     802000b2:	0785                	addi	a5,a5,1
     802000b4:	0605                	addi	a2,a2,1
@@ -83,73 +83,73 @@ Disassembly of section .text:
     802000ca:	00000073          	ecall
     802000ce:	ed31                	bnez	a0,8020012a <send_mission+0x96>
     802000d0:	0ab30f63          	beq	t1,a1,8020018e <send_mission+0xfa>
-    802000d4:	00001517          	auipc	a0,0x1
-    802000d8:	12450513          	addi	a0,a0,292 # 802011f8 <payload_main+0xb90>
+    802000d4:	00002517          	auipc	a0,0x2
+    802000d8:	cbc50513          	addi	a0,a0,-836 # 80201d90 <payload_main+0x15aa>
     802000dc:	e42e                	sd	a1,8(sp)
     802000de:	00000097          	auipc	ra,0x0
     802000e2:	f84080e7          	jalr	-124(ra) # 80200062 <puts>
     802000e6:	8522                	mv	a0,s0
     802000e8:	00000097          	auipc	ra,0x0
     802000ec:	f7a080e7          	jalr	-134(ra) # 80200062 <puts>
-    802000f0:	00001517          	auipc	a0,0x1
-    802000f4:	0f850513          	addi	a0,a0,248 # 802011e8 <payload_main+0xb80>
+    802000f0:	00002517          	auipc	a0,0x2
+    802000f4:	c9050513          	addi	a0,a0,-880 # 80201d80 <payload_main+0x159a>
     802000f8:	00000097          	auipc	ra,0x0
     802000fc:	f6a080e7          	jalr	-150(ra) # 80200062 <puts>
     80200100:	65a2                	ld	a1,8(sp)
     80200102:	47a5                	li	a5,9
     80200104:	0eb7f263          	bgeu	a5,a1,802001e8 <send_mission+0x154>
-    80200108:	00001517          	auipc	a0,0x1
-    8020010c:	11050513          	addi	a0,a0,272 # 80201218 <payload_main+0xbb0>
+    80200108:	00002517          	auipc	a0,0x2
+    8020010c:	ca850513          	addi	a0,a0,-856 # 80201db0 <payload_main+0x15ca>
     80200110:	00000097          	auipc	ra,0x0
     80200114:	f52080e7          	jalr	-174(ra) # 80200062 <puts>
-    80200118:	00001517          	auipc	a0,0x1
-    8020011c:	0d850513          	addi	a0,a0,216 # 802011f0 <payload_main+0xb88>
+    80200118:	00002517          	auipc	a0,0x2
+    8020011c:	c7050513          	addi	a0,a0,-912 # 80201d88 <payload_main+0x15a2>
     80200120:	00000097          	auipc	ra,0x0
     80200124:	f42080e7          	jalr	-190(ra) # 80200062 <puts>
     80200128:	a0b1                	j	80200174 <send_mission+0xe0>
-    8020012a:	00001517          	auipc	a0,0x1
-    8020012e:	0ce50513          	addi	a0,a0,206 # 802011f8 <payload_main+0xb90>
+    8020012a:	00002517          	auipc	a0,0x2
+    8020012e:	c6650513          	addi	a0,a0,-922 # 80201d90 <payload_main+0x15aa>
     80200132:	00000097          	auipc	ra,0x0
     80200136:	f30080e7          	jalr	-208(ra) # 80200062 <puts>
     8020013a:	8522                	mv	a0,s0
     8020013c:	00000097          	auipc	ra,0x0
     80200140:	f26080e7          	jalr	-218(ra) # 80200062 <puts>
-    80200144:	00001517          	auipc	a0,0x1
-    80200148:	0a450513          	addi	a0,a0,164 # 802011e8 <payload_main+0xb80>
+    80200144:	00002517          	auipc	a0,0x2
+    80200148:	c3c50513          	addi	a0,a0,-964 # 80201d80 <payload_main+0x159a>
     8020014c:	00000097          	auipc	ra,0x0
     80200150:	f16080e7          	jalr	-234(ra) # 80200062 <puts>
-    80200154:	00001517          	auipc	a0,0x1
-    80200158:	0b450513          	addi	a0,a0,180 # 80201208 <payload_main+0xba0>
+    80200154:	00002517          	auipc	a0,0x2
+    80200158:	c4c50513          	addi	a0,a0,-948 # 80201da0 <payload_main+0x15ba>
     8020015c:	00000097          	auipc	ra,0x0
     80200160:	f06080e7          	jalr	-250(ra) # 80200062 <puts>
-    80200164:	00001517          	auipc	a0,0x1
-    80200168:	08c50513          	addi	a0,a0,140 # 802011f0 <payload_main+0xb88>
+    80200164:	00002517          	auipc	a0,0x2
+    80200168:	c2450513          	addi	a0,a0,-988 # 80201d88 <payload_main+0x15a2>
     8020016c:	00000097          	auipc	ra,0x0
     80200170:	ef6080e7          	jalr	-266(ra) # 80200062 <puts>
-    80200174:	00003797          	auipc	a5,0x3
-    80200178:	e8c7a783          	lw	a5,-372(a5) # 80203000 <failures>
+    80200174:	00004797          	auipc	a5,0x4
+    80200178:	e8c7a783          	lw	a5,-372(a5) # 80204000 <failures>
     8020017c:	60e2                	ld	ra,24(sp)
     8020017e:	6442                	ld	s0,16(sp)
     80200180:	2785                	addiw	a5,a5,1
-    80200182:	00003717          	auipc	a4,0x3
-    80200186:	e6f72f23          	sw	a5,-386(a4) # 80203000 <failures>
+    80200182:	00004717          	auipc	a4,0x4
+    80200186:	e6f72f23          	sw	a5,-386(a4) # 80204000 <failures>
     8020018a:	6105                	addi	sp,sp,32
     8020018c:	8082                	ret
-    8020018e:	00001517          	auipc	a0,0x1
-    80200192:	04a50513          	addi	a0,a0,74 # 802011d8 <payload_main+0xb70>
+    8020018e:	00002517          	auipc	a0,0x2
+    80200192:	be250513          	addi	a0,a0,-1054 # 80201d70 <payload_main+0x158a>
     80200196:	e41a                	sd	t1,8(sp)
     80200198:	00000097          	auipc	ra,0x0
     8020019c:	eca080e7          	jalr	-310(ra) # 80200062 <puts>
     802001a0:	8522                	mv	a0,s0
     802001a2:	00000097          	auipc	ra,0x0
     802001a6:	ec0080e7          	jalr	-320(ra) # 80200062 <puts>
-    802001aa:	00001517          	auipc	a0,0x1
-    802001ae:	03e50513          	addi	a0,a0,62 # 802011e8 <payload_main+0xb80>
+    802001aa:	00002517          	auipc	a0,0x2
+    802001ae:	bd650513          	addi	a0,a0,-1066 # 80201d80 <payload_main+0x159a>
     802001b2:	00000097          	auipc	ra,0x0
     802001b6:	eb0080e7          	jalr	-336(ra) # 80200062 <puts>
     802001ba:	6322                	ld	t1,8(sp)
-    802001bc:	00001797          	auipc	a5,0x1
-    802001c0:	7b478793          	addi	a5,a5,1972 # 80201970 <verdict_names>
+    802001bc:	00002797          	auipc	a5,0x2
+    802001c0:	5c478793          	addi	a5,a5,1476 # 80202780 <verdict_names>
     802001c4:	030e                	slli	t1,t1,0x3
     802001c6:	979a                	add	a5,a5,t1
     802001c8:	6388                	ld	a0,0(a5)
@@ -157,1185 +157,2186 @@ Disassembly of section .text:
     802001ce:	e98080e7          	jalr	-360(ra) # 80200062 <puts>
     802001d2:	6442                	ld	s0,16(sp)
     802001d4:	60e2                	ld	ra,24(sp)
-    802001d6:	00001517          	auipc	a0,0x1
-    802001da:	01a50513          	addi	a0,a0,26 # 802011f0 <payload_main+0xb88>
+    802001d6:	00002517          	auipc	a0,0x2
+    802001da:	bb250513          	addi	a0,a0,-1102 # 80201d88 <payload_main+0x15a2>
     802001de:	6105                	addi	sp,sp,32
     802001e0:	00000317          	auipc	t1,0x0
     802001e4:	e8230067          	jr	-382(t1) # 80200062 <puts>
     802001e8:	058e                	slli	a1,a1,0x3
-    802001ea:	00001797          	auipc	a5,0x1
-    802001ee:	78678793          	addi	a5,a5,1926 # 80201970 <verdict_names>
+    802001ea:	00002797          	auipc	a5,0x2
+    802001ee:	59678793          	addi	a5,a5,1430 # 80202780 <verdict_names>
     802001f2:	97ae                	add	a5,a5,a1
     802001f4:	6388                	ld	a0,0(a5)
     802001f6:	00000097          	auipc	ra,0x0
     802001fa:	e6c080e7          	jalr	-404(ra) # 80200062 <puts>
-    802001fe:	00001517          	auipc	a0,0x1
-    80200202:	ff250513          	addi	a0,a0,-14 # 802011f0 <payload_main+0xb88>
+    802001fe:	00002517          	auipc	a0,0x2
+    80200202:	b8a50513          	addi	a0,a0,-1142 # 80201d88 <payload_main+0x15a2>
     80200206:	00000097          	auipc	ra,0x0
     8020020a:	e5c080e7          	jalr	-420(ra) # 80200062 <puts>
     8020020e:	b79d                	j	80200174 <send_mission+0xe0>
 
-0000000080200210 <send.constprop.0>:
-    80200210:	3e800813          	li	a6,1000
-    80200214:	1101                	addi	sp,sp,-32
-    80200216:	080008b7          	lui	a7,0x8000
-    8020021a:	00002317          	auipc	t1,0x2
-    8020021e:	dec33323          	sd	a2,-538(t1) # 80202000 <shared_page>
-    80200222:	00002617          	auipc	a2,0x2
-    80200226:	ded62723          	sw	a3,-530(a2) # 80202010 <shared_page+0x10>
-    8020022a:	00002697          	auipc	a3,0x2
-    8020022e:	dee6a523          	sw	a4,-534(a3) # 80202014 <shared_page+0x14>
-    80200232:	00002717          	auipc	a4,0x2
-    80200236:	def72723          	sw	a5,-530(a4) # 80202020 <shared_page+0x20>
-    8020023a:	00002797          	auipc	a5,0x2
-    8020023e:	dd07bf23          	sd	a6,-546(a5) # 80202018 <shared_page+0x18>
-    80200242:	e822                	sd	s0,16(sp)
-    80200244:	87ae                	mv	a5,a1
-    80200246:	842a                	mv	s0,a0
-    80200248:	ec06                	sd	ra,24(sp)
-    8020024a:	00002717          	auipc	a4,0x2
-    8020024e:	da073f23          	sd	zero,-578(a4) # 80202008 <shared_page+0x8>
-    80200252:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
-    80200254:	4501                	li	a0,0
-    80200256:	4581                	li	a1,0
-    80200258:	4805                	li	a6,1
-    8020025a:	00000073          	ecall
-    8020025e:	ed31                	bnez	a0,802002ba <send.constprop.0+0xaa>
-    80200260:	e42e                	sd	a1,8(sp)
-    80200262:	0af58e63          	beq	a1,a5,8020031e <send.constprop.0+0x10e>
-    80200266:	00001517          	auipc	a0,0x1
-    8020026a:	f9250513          	addi	a0,a0,-110 # 802011f8 <payload_main+0xb90>
-    8020026e:	00000097          	auipc	ra,0x0
-    80200272:	df4080e7          	jalr	-524(ra) # 80200062 <puts>
-    80200276:	8522                	mv	a0,s0
-    80200278:	00000097          	auipc	ra,0x0
-    8020027c:	dea080e7          	jalr	-534(ra) # 80200062 <puts>
-    80200280:	00001517          	auipc	a0,0x1
-    80200284:	f6850513          	addi	a0,a0,-152 # 802011e8 <payload_main+0xb80>
-    80200288:	00000097          	auipc	ra,0x0
-    8020028c:	dda080e7          	jalr	-550(ra) # 80200062 <puts>
-    80200290:	65a2                	ld	a1,8(sp)
-    80200292:	47a5                	li	a5,9
-    80200294:	0eb7f163          	bgeu	a5,a1,80200376 <send.constprop.0+0x166>
-    80200298:	00001517          	auipc	a0,0x1
-    8020029c:	f8050513          	addi	a0,a0,-128 # 80201218 <payload_main+0xbb0>
-    802002a0:	00000097          	auipc	ra,0x0
-    802002a4:	dc2080e7          	jalr	-574(ra) # 80200062 <puts>
-    802002a8:	00001517          	auipc	a0,0x1
-    802002ac:	f4850513          	addi	a0,a0,-184 # 802011f0 <payload_main+0xb88>
-    802002b0:	00000097          	auipc	ra,0x0
-    802002b4:	db2080e7          	jalr	-590(ra) # 80200062 <puts>
-    802002b8:	a0b1                	j	80200304 <send.constprop.0+0xf4>
-    802002ba:	00001517          	auipc	a0,0x1
-    802002be:	f3e50513          	addi	a0,a0,-194 # 802011f8 <payload_main+0xb90>
+0000000080200210 <putdec>:
+    80200210:	c52d                	beqz	a0,8020027a <putdec+0x6a>
+    80200212:	ccccd7b7          	lui	a5,0xccccd
+    80200216:	ccd78793          	addi	a5,a5,-819 # ffffffffcccccccd <__payload_stack_top+0xffffffff4cac4cbd>
+    8020021a:	1101                	addi	sp,sp,-32
+    8020021c:	0034                	addi	a3,sp,8
+    8020021e:	02079893          	slli	a7,a5,0x20
+    80200222:	8636                	mv	a2,a3
+    80200224:	98be                	add	a7,a7,a5
+    80200226:	4325                	li	t1,9
+    80200228:	031537b3          	mulhu	a5,a0,a7
+    8020022c:	85aa                	mv	a1,a0
+    8020022e:	8832                	mv	a6,a2
+    80200230:	0605                	addi	a2,a2,1
+    80200232:	838d                	srli	a5,a5,0x3
+    80200234:	00279713          	slli	a4,a5,0x2
+    80200238:	973e                	add	a4,a4,a5
+    8020023a:	0706                	slli	a4,a4,0x1
+    8020023c:	8d19                	sub	a0,a0,a4
+    8020023e:	0305051b          	addiw	a0,a0,48
+    80200242:	fea60fa3          	sb	a0,-1(a2)
+    80200246:	853e                	mv	a0,a5
+    80200248:	feb360e3          	bltu	t1,a1,80200228 <putdec+0x18>
+    8020024c:	40d8083b          	subw	a6,a6,a3
+    80200250:	02081793          	slli	a5,a6,0x20
+    80200254:	fff68713          	addi	a4,a3,-1
+    80200258:	9381                	srli	a5,a5,0x20
+    8020025a:	9742                	add	a4,a4,a6
+    8020025c:	8f1d                	sub	a4,a4,a5
+    8020025e:	010687b3          	add	a5,a3,a6
+    80200262:	0007c503          	lbu	a0,0(a5)
+    80200266:	4581                	li	a1,0
+    80200268:	4801                	li	a6,0
+    8020026a:	4885                	li	a7,1
+    8020026c:	00000073          	ecall
+    80200270:	17fd                	addi	a5,a5,-1
+    80200272:	fee798e3          	bne	a5,a4,80200262 <putdec+0x52>
+    80200276:	6105                	addi	sp,sp,32
+    80200278:	8082                	ret
+    8020027a:	03000513          	li	a0,48
+    8020027e:	4581                	li	a1,0
+    80200280:	4801                	li	a6,0
+    80200282:	4885                	li	a7,1
+    80200284:	00000073          	ecall
+    80200288:	8082                	ret
+
+000000008020028a <bench_print>:
+    8020028a:	1101                	addi	sp,sp,-32
+    8020028c:	e426                	sd	s1,8(sp)
+    8020028e:	84aa                	mv	s1,a0
+    80200290:	00002517          	auipc	a0,0x2
+    80200294:	b2850513          	addi	a0,a0,-1240 # 80201db8 <payload_main+0x15d2>
+    80200298:	ec06                	sd	ra,24(sp)
+    8020029a:	e822                	sd	s0,16(sp)
+    8020029c:	842e                	mv	s0,a1
+    8020029e:	00000097          	auipc	ra,0x0
+    802002a2:	dc4080e7          	jalr	-572(ra) # 80200062 <puts>
+    802002a6:	8526                	mv	a0,s1
+    802002a8:	00000097          	auipc	ra,0x0
+    802002ac:	dba080e7          	jalr	-582(ra) # 80200062 <puts>
+    802002b0:	00002517          	auipc	a0,0x2
+    802002b4:	b1050513          	addi	a0,a0,-1264 # 80201dc0 <payload_main+0x15da>
+    802002b8:	00000097          	auipc	ra,0x0
+    802002bc:	daa080e7          	jalr	-598(ra) # 80200062 <puts>
+    802002c0:	6008                	ld	a0,0(s0)
     802002c2:	00000097          	auipc	ra,0x0
-    802002c6:	da0080e7          	jalr	-608(ra) # 80200062 <puts>
-    802002ca:	8522                	mv	a0,s0
-    802002cc:	00000097          	auipc	ra,0x0
-    802002d0:	d96080e7          	jalr	-618(ra) # 80200062 <puts>
-    802002d4:	00001517          	auipc	a0,0x1
-    802002d8:	f1450513          	addi	a0,a0,-236 # 802011e8 <payload_main+0xb80>
+    802002c6:	f4e080e7          	jalr	-178(ra) # 80200210 <putdec>
+    802002ca:	00002517          	auipc	a0,0x2
+    802002ce:	afe50513          	addi	a0,a0,-1282 # 80201dc8 <payload_main+0x15e2>
+    802002d2:	00000097          	auipc	ra,0x0
+    802002d6:	d90080e7          	jalr	-624(ra) # 80200062 <puts>
+    802002da:	6408                	ld	a0,8(s0)
     802002dc:	00000097          	auipc	ra,0x0
-    802002e0:	d86080e7          	jalr	-634(ra) # 80200062 <puts>
-    802002e4:	00001517          	auipc	a0,0x1
-    802002e8:	f2450513          	addi	a0,a0,-220 # 80201208 <payload_main+0xba0>
+    802002e0:	f34080e7          	jalr	-204(ra) # 80200210 <putdec>
+    802002e4:	00002517          	auipc	a0,0x2
+    802002e8:	afc50513          	addi	a0,a0,-1284 # 80201de0 <payload_main+0x15fa>
     802002ec:	00000097          	auipc	ra,0x0
     802002f0:	d76080e7          	jalr	-650(ra) # 80200062 <puts>
-    802002f4:	00001517          	auipc	a0,0x1
-    802002f8:	efc50513          	addi	a0,a0,-260 # 802011f0 <payload_main+0xb88>
-    802002fc:	00000097          	auipc	ra,0x0
-    80200300:	d66080e7          	jalr	-666(ra) # 80200062 <puts>
-    80200304:	00003797          	auipc	a5,0x3
-    80200308:	cfc7a783          	lw	a5,-772(a5) # 80203000 <failures>
-    8020030c:	60e2                	ld	ra,24(sp)
-    8020030e:	6442                	ld	s0,16(sp)
-    80200310:	2785                	addiw	a5,a5,1
-    80200312:	00003717          	auipc	a4,0x3
-    80200316:	cef72723          	sw	a5,-786(a4) # 80203000 <failures>
-    8020031a:	6105                	addi	sp,sp,32
-    8020031c:	8082                	ret
-    8020031e:	00001517          	auipc	a0,0x1
-    80200322:	eba50513          	addi	a0,a0,-326 # 802011d8 <payload_main+0xb70>
-    80200326:	00000097          	auipc	ra,0x0
-    8020032a:	d3c080e7          	jalr	-708(ra) # 80200062 <puts>
-    8020032e:	8522                	mv	a0,s0
-    80200330:	00000097          	auipc	ra,0x0
-    80200334:	d32080e7          	jalr	-718(ra) # 80200062 <puts>
-    80200338:	00001517          	auipc	a0,0x1
-    8020033c:	eb050513          	addi	a0,a0,-336 # 802011e8 <payload_main+0xb80>
-    80200340:	00000097          	auipc	ra,0x0
-    80200344:	d22080e7          	jalr	-734(ra) # 80200062 <puts>
-    80200348:	65a2                	ld	a1,8(sp)
-    8020034a:	00001797          	auipc	a5,0x1
-    8020034e:	62678793          	addi	a5,a5,1574 # 80201970 <verdict_names>
-    80200352:	058e                	slli	a1,a1,0x3
-    80200354:	97ae                	add	a5,a5,a1
-    80200356:	6388                	ld	a0,0(a5)
-    80200358:	00000097          	auipc	ra,0x0
-    8020035c:	d0a080e7          	jalr	-758(ra) # 80200062 <puts>
-    80200360:	6442                	ld	s0,16(sp)
-    80200362:	60e2                	ld	ra,24(sp)
-    80200364:	00001517          	auipc	a0,0x1
-    80200368:	e8c50513          	addi	a0,a0,-372 # 802011f0 <payload_main+0xb88>
-    8020036c:	6105                	addi	sp,sp,32
-    8020036e:	00000317          	auipc	t1,0x0
-    80200372:	cf430067          	jr	-780(t1) # 80200062 <puts>
-    80200376:	058e                	slli	a1,a1,0x3
-    80200378:	00001797          	auipc	a5,0x1
-    8020037c:	5f878793          	addi	a5,a5,1528 # 80201970 <verdict_names>
-    80200380:	97ae                	add	a5,a5,a1
-    80200382:	6388                	ld	a0,0(a5)
-    80200384:	00000097          	auipc	ra,0x0
-    80200388:	cde080e7          	jalr	-802(ra) # 80200062 <puts>
-    8020038c:	00001517          	auipc	a0,0x1
-    80200390:	e6450513          	addi	a0,a0,-412 # 802011f0 <payload_main+0xb88>
-    80200394:	00000097          	auipc	ra,0x0
-    80200398:	cce080e7          	jalr	-818(ra) # 80200062 <puts>
-    8020039c:	b7a5                	j	80200304 <send.constprop.0+0xf4>
+    802002f4:	6008                	ld	a0,0(s0)
+    802002f6:	c501                	beqz	a0,802002fe <bench_print+0x74>
+    802002f8:	6c1c                	ld	a5,24(s0)
+    802002fa:	02a7d533          	divu	a0,a5,a0
+    802002fe:	00000097          	auipc	ra,0x0
+    80200302:	f12080e7          	jalr	-238(ra) # 80200210 <putdec>
+    80200306:	00002517          	auipc	a0,0x2
+    8020030a:	ada50513          	addi	a0,a0,-1318 # 80201de0 <payload_main+0x15fa>
+    8020030e:	00000097          	auipc	ra,0x0
+    80200312:	d54080e7          	jalr	-684(ra) # 80200062 <puts>
+    80200316:	6808                	ld	a0,16(s0)
+    80200318:	00000097          	auipc	ra,0x0
+    8020031c:	ef8080e7          	jalr	-264(ra) # 80200210 <putdec>
+    80200320:	00002517          	auipc	a0,0x2
+    80200324:	ac850513          	addi	a0,a0,-1336 # 80201de8 <payload_main+0x1602>
+    80200328:	00000097          	auipc	ra,0x0
+    8020032c:	d3a080e7          	jalr	-710(ra) # 80200062 <puts>
+    80200330:	7008                	ld	a0,32(s0)
+    80200332:	00000097          	auipc	ra,0x0
+    80200336:	ede080e7          	jalr	-290(ra) # 80200210 <putdec>
+    8020033a:	00002517          	auipc	a0,0x2
+    8020033e:	aa650513          	addi	a0,a0,-1370 # 80201de0 <payload_main+0x15fa>
+    80200342:	00000097          	auipc	ra,0x0
+    80200346:	d20080e7          	jalr	-736(ra) # 80200062 <puts>
+    8020034a:	6008                	ld	a0,0(s0)
+    8020034c:	c501                	beqz	a0,80200354 <bench_print+0xca>
+    8020034e:	781c                	ld	a5,48(s0)
+    80200350:	02a7d533          	divu	a0,a5,a0
+    80200354:	00000097          	auipc	ra,0x0
+    80200358:	ebc080e7          	jalr	-324(ra) # 80200210 <putdec>
+    8020035c:	00002517          	auipc	a0,0x2
+    80200360:	a8450513          	addi	a0,a0,-1404 # 80201de0 <payload_main+0x15fa>
+    80200364:	00000097          	auipc	ra,0x0
+    80200368:	cfe080e7          	jalr	-770(ra) # 80200062 <puts>
+    8020036c:	7408                	ld	a0,40(s0)
+    8020036e:	00000097          	auipc	ra,0x0
+    80200372:	ea2080e7          	jalr	-350(ra) # 80200210 <putdec>
+    80200376:	6442                	ld	s0,16(sp)
+    80200378:	60e2                	ld	ra,24(sp)
+    8020037a:	64a2                	ld	s1,8(sp)
+    8020037c:	00002517          	auipc	a0,0x2
+    80200380:	a0c50513          	addi	a0,a0,-1524 # 80201d88 <payload_main+0x15a2>
+    80200384:	6105                	addi	sp,sp,32
+    80200386:	00000317          	auipc	t1,0x0
+    8020038a:	cdc30067          	jr	-804(t1) # 80200062 <puts>
 
-000000008020039e <mission_corridor_tests>:
-    8020039e:	7169                	addi	sp,sp,-304
-    802003a0:	00001517          	auipc	a0,0x1
-    802003a4:	e8050513          	addi	a0,a0,-384 # 80201220 <payload_main+0xbb8>
-    802003a8:	f606                	sd	ra,296(sp)
-    802003aa:	f222                	sd	s0,288(sp)
-    802003ac:	00000097          	auipc	ra,0x0
-    802003b0:	cb6080e7          	jalr	-842(ra) # 80200062 <puts>
-    802003b4:	081c                	addi	a5,sp,16
-    802003b6:	00078023          	sb	zero,0(a5)
-    802003ba:	1218                	addi	a4,sp,288
-    802003bc:	0785                	addi	a5,a5,1
-    802003be:	fee79ce3          	bne	a5,a4,802003b6 <mission_corridor_tests+0x18>
-    802003c2:	00001e97          	auipc	t4,0x1
-    802003c6:	59eebe83          	ld	t4,1438(t4) # 80201960 <payload_main+0x12f8>
-    802003ca:	00001e17          	auipc	t3,0x1
-    802003ce:	59ee3e03          	ld	t3,1438(t3) # 80201968 <payload_main+0x1300>
-    802003d2:	008fd7b7          	lui	a5,0x8fd
-    802003d6:	07d2                	slli	a5,a5,0x14
-    802003d8:	04b00693          	li	a3,75
-    802003dc:	07d00713          	li	a4,125
-    802003e0:	ed478793          	addi	a5,a5,-300 # 8fced4 <_start-0x7f90312c>
-    802003e4:	170e                	slli	a4,a4,0x23
-    802003e6:	3e800813          	li	a6,1000
-    802003ea:	168a                	slli	a3,a3,0x22
-    802003ec:	4305                	li	t1,1
-    802003ee:	4889                	li	a7,2
-    802003f0:	0810                	addi	a2,sp,16
-    802003f2:	45a5                	li	a1,9
-    802003f4:	00001517          	auipc	a0,0x1
-    802003f8:	e5c50513          	addi	a0,a0,-420 # 80201250 <payload_main+0xbe8>
-    802003fc:	f43e                	sd	a5,40(sp)
-    802003fe:	e0ba                	sd	a4,64(sp)
-    80200400:	f836                	sd	a3,48(sp)
-    80200402:	ec76                	sd	t4,24(sp)
-    80200404:	f072                	sd	t3,32(sp)
-    80200406:	e81a                	sd	t1,16(sp)
-    80200408:	fc46                	sd	a7,56(sp)
-    8020040a:	e4c2                	sd	a6,72(sp)
-    8020040c:	c8c2                	sw	a6,80(sp)
-    8020040e:	00000097          	auipc	ra,0x0
-    80200412:	c86080e7          	jalr	-890(ra) # 80200094 <send_mission>
-    80200416:	19f8                	addi	a4,sp,252
-    80200418:	00001797          	auipc	a5,0x1
-    8020041c:	5a878793          	addi	a5,a5,1448 # 802019c0 <valid_hmac.0>
-    80200420:	00001617          	auipc	a2,0x1
-    80200424:	5c060613          	addi	a2,a2,1472 # 802019e0 <valid_hmac.0+0x20>
-    80200428:	0007c683          	lbu	a3,0(a5)
-    8020042c:	0785                	addi	a5,a5,1
-    8020042e:	0705                	addi	a4,a4,1
-    80200430:	fed70fa3          	sb	a3,-1(a4)
-    80200434:	fec79ae3          	bne	a5,a2,80200428 <mission_corridor_tests+0x8a>
-    80200438:	6785                	lui	a5,0x1
-    8020043a:	fa178793          	addi	a5,a5,-95 # fa1 <_start-0x801ff05f>
-    8020043e:	0810                	addi	a2,sp,16
-    80200440:	45a5                	li	a1,9
-    80200442:	00001517          	auipc	a0,0x1
-    80200446:	e2e50513          	addi	a0,a0,-466 # 80201270 <payload_main+0xc08>
-    8020044a:	ce3e                	sw	a5,28(sp)
-    8020044c:	00000097          	auipc	ra,0x0
-    80200450:	c48080e7          	jalr	-952(ra) # 80200094 <send_mission>
-    80200454:	6785                	lui	a5,0x1
-    80200456:	fa078793          	addi	a5,a5,-96 # fa0 <_start-0x801ff060>
-    8020045a:	0810                	addi	a2,sp,16
-    8020045c:	4581                	li	a1,0
-    8020045e:	00001517          	auipc	a0,0x1
-    80200462:	e3250513          	addi	a0,a0,-462 # 80201290 <payload_main+0xc28>
-    80200466:	ce3e                	sw	a5,28(sp)
-    80200468:	00000097          	auipc	ra,0x0
-    8020046c:	c2c080e7          	jalr	-980(ra) # 80200094 <send_mission>
-    80200470:	0810                	addi	a2,sp,16
-    80200472:	4585                	li	a1,1
-    80200474:	00001517          	auipc	a0,0x1
-    80200478:	e3c50513          	addi	a0,a0,-452 # 802012b0 <payload_main+0xc48>
-    8020047c:	00000097          	auipc	ra,0x0
-    80200480:	c18080e7          	jalr	-1000(ra) # 80200094 <send_mission>
-    80200484:	c01026f3          	rdtime	a3
-    80200488:	0007a737          	lui	a4,0x7a
-    8020048c:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    80200490:	c01027f3          	rdtime	a5
-    80200494:	8f95                	sub	a5,a5,a3
-    80200496:	fef77de3          	bgeu	a4,a5,80200490 <mission_corridor_tests+0xf2>
-    8020049a:	4781                	li	a5,0
-    8020049c:	4701                	li	a4,0
-    8020049e:	0e100693          	li	a3,225
-    802004a2:	4629                	li	a2,10
-    802004a4:	4581                	li	a1,0
-    802004a6:	00001517          	auipc	a0,0x1
-    802004aa:	e2a50513          	addi	a0,a0,-470 # 802012d0 <payload_main+0xc68>
+000000008020038e <send.constprop.0>:
+    8020038e:	3e800813          	li	a6,1000
+    80200392:	1101                	addi	sp,sp,-32
+    80200394:	080008b7          	lui	a7,0x8000
+    80200398:	00003317          	auipc	t1,0x3
+    8020039c:	c6c33423          	sd	a2,-920(t1) # 80203000 <shared_page>
+    802003a0:	00003617          	auipc	a2,0x3
+    802003a4:	c6d62823          	sw	a3,-912(a2) # 80203010 <shared_page+0x10>
+    802003a8:	00003697          	auipc	a3,0x3
+    802003ac:	c6e6a623          	sw	a4,-916(a3) # 80203014 <shared_page+0x14>
+    802003b0:	00003717          	auipc	a4,0x3
+    802003b4:	c6f72823          	sw	a5,-912(a4) # 80203020 <shared_page+0x20>
+    802003b8:	00003797          	auipc	a5,0x3
+    802003bc:	c707b023          	sd	a6,-928(a5) # 80203018 <shared_page+0x18>
+    802003c0:	e822                	sd	s0,16(sp)
+    802003c2:	87ae                	mv	a5,a1
+    802003c4:	842a                	mv	s0,a0
+    802003c6:	ec06                	sd	ra,24(sp)
+    802003c8:	00003717          	auipc	a4,0x3
+    802003cc:	c4073023          	sd	zero,-960(a4) # 80203008 <shared_page+0x8>
+    802003d0:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    802003d2:	4501                	li	a0,0
+    802003d4:	4581                	li	a1,0
+    802003d6:	4805                	li	a6,1
+    802003d8:	00000073          	ecall
+    802003dc:	ed31                	bnez	a0,80200438 <send.constprop.0+0xaa>
+    802003de:	e42e                	sd	a1,8(sp)
+    802003e0:	0af58e63          	beq	a1,a5,8020049c <send.constprop.0+0x10e>
+    802003e4:	00002517          	auipc	a0,0x2
+    802003e8:	9ac50513          	addi	a0,a0,-1620 # 80201d90 <payload_main+0x15aa>
+    802003ec:	00000097          	auipc	ra,0x0
+    802003f0:	c76080e7          	jalr	-906(ra) # 80200062 <puts>
+    802003f4:	8522                	mv	a0,s0
+    802003f6:	00000097          	auipc	ra,0x0
+    802003fa:	c6c080e7          	jalr	-916(ra) # 80200062 <puts>
+    802003fe:	00002517          	auipc	a0,0x2
+    80200402:	98250513          	addi	a0,a0,-1662 # 80201d80 <payload_main+0x159a>
+    80200406:	00000097          	auipc	ra,0x0
+    8020040a:	c5c080e7          	jalr	-932(ra) # 80200062 <puts>
+    8020040e:	65a2                	ld	a1,8(sp)
+    80200410:	47a5                	li	a5,9
+    80200412:	0eb7f163          	bgeu	a5,a1,802004f4 <send.constprop.0+0x166>
+    80200416:	00002517          	auipc	a0,0x2
+    8020041a:	99a50513          	addi	a0,a0,-1638 # 80201db0 <payload_main+0x15ca>
+    8020041e:	00000097          	auipc	ra,0x0
+    80200422:	c44080e7          	jalr	-956(ra) # 80200062 <puts>
+    80200426:	00002517          	auipc	a0,0x2
+    8020042a:	96250513          	addi	a0,a0,-1694 # 80201d88 <payload_main+0x15a2>
+    8020042e:	00000097          	auipc	ra,0x0
+    80200432:	c34080e7          	jalr	-972(ra) # 80200062 <puts>
+    80200436:	a0b1                	j	80200482 <send.constprop.0+0xf4>
+    80200438:	00002517          	auipc	a0,0x2
+    8020043c:	95850513          	addi	a0,a0,-1704 # 80201d90 <payload_main+0x15aa>
+    80200440:	00000097          	auipc	ra,0x0
+    80200444:	c22080e7          	jalr	-990(ra) # 80200062 <puts>
+    80200448:	8522                	mv	a0,s0
+    8020044a:	00000097          	auipc	ra,0x0
+    8020044e:	c18080e7          	jalr	-1000(ra) # 80200062 <puts>
+    80200452:	00002517          	auipc	a0,0x2
+    80200456:	92e50513          	addi	a0,a0,-1746 # 80201d80 <payload_main+0x159a>
+    8020045a:	00000097          	auipc	ra,0x0
+    8020045e:	c08080e7          	jalr	-1016(ra) # 80200062 <puts>
+    80200462:	00002517          	auipc	a0,0x2
+    80200466:	93e50513          	addi	a0,a0,-1730 # 80201da0 <payload_main+0x15ba>
+    8020046a:	00000097          	auipc	ra,0x0
+    8020046e:	bf8080e7          	jalr	-1032(ra) # 80200062 <puts>
+    80200472:	00002517          	auipc	a0,0x2
+    80200476:	91650513          	addi	a0,a0,-1770 # 80201d88 <payload_main+0x15a2>
+    8020047a:	00000097          	auipc	ra,0x0
+    8020047e:	be8080e7          	jalr	-1048(ra) # 80200062 <puts>
+    80200482:	00004797          	auipc	a5,0x4
+    80200486:	b7e7a783          	lw	a5,-1154(a5) # 80204000 <failures>
+    8020048a:	60e2                	ld	ra,24(sp)
+    8020048c:	6442                	ld	s0,16(sp)
+    8020048e:	2785                	addiw	a5,a5,1
+    80200490:	00004717          	auipc	a4,0x4
+    80200494:	b6f72823          	sw	a5,-1168(a4) # 80204000 <failures>
+    80200498:	6105                	addi	sp,sp,32
+    8020049a:	8082                	ret
+    8020049c:	00002517          	auipc	a0,0x2
+    802004a0:	8d450513          	addi	a0,a0,-1836 # 80201d70 <payload_main+0x158a>
+    802004a4:	00000097          	auipc	ra,0x0
+    802004a8:	bbe080e7          	jalr	-1090(ra) # 80200062 <puts>
+    802004ac:	8522                	mv	a0,s0
     802004ae:	00000097          	auipc	ra,0x0
-    802004b2:	d62080e7          	jalr	-670(ra) # 80200210 <send.constprop.0>
-    802004b6:	c01026f3          	rdtime	a3
-    802004ba:	0007a737          	lui	a4,0x7a
-    802004be:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    802004c2:	c01027f3          	rdtime	a5
-    802004c6:	8f95                	sub	a5,a5,a3
-    802004c8:	fef77de3          	bgeu	a4,a5,802004c2 <mission_corridor_tests+0x124>
-    802004cc:	4785                	li	a5,1
-    802004ce:	4701                	li	a4,0
-    802004d0:	0e100693          	li	a3,225
-    802004d4:	462d                	li	a2,11
-    802004d6:	4581                	li	a1,0
-    802004d8:	00001517          	auipc	a0,0x1
-    802004dc:	e1850513          	addi	a0,a0,-488 # 802012f0 <payload_main+0xc88>
-    802004e0:	00000097          	auipc	ra,0x0
-    802004e4:	d30080e7          	jalr	-720(ra) # 80200210 <send.constprop.0>
-    802004e8:	c01026f3          	rdtime	a3
-    802004ec:	0007a737          	lui	a4,0x7a
-    802004f0:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    802004f4:	c01027f3          	rdtime	a5
-    802004f8:	8f95                	sub	a5,a5,a3
-    802004fa:	fef77de3          	bgeu	a4,a5,802004f4 <mission_corridor_tests+0x156>
-    802004fe:	0e100693          	li	a3,225
-    80200502:	4789                	li	a5,2
-    80200504:	4701                	li	a4,0
-    80200506:	4631                	li	a2,12
-    80200508:	4581                	li	a1,0
-    8020050a:	00001517          	auipc	a0,0x1
-    8020050e:	e0650513          	addi	a0,a0,-506 # 80201310 <payload_main+0xca8>
+    802004b2:	bb4080e7          	jalr	-1100(ra) # 80200062 <puts>
+    802004b6:	00002517          	auipc	a0,0x2
+    802004ba:	8ca50513          	addi	a0,a0,-1846 # 80201d80 <payload_main+0x159a>
+    802004be:	00000097          	auipc	ra,0x0
+    802004c2:	ba4080e7          	jalr	-1116(ra) # 80200062 <puts>
+    802004c6:	65a2                	ld	a1,8(sp)
+    802004c8:	00002797          	auipc	a5,0x2
+    802004cc:	2b878793          	addi	a5,a5,696 # 80202780 <verdict_names>
+    802004d0:	058e                	slli	a1,a1,0x3
+    802004d2:	97ae                	add	a5,a5,a1
+    802004d4:	6388                	ld	a0,0(a5)
+    802004d6:	00000097          	auipc	ra,0x0
+    802004da:	b8c080e7          	jalr	-1140(ra) # 80200062 <puts>
+    802004de:	6442                	ld	s0,16(sp)
+    802004e0:	60e2                	ld	ra,24(sp)
+    802004e2:	00002517          	auipc	a0,0x2
+    802004e6:	8a650513          	addi	a0,a0,-1882 # 80201d88 <payload_main+0x15a2>
+    802004ea:	6105                	addi	sp,sp,32
+    802004ec:	00000317          	auipc	t1,0x0
+    802004f0:	b7630067          	jr	-1162(t1) # 80200062 <puts>
+    802004f4:	058e                	slli	a1,a1,0x3
+    802004f6:	00002797          	auipc	a5,0x2
+    802004fa:	28a78793          	addi	a5,a5,650 # 80202780 <verdict_names>
+    802004fe:	97ae                	add	a5,a5,a1
+    80200500:	6388                	ld	a0,0(a5)
+    80200502:	00000097          	auipc	ra,0x0
+    80200506:	b60080e7          	jalr	-1184(ra) # 80200062 <puts>
+    8020050a:	00002517          	auipc	a0,0x2
+    8020050e:	87e50513          	addi	a0,a0,-1922 # 80201d88 <payload_main+0x15a2>
     80200512:	00000097          	auipc	ra,0x0
-    80200516:	cfe080e7          	jalr	-770(ra) # 80200210 <send.constprop.0>
-    8020051a:	0007a6b7          	lui	a3,0x7a
-    8020051e:	11f68693          	addi	a3,a3,287 # 7a11f <_start-0x80185ee1>
-    80200522:	4329                	li	t1,10
-    80200524:	4435                	li	s0,13
-    80200526:	0e100f13          	li	t5,225
-    8020052a:	3e800e93          	li	t4,1000
-    8020052e:	4e09                	li	t3,2
-    80200530:	13600f93          	li	t6,310
-    80200534:	c0102773          	rdtime	a4
-    80200538:	c01027f3          	rdtime	a5
-    8020053c:	8f99                	sub	a5,a5,a4
-    8020053e:	fef6fde3          	bgeu	a3,a5,80200538 <mission_corridor_tests+0x19a>
-    80200542:	080008b7          	lui	a7,0x8000
-    80200546:	00002797          	auipc	a5,0x2
-    8020054a:	aa87bd23          	sd	s0,-1350(a5) # 80202000 <shared_page>
-    8020054e:	00002797          	auipc	a5,0x2
-    80200552:	aa07bd23          	sd	zero,-1350(a5) # 80202008 <shared_page+0x8>
-    80200556:	00002797          	auipc	a5,0x2
-    8020055a:	abe7ad23          	sw	t5,-1350(a5) # 80202010 <shared_page+0x10>
-    8020055e:	00002797          	auipc	a5,0x2
-    80200562:	aa67ab23          	sw	t1,-1354(a5) # 80202014 <shared_page+0x14>
-    80200566:	00002797          	auipc	a5,0x2
-    8020056a:	abd7b923          	sd	t4,-1358(a5) # 80202018 <shared_page+0x18>
-    8020056e:	00002797          	auipc	a5,0x2
-    80200572:	abc7a923          	sw	t3,-1358(a5) # 80202020 <shared_page+0x20>
-    80200576:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
-    80200578:	00140613          	addi	a2,s0,1
-    8020057c:	4501                	li	a0,0
-    8020057e:	4581                	li	a1,0
-    80200580:	4805                	li	a6,1
-    80200582:	00000073          	ecall
-    80200586:	8d4d                	or	a0,a0,a1
-    80200588:	e511                	bnez	a0,80200594 <mission_corridor_tests+0x1f6>
-    8020058a:	2329                	addiw	t1,t1,10
-    8020058c:	0bf30363          	beq	t1,t6,80200632 <mission_corridor_tests+0x294>
-    80200590:	8432                	mv	s0,a2
-    80200592:	b74d                	j	80200534 <mission_corridor_tests+0x196>
-    80200594:	00001517          	auipc	a0,0x1
-    80200598:	c6450513          	addi	a0,a0,-924 # 802011f8 <payload_main+0xb90>
-    8020059c:	e432                	sd	a2,8(sp)
-    8020059e:	00000097          	auipc	ra,0x0
-    802005a2:	ac4080e7          	jalr	-1340(ra) # 80200062 <puts>
-    802005a6:	00001517          	auipc	a0,0x1
-    802005aa:	dca50513          	addi	a0,a0,-566 # 80201370 <payload_main+0xd08>
-    802005ae:	00000097          	auipc	ra,0x0
-    802005b2:	ab4080e7          	jalr	-1356(ra) # 80200062 <puts>
-    802005b6:	00001517          	auipc	a0,0x1
-    802005ba:	c3a50513          	addi	a0,a0,-966 # 802011f0 <payload_main+0xb88>
-    802005be:	00000097          	auipc	ra,0x0
-    802005c2:	aa4080e7          	jalr	-1372(ra) # 80200062 <puts>
-    802005c6:	00003797          	auipc	a5,0x3
-    802005ca:	a3a7a783          	lw	a5,-1478(a5) # 80203000 <failures>
-    802005ce:	6622                	ld	a2,8(sp)
-    802005d0:	2785                	addiw	a5,a5,1
-    802005d2:	00003717          	auipc	a4,0x3
-    802005d6:	a2f72723          	sw	a5,-1490(a4) # 80203000 <failures>
-    802005da:	c01026f3          	rdtime	a3
-    802005de:	0007a737          	lui	a4,0x7a
-    802005e2:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    802005e6:	c01027f3          	rdtime	a5
-    802005ea:	8f95                	sub	a5,a5,a3
-    802005ec:	fef77de3          	bgeu	a4,a5,802005e6 <mission_corridor_tests+0x248>
-    802005f0:	4789                	li	a5,2
-    802005f2:	13600713          	li	a4,310
-    802005f6:	0e100693          	li	a3,225
-    802005fa:	4591                	li	a1,4
-    802005fc:	00001517          	auipc	a0,0x1
-    80200600:	d3450513          	addi	a0,a0,-716 # 80201330 <payload_main+0xcc8>
-    80200604:	00000097          	auipc	ra,0x0
-    80200608:	c0c080e7          	jalr	-1012(ra) # 80200210 <send.constprop.0>
-    8020060c:	00240613          	addi	a2,s0,2
-    80200610:	7412                	ld	s0,288(sp)
-    80200612:	70b2                	ld	ra,296(sp)
-    80200614:	478d                	li	a5,3
-    80200616:	12c00713          	li	a4,300
-    8020061a:	0e100693          	li	a3,225
-    8020061e:	4581                	li	a1,0
-    80200620:	00001517          	auipc	a0,0x1
-    80200624:	d3050513          	addi	a0,a0,-720 # 80201350 <payload_main+0xce8>
-    80200628:	6155                	addi	sp,sp,304
-    8020062a:	00000317          	auipc	t1,0x0
-    8020062e:	be630067          	jr	-1050(t1) # 80200210 <send.constprop.0>
-    80200632:	00001517          	auipc	a0,0x1
-    80200636:	ba650513          	addi	a0,a0,-1114 # 802011d8 <payload_main+0xb70>
-    8020063a:	e432                	sd	a2,8(sp)
-    8020063c:	00000097          	auipc	ra,0x0
-    80200640:	a26080e7          	jalr	-1498(ra) # 80200062 <puts>
-    80200644:	00001517          	auipc	a0,0x1
-    80200648:	d2c50513          	addi	a0,a0,-724 # 80201370 <payload_main+0xd08>
-    8020064c:	00000097          	auipc	ra,0x0
-    80200650:	a16080e7          	jalr	-1514(ra) # 80200062 <puts>
-    80200654:	00001517          	auipc	a0,0x1
-    80200658:	b9c50513          	addi	a0,a0,-1124 # 802011f0 <payload_main+0xb88>
-    8020065c:	00000097          	auipc	ra,0x0
-    80200660:	a06080e7          	jalr	-1530(ra) # 80200062 <puts>
-    80200664:	6622                	ld	a2,8(sp)
-    80200666:	bf95                	j	802005da <mission_corridor_tests+0x23c>
+    80200516:	b50080e7          	jalr	-1200(ra) # 80200062 <puts>
+    8020051a:	b7a5                	j	80200482 <send.constprop.0+0xf4>
 
-0000000080200668 <payload_main>:
-    80200668:	1101                	addi	sp,sp,-32
-    8020066a:	00001517          	auipc	a0,0x1
-    8020066e:	d7650513          	addi	a0,a0,-650 # 802013e0 <payload_main+0xd78>
-    80200672:	ec06                	sd	ra,24(sp)
-    80200674:	e822                	sd	s0,16(sp)
-    80200676:	00000097          	auipc	ra,0x0
-    8020067a:	9ec080e7          	jalr	-1556(ra) # 80200062 <puts>
-    8020067e:	00001517          	auipc	a0,0x1
-    80200682:	d8250513          	addi	a0,a0,-638 # 80201400 <payload_main+0xd98>
-    80200686:	00000097          	auipc	ra,0x0
-    8020068a:	9dc080e7          	jalr	-1572(ra) # 80200062 <puts>
-    8020068e:	4705                	li	a4,1
-    80200690:	00003417          	auipc	s0,0x3
-    80200694:	96040413          	addi	s0,s0,-1696 # 80202ff0 <fault_count>
-    80200698:	077e                	slli	a4,a4,0x1f
-    8020069a:	601c                	ld	a5,0(s0)
-    8020069c:	6318                	ld	a4,0(a4)
-    8020069e:	0785                	addi	a5,a5,1
-    802006a0:	e43a                	sd	a4,8(sp)
-    802006a2:	6018                	ld	a4,0(s0)
-    802006a4:	2ee795e3          	bne	a5,a4,8020118e <payload_main+0xb26>
-    802006a8:	00001517          	auipc	a0,0x1
-    802006ac:	b3050513          	addi	a0,a0,-1232 # 802011d8 <payload_main+0xb70>
-    802006b0:	00000097          	auipc	ra,0x0
-    802006b4:	9b2080e7          	jalr	-1614(ra) # 80200062 <puts>
-    802006b8:	00001517          	auipc	a0,0x1
-    802006bc:	d6850513          	addi	a0,a0,-664 # 80201420 <payload_main+0xdb8>
-    802006c0:	00000097          	auipc	ra,0x0
-    802006c4:	9a2080e7          	jalr	-1630(ra) # 80200062 <puts>
-    802006c8:	00001517          	auipc	a0,0x1
-    802006cc:	b2850513          	addi	a0,a0,-1240 # 802011f0 <payload_main+0xb88>
-    802006d0:	00000097          	auipc	ra,0x0
-    802006d4:	992080e7          	jalr	-1646(ra) # 80200062 <puts>
-    802006d8:	37ab77b7          	lui	a5,0x37ab7
-    802006dc:	078a                	slli	a5,a5,0x2
-    802006de:	020016b7          	lui	a3,0x2001
-    802006e2:	eef78793          	addi	a5,a5,-273 # 37ab6eef <_start-0x48749111>
-    802006e6:	069a                	slli	a3,a3,0x6
-    802006e8:	6018                	ld	a4,0(s0)
-    802006ea:	e29c                	sd	a5,0(a3)
-    802006ec:	6014                	ld	a3,0(s0)
-    802006ee:	00170793          	addi	a5,a4,1
-    802006f2:	24d79be3          	bne	a5,a3,80201148 <payload_main+0xae0>
-    802006f6:	00001517          	auipc	a0,0x1
-    802006fa:	ae250513          	addi	a0,a0,-1310 # 802011d8 <payload_main+0xb70>
-    802006fe:	00000097          	auipc	ra,0x0
-    80200702:	964080e7          	jalr	-1692(ra) # 80200062 <puts>
-    80200706:	00001517          	auipc	a0,0x1
-    8020070a:	d3a50513          	addi	a0,a0,-710 # 80201440 <payload_main+0xdd8>
-    8020070e:	00000097          	auipc	ra,0x0
-    80200712:	954080e7          	jalr	-1708(ra) # 80200062 <puts>
-    80200716:	00001517          	auipc	a0,0x1
-    8020071a:	ada50513          	addi	a0,a0,-1318 # 802011f0 <payload_main+0xb88>
-    8020071e:	00000097          	auipc	ra,0x0
-    80200722:	944080e7          	jalr	-1724(ra) # 80200062 <puts>
-    80200726:	7ff00713          	li	a4,2047
-    8020072a:	0756                	slli	a4,a4,0x15
-    8020072c:	601c                	ld	a5,0(s0)
-    8020072e:	00073023          	sd	zero,0(a4)
-    80200732:	6018                	ld	a4,0(s0)
-    80200734:	0785                	addi	a5,a5,1
-    80200736:	1ce796e3          	bne	a5,a4,80201102 <payload_main+0xa9a>
-    8020073a:	00001517          	auipc	a0,0x1
-    8020073e:	a9e50513          	addi	a0,a0,-1378 # 802011d8 <payload_main+0xb70>
-    80200742:	00000097          	auipc	ra,0x0
-    80200746:	920080e7          	jalr	-1760(ra) # 80200062 <puts>
-    8020074a:	00001517          	auipc	a0,0x1
-    8020074e:	d1650513          	addi	a0,a0,-746 # 80201460 <payload_main+0xdf8>
-    80200752:	00000097          	auipc	ra,0x0
-    80200756:	910080e7          	jalr	-1776(ra) # 80200062 <puts>
-    8020075a:	00001517          	auipc	a0,0x1
-    8020075e:	a9650513          	addi	a0,a0,-1386 # 802011f0 <payload_main+0xb88>
-    80200762:	00000097          	auipc	ra,0x0
-    80200766:	900080e7          	jalr	-1792(ra) # 80200062 <puts>
-    8020076a:	01ffd737          	lui	a4,0x1ffd
-    8020076e:	071e                	slli	a4,a4,0x7
-    80200770:	601c                	ld	a5,0(s0)
-    80200772:	6318                	ld	a4,0(a4)
-    80200774:	0785                	addi	a5,a5,1
-    80200776:	e43a                	sd	a4,8(sp)
-    80200778:	6018                	ld	a4,0(s0)
-    8020077a:	14e791e3          	bne	a5,a4,802010bc <payload_main+0xa54>
-    8020077e:	00001517          	auipc	a0,0x1
-    80200782:	a5a50513          	addi	a0,a0,-1446 # 802011d8 <payload_main+0xb70>
-    80200786:	00000097          	auipc	ra,0x0
-    8020078a:	8dc080e7          	jalr	-1828(ra) # 80200062 <puts>
-    8020078e:	00001517          	auipc	a0,0x1
-    80200792:	cf250513          	addi	a0,a0,-782 # 80201480 <payload_main+0xe18>
-    80200796:	00000097          	auipc	ra,0x0
-    8020079a:	8cc080e7          	jalr	-1844(ra) # 80200062 <puts>
+000000008020051c <mission_corridor_tests>:
+    8020051c:	7169                	addi	sp,sp,-304
+    8020051e:	00002517          	auipc	a0,0x2
+    80200522:	8ea50513          	addi	a0,a0,-1814 # 80201e08 <payload_main+0x1622>
+    80200526:	f606                	sd	ra,296(sp)
+    80200528:	f222                	sd	s0,288(sp)
+    8020052a:	00000097          	auipc	ra,0x0
+    8020052e:	b38080e7          	jalr	-1224(ra) # 80200062 <puts>
+    80200532:	081c                	addi	a5,sp,16
+    80200534:	00078023          	sb	zero,0(a5)
+    80200538:	1218                	addi	a4,sp,288
+    8020053a:	0785                	addi	a5,a5,1
+    8020053c:	fee79ce3          	bne	a5,a4,80200534 <mission_corridor_tests+0x18>
+    80200540:	00002e97          	auipc	t4,0x2
+    80200544:	230ebe83          	ld	t4,560(t4) # 80202770 <payload_main+0x1f8a>
+    80200548:	00002e17          	auipc	t3,0x2
+    8020054c:	230e3e03          	ld	t3,560(t3) # 80202778 <payload_main+0x1f92>
+    80200550:	008fd7b7          	lui	a5,0x8fd
+    80200554:	07d2                	slli	a5,a5,0x14
+    80200556:	04b00693          	li	a3,75
+    8020055a:	07d00713          	li	a4,125
+    8020055e:	ed478793          	addi	a5,a5,-300 # 8fced4 <_start-0x7f90312c>
+    80200562:	170e                	slli	a4,a4,0x23
+    80200564:	3e800813          	li	a6,1000
+    80200568:	168a                	slli	a3,a3,0x22
+    8020056a:	4305                	li	t1,1
+    8020056c:	4889                	li	a7,2
+    8020056e:	0810                	addi	a2,sp,16
+    80200570:	45a5                	li	a1,9
+    80200572:	00002517          	auipc	a0,0x2
+    80200576:	8c650513          	addi	a0,a0,-1850 # 80201e38 <payload_main+0x1652>
+    8020057a:	f43e                	sd	a5,40(sp)
+    8020057c:	e0ba                	sd	a4,64(sp)
+    8020057e:	f836                	sd	a3,48(sp)
+    80200580:	ec76                	sd	t4,24(sp)
+    80200582:	f072                	sd	t3,32(sp)
+    80200584:	e81a                	sd	t1,16(sp)
+    80200586:	fc46                	sd	a7,56(sp)
+    80200588:	e4c2                	sd	a6,72(sp)
+    8020058a:	c8c2                	sw	a6,80(sp)
+    8020058c:	00000097          	auipc	ra,0x0
+    80200590:	b08080e7          	jalr	-1272(ra) # 80200094 <send_mission>
+    80200594:	19f8                	addi	a4,sp,252
+    80200596:	00002797          	auipc	a5,0x2
+    8020059a:	23a78793          	addi	a5,a5,570 # 802027d0 <valid_hmac.0>
+    8020059e:	00002617          	auipc	a2,0x2
+    802005a2:	25260613          	addi	a2,a2,594 # 802027f0 <valid_hmac.0+0x20>
+    802005a6:	0007c683          	lbu	a3,0(a5)
+    802005aa:	0785                	addi	a5,a5,1
+    802005ac:	0705                	addi	a4,a4,1
+    802005ae:	fed70fa3          	sb	a3,-1(a4)
+    802005b2:	fec79ae3          	bne	a5,a2,802005a6 <mission_corridor_tests+0x8a>
+    802005b6:	6785                	lui	a5,0x1
+    802005b8:	fa178793          	addi	a5,a5,-95 # fa1 <_start-0x801ff05f>
+    802005bc:	0810                	addi	a2,sp,16
+    802005be:	45a5                	li	a1,9
+    802005c0:	00002517          	auipc	a0,0x2
+    802005c4:	89850513          	addi	a0,a0,-1896 # 80201e58 <payload_main+0x1672>
+    802005c8:	ce3e                	sw	a5,28(sp)
+    802005ca:	00000097          	auipc	ra,0x0
+    802005ce:	aca080e7          	jalr	-1334(ra) # 80200094 <send_mission>
+    802005d2:	6785                	lui	a5,0x1
+    802005d4:	fa078793          	addi	a5,a5,-96 # fa0 <_start-0x801ff060>
+    802005d8:	0810                	addi	a2,sp,16
+    802005da:	4581                	li	a1,0
+    802005dc:	00002517          	auipc	a0,0x2
+    802005e0:	89c50513          	addi	a0,a0,-1892 # 80201e78 <payload_main+0x1692>
+    802005e4:	ce3e                	sw	a5,28(sp)
+    802005e6:	00000097          	auipc	ra,0x0
+    802005ea:	aae080e7          	jalr	-1362(ra) # 80200094 <send_mission>
+    802005ee:	0810                	addi	a2,sp,16
+    802005f0:	4585                	li	a1,1
+    802005f2:	00002517          	auipc	a0,0x2
+    802005f6:	8a650513          	addi	a0,a0,-1882 # 80201e98 <payload_main+0x16b2>
+    802005fa:	00000097          	auipc	ra,0x0
+    802005fe:	a9a080e7          	jalr	-1382(ra) # 80200094 <send_mission>
+    80200602:	c01026f3          	rdtime	a3
+    80200606:	0007a737          	lui	a4,0x7a
+    8020060a:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    8020060e:	c01027f3          	rdtime	a5
+    80200612:	8f95                	sub	a5,a5,a3
+    80200614:	fef77de3          	bgeu	a4,a5,8020060e <mission_corridor_tests+0xf2>
+    80200618:	4781                	li	a5,0
+    8020061a:	4701                	li	a4,0
+    8020061c:	0e100693          	li	a3,225
+    80200620:	4629                	li	a2,10
+    80200622:	4581                	li	a1,0
+    80200624:	00002517          	auipc	a0,0x2
+    80200628:	89450513          	addi	a0,a0,-1900 # 80201eb8 <payload_main+0x16d2>
+    8020062c:	00000097          	auipc	ra,0x0
+    80200630:	d62080e7          	jalr	-670(ra) # 8020038e <send.constprop.0>
+    80200634:	c01026f3          	rdtime	a3
+    80200638:	0007a737          	lui	a4,0x7a
+    8020063c:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200640:	c01027f3          	rdtime	a5
+    80200644:	8f95                	sub	a5,a5,a3
+    80200646:	fef77de3          	bgeu	a4,a5,80200640 <mission_corridor_tests+0x124>
+    8020064a:	4785                	li	a5,1
+    8020064c:	4701                	li	a4,0
+    8020064e:	0e100693          	li	a3,225
+    80200652:	462d                	li	a2,11
+    80200654:	4581                	li	a1,0
+    80200656:	00002517          	auipc	a0,0x2
+    8020065a:	88250513          	addi	a0,a0,-1918 # 80201ed8 <payload_main+0x16f2>
+    8020065e:	00000097          	auipc	ra,0x0
+    80200662:	d30080e7          	jalr	-720(ra) # 8020038e <send.constprop.0>
+    80200666:	c01026f3          	rdtime	a3
+    8020066a:	0007a737          	lui	a4,0x7a
+    8020066e:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200672:	c01027f3          	rdtime	a5
+    80200676:	8f95                	sub	a5,a5,a3
+    80200678:	fef77de3          	bgeu	a4,a5,80200672 <mission_corridor_tests+0x156>
+    8020067c:	0e100693          	li	a3,225
+    80200680:	4789                	li	a5,2
+    80200682:	4701                	li	a4,0
+    80200684:	4631                	li	a2,12
+    80200686:	4581                	li	a1,0
+    80200688:	00002517          	auipc	a0,0x2
+    8020068c:	87050513          	addi	a0,a0,-1936 # 80201ef8 <payload_main+0x1712>
+    80200690:	00000097          	auipc	ra,0x0
+    80200694:	cfe080e7          	jalr	-770(ra) # 8020038e <send.constprop.0>
+    80200698:	0007a6b7          	lui	a3,0x7a
+    8020069c:	11f68693          	addi	a3,a3,287 # 7a11f <_start-0x80185ee1>
+    802006a0:	4329                	li	t1,10
+    802006a2:	4435                	li	s0,13
+    802006a4:	0e100f13          	li	t5,225
+    802006a8:	3e800e93          	li	t4,1000
+    802006ac:	4e09                	li	t3,2
+    802006ae:	13600f93          	li	t6,310
+    802006b2:	c0102773          	rdtime	a4
+    802006b6:	c01027f3          	rdtime	a5
+    802006ba:	8f99                	sub	a5,a5,a4
+    802006bc:	fef6fde3          	bgeu	a3,a5,802006b6 <mission_corridor_tests+0x19a>
+    802006c0:	080008b7          	lui	a7,0x8000
+    802006c4:	00003797          	auipc	a5,0x3
+    802006c8:	9287be23          	sd	s0,-1732(a5) # 80203000 <shared_page>
+    802006cc:	00003797          	auipc	a5,0x3
+    802006d0:	9207be23          	sd	zero,-1732(a5) # 80203008 <shared_page+0x8>
+    802006d4:	00003797          	auipc	a5,0x3
+    802006d8:	93e7ae23          	sw	t5,-1732(a5) # 80203010 <shared_page+0x10>
+    802006dc:	00003797          	auipc	a5,0x3
+    802006e0:	9267ac23          	sw	t1,-1736(a5) # 80203014 <shared_page+0x14>
+    802006e4:	00003797          	auipc	a5,0x3
+    802006e8:	93d7ba23          	sd	t4,-1740(a5) # 80203018 <shared_page+0x18>
+    802006ec:	00003797          	auipc	a5,0x3
+    802006f0:	93c7aa23          	sw	t3,-1740(a5) # 80203020 <shared_page+0x20>
+    802006f4:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    802006f6:	00140613          	addi	a2,s0,1
+    802006fa:	4501                	li	a0,0
+    802006fc:	4581                	li	a1,0
+    802006fe:	4805                	li	a6,1
+    80200700:	00000073          	ecall
+    80200704:	8d4d                	or	a0,a0,a1
+    80200706:	e511                	bnez	a0,80200712 <mission_corridor_tests+0x1f6>
+    80200708:	2329                	addiw	t1,t1,10
+    8020070a:	0bf30363          	beq	t1,t6,802007b0 <mission_corridor_tests+0x294>
+    8020070e:	8432                	mv	s0,a2
+    80200710:	b74d                	j	802006b2 <mission_corridor_tests+0x196>
+    80200712:	00001517          	auipc	a0,0x1
+    80200716:	67e50513          	addi	a0,a0,1662 # 80201d90 <payload_main+0x15aa>
+    8020071a:	e432                	sd	a2,8(sp)
+    8020071c:	00000097          	auipc	ra,0x0
+    80200720:	946080e7          	jalr	-1722(ra) # 80200062 <puts>
+    80200724:	00002517          	auipc	a0,0x2
+    80200728:	83450513          	addi	a0,a0,-1996 # 80201f58 <payload_main+0x1772>
+    8020072c:	00000097          	auipc	ra,0x0
+    80200730:	936080e7          	jalr	-1738(ra) # 80200062 <puts>
+    80200734:	00001517          	auipc	a0,0x1
+    80200738:	65450513          	addi	a0,a0,1620 # 80201d88 <payload_main+0x15a2>
+    8020073c:	00000097          	auipc	ra,0x0
+    80200740:	926080e7          	jalr	-1754(ra) # 80200062 <puts>
+    80200744:	00004797          	auipc	a5,0x4
+    80200748:	8bc7a783          	lw	a5,-1860(a5) # 80204000 <failures>
+    8020074c:	6622                	ld	a2,8(sp)
+    8020074e:	2785                	addiw	a5,a5,1
+    80200750:	00004717          	auipc	a4,0x4
+    80200754:	8af72823          	sw	a5,-1872(a4) # 80204000 <failures>
+    80200758:	c01026f3          	rdtime	a3
+    8020075c:	0007a737          	lui	a4,0x7a
+    80200760:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200764:	c01027f3          	rdtime	a5
+    80200768:	8f95                	sub	a5,a5,a3
+    8020076a:	fef77de3          	bgeu	a4,a5,80200764 <mission_corridor_tests+0x248>
+    8020076e:	4789                	li	a5,2
+    80200770:	13600713          	li	a4,310
+    80200774:	0e100693          	li	a3,225
+    80200778:	4591                	li	a1,4
+    8020077a:	00001517          	auipc	a0,0x1
+    8020077e:	79e50513          	addi	a0,a0,1950 # 80201f18 <payload_main+0x1732>
+    80200782:	00000097          	auipc	ra,0x0
+    80200786:	c0c080e7          	jalr	-1012(ra) # 8020038e <send.constprop.0>
+    8020078a:	00240613          	addi	a2,s0,2
+    8020078e:	7412                	ld	s0,288(sp)
+    80200790:	70b2                	ld	ra,296(sp)
+    80200792:	478d                	li	a5,3
+    80200794:	12c00713          	li	a4,300
+    80200798:	0e100693          	li	a3,225
+    8020079c:	4581                	li	a1,0
     8020079e:	00001517          	auipc	a0,0x1
-    802007a2:	a5250513          	addi	a0,a0,-1454 # 802011f0 <payload_main+0xb88>
-    802007a6:	00000097          	auipc	ra,0x0
-    802007aa:	8bc080e7          	jalr	-1860(ra) # 80200062 <puts>
-    802007ae:	00fff737          	lui	a4,0xfff
-    802007b2:	6685                	lui	a3,0x1
-    802007b4:	0722                	slli	a4,a4,0x8
-    802007b6:	23468693          	addi	a3,a3,564 # 1234 <_start-0x801fedcc>
-    802007ba:	601c                	ld	a5,0(s0)
-    802007bc:	e314                	sd	a3,0(a4)
-    802007be:	6018                	ld	a4,0(s0)
-    802007c0:	0785                	addi	a5,a5,1
-    802007c2:	0ae79ae3          	bne	a5,a4,80201076 <payload_main+0xa0e>
-    802007c6:	00001517          	auipc	a0,0x1
-    802007ca:	a1250513          	addi	a0,a0,-1518 # 802011d8 <payload_main+0xb70>
-    802007ce:	00000097          	auipc	ra,0x0
-    802007d2:	894080e7          	jalr	-1900(ra) # 80200062 <puts>
-    802007d6:	00001517          	auipc	a0,0x1
-    802007da:	cca50513          	addi	a0,a0,-822 # 802014a0 <payload_main+0xe38>
-    802007de:	00000097          	auipc	ra,0x0
-    802007e2:	884080e7          	jalr	-1916(ra) # 80200062 <puts>
-    802007e6:	00001517          	auipc	a0,0x1
-    802007ea:	a0a50513          	addi	a0,a0,-1526 # 802011f0 <payload_main+0xb88>
-    802007ee:	00000097          	auipc	ra,0x0
-    802007f2:	874080e7          	jalr	-1932(ra) # 80200062 <puts>
-    802007f6:	02a00793          	li	a5,42
-    802007fa:	6018                	ld	a4,0(s0)
-    802007fc:	00002697          	auipc	a3,0x2
-    80200800:	7ef6be23          	sd	a5,2044(a3) # 80202ff8 <own_memory>
-    80200804:	601c                	ld	a5,0(s0)
-    80200806:	02f715e3          	bne	a4,a5,80201030 <payload_main+0x9c8>
-    8020080a:	00001517          	auipc	a0,0x1
-    8020080e:	9ce50513          	addi	a0,a0,-1586 # 802011d8 <payload_main+0xb70>
-    80200812:	00000097          	auipc	ra,0x0
-    80200816:	850080e7          	jalr	-1968(ra) # 80200062 <puts>
-    8020081a:	00001517          	auipc	a0,0x1
-    8020081e:	cb650513          	addi	a0,a0,-842 # 802014d0 <payload_main+0xe68>
-    80200822:	00000097          	auipc	ra,0x0
-    80200826:	840080e7          	jalr	-1984(ra) # 80200062 <puts>
-    8020082a:	00001517          	auipc	a0,0x1
-    8020082e:	9c650513          	addi	a0,a0,-1594 # 802011f0 <payload_main+0xb88>
-    80200832:	00000097          	auipc	ra,0x0
-    80200836:	830080e7          	jalr	-2000(ra) # 80200062 <puts>
-    8020083a:	67a2                	ld	a5,8(sp)
-    8020083c:	00001517          	auipc	a0,0x1
-    80200840:	cb450513          	addi	a0,a0,-844 # 802014f0 <payload_main+0xe88>
-    80200844:	00000097          	auipc	ra,0x0
-    80200848:	81e080e7          	jalr	-2018(ra) # 80200062 <puts>
-    8020084c:	080008b7          	lui	a7,0x8000
-    80200850:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
-    80200852:	4501                	li	a0,0
-    80200854:	4581                	li	a1,0
-    80200856:	4805                	li	a6,1
-    80200858:	00000073          	ecall
-    8020085c:	57f1                	li	a5,-4
-    8020085e:	7af50063          	beq	a0,a5,80200ffe <payload_main+0x996>
-    80200862:	00001517          	auipc	a0,0x1
-    80200866:	99650513          	addi	a0,a0,-1642 # 802011f8 <payload_main+0xb90>
-    8020086a:	fffff097          	auipc	ra,0xfffff
-    8020086e:	7f8080e7          	jalr	2040(ra) # 80200062 <puts>
-    80200872:	00001517          	auipc	a0,0x1
-    80200876:	c9e50513          	addi	a0,a0,-866 # 80201510 <payload_main+0xea8>
-    8020087a:	fffff097          	auipc	ra,0xfffff
-    8020087e:	7e8080e7          	jalr	2024(ra) # 80200062 <puts>
-    80200882:	00001517          	auipc	a0,0x1
-    80200886:	96e50513          	addi	a0,a0,-1682 # 802011f0 <payload_main+0xb88>
-    8020088a:	fffff097          	auipc	ra,0xfffff
-    8020088e:	7d8080e7          	jalr	2008(ra) # 80200062 <puts>
-    80200892:	00002797          	auipc	a5,0x2
-    80200896:	76e7a783          	lw	a5,1902(a5) # 80203000 <failures>
-    8020089a:	2785                	addiw	a5,a5,1
-    8020089c:	00002717          	auipc	a4,0x2
-    802008a0:	76f72223          	sw	a5,1892(a4) # 80203000 <failures>
-    802008a4:	02001537          	lui	a0,0x2001
-    802008a8:	080008b7          	lui	a7,0x8000
-    802008ac:	051a                	slli	a0,a0,0x6
-    802008ae:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
-    802008b0:	4581                	li	a1,0
-    802008b2:	4801                	li	a6,0
-    802008b4:	00000073          	ecall
-    802008b8:	57f5                	li	a5,-3
-    802008ba:	70f50963          	beq	a0,a5,80200fcc <payload_main+0x964>
-    802008be:	00001517          	auipc	a0,0x1
-    802008c2:	93a50513          	addi	a0,a0,-1734 # 802011f8 <payload_main+0xb90>
-    802008c6:	fffff097          	auipc	ra,0xfffff
-    802008ca:	79c080e7          	jalr	1948(ra) # 80200062 <puts>
-    802008ce:	00001517          	auipc	a0,0x1
-    802008d2:	c6a50513          	addi	a0,a0,-918 # 80201538 <payload_main+0xed0>
-    802008d6:	fffff097          	auipc	ra,0xfffff
-    802008da:	78c080e7          	jalr	1932(ra) # 80200062 <puts>
-    802008de:	00001517          	auipc	a0,0x1
-    802008e2:	91250513          	addi	a0,a0,-1774 # 802011f0 <payload_main+0xb88>
-    802008e6:	fffff097          	auipc	ra,0xfffff
-    802008ea:	77c080e7          	jalr	1916(ra) # 80200062 <puts>
-    802008ee:	00002797          	auipc	a5,0x2
-    802008f2:	7127a783          	lw	a5,1810(a5) # 80203000 <failures>
-    802008f6:	2785                	addiw	a5,a5,1
-    802008f8:	00002717          	auipc	a4,0x2
-    802008fc:	70f72423          	sw	a5,1800(a4) # 80203000 <failures>
-    80200900:	01ffd537          	lui	a0,0x1ffd
-    80200904:	080008b7          	lui	a7,0x8000
-    80200908:	051e                	slli	a0,a0,0x7
-    8020090a:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
-    8020090c:	4581                	li	a1,0
-    8020090e:	4801                	li	a6,0
-    80200910:	00000073          	ecall
-    80200914:	57f5                	li	a5,-3
-    80200916:	68f50263          	beq	a0,a5,80200f9a <payload_main+0x932>
-    8020091a:	00001517          	auipc	a0,0x1
-    8020091e:	8de50513          	addi	a0,a0,-1826 # 802011f8 <payload_main+0xb90>
-    80200922:	fffff097          	auipc	ra,0xfffff
-    80200926:	740080e7          	jalr	1856(ra) # 80200062 <puts>
-    8020092a:	00001517          	auipc	a0,0x1
-    8020092e:	c3650513          	addi	a0,a0,-970 # 80201560 <payload_main+0xef8>
-    80200932:	fffff097          	auipc	ra,0xfffff
-    80200936:	730080e7          	jalr	1840(ra) # 80200062 <puts>
+    802007a2:	79a50513          	addi	a0,a0,1946 # 80201f38 <payload_main+0x1752>
+    802007a6:	6155                	addi	sp,sp,304
+    802007a8:	00000317          	auipc	t1,0x0
+    802007ac:	be630067          	jr	-1050(t1) # 8020038e <send.constprop.0>
+    802007b0:	00001517          	auipc	a0,0x1
+    802007b4:	5c050513          	addi	a0,a0,1472 # 80201d70 <payload_main+0x158a>
+    802007b8:	e432                	sd	a2,8(sp)
+    802007ba:	00000097          	auipc	ra,0x0
+    802007be:	8a8080e7          	jalr	-1880(ra) # 80200062 <puts>
+    802007c2:	00001517          	auipc	a0,0x1
+    802007c6:	79650513          	addi	a0,a0,1942 # 80201f58 <payload_main+0x1772>
+    802007ca:	00000097          	auipc	ra,0x0
+    802007ce:	898080e7          	jalr	-1896(ra) # 80200062 <puts>
+    802007d2:	00001517          	auipc	a0,0x1
+    802007d6:	5b650513          	addi	a0,a0,1462 # 80201d88 <payload_main+0x15a2>
+    802007da:	00000097          	auipc	ra,0x0
+    802007de:	888080e7          	jalr	-1912(ra) # 80200062 <puts>
+    802007e2:	6622                	ld	a2,8(sp)
+    802007e4:	bf95                	j	80200758 <mission_corridor_tests+0x23c>
+
+00000000802007e6 <payload_main>:
+    802007e6:	7145                	addi	sp,sp,-464
+    802007e8:	00001517          	auipc	a0,0x1
+    802007ec:	7e050513          	addi	a0,a0,2016 # 80201fc8 <payload_main+0x17e2>
+    802007f0:	e786                	sd	ra,456(sp)
+    802007f2:	e3a2                	sd	s0,448(sp)
+    802007f4:	ff26                	sd	s1,440(sp)
+    802007f6:	fb4a                	sd	s2,432(sp)
+    802007f8:	f74e                	sd	s3,424(sp)
+    802007fa:	f352                	sd	s4,416(sp)
+    802007fc:	ef56                	sd	s5,408(sp)
+    802007fe:	eb5a                	sd	s6,400(sp)
+    80200800:	e75e                	sd	s7,392(sp)
+    80200802:	e362                	sd	s8,384(sp)
+    80200804:	fee6                	sd	s9,376(sp)
+    80200806:	faea                	sd	s10,368(sp)
+    80200808:	f6ee                	sd	s11,360(sp)
+    8020080a:	00000097          	auipc	ra,0x0
+    8020080e:	858080e7          	jalr	-1960(ra) # 80200062 <puts>
+    80200812:	00001517          	auipc	a0,0x1
+    80200816:	7d650513          	addi	a0,a0,2006 # 80201fe8 <payload_main+0x1802>
+    8020081a:	00000097          	auipc	ra,0x0
+    8020081e:	848080e7          	jalr	-1976(ra) # 80200062 <puts>
+    80200822:	4705                	li	a4,1
+    80200824:	00003697          	auipc	a3,0x3
+    80200828:	7cc68693          	addi	a3,a3,1996 # 80203ff0 <fault_count>
+    8020082c:	077e                	slli	a4,a4,0x1f
+    8020082e:	629c                	ld	a5,0(a3)
+    80200830:	6318                	ld	a4,0(a4)
+    80200832:	0785                	addi	a5,a5,1
+    80200834:	e13a                	sd	a4,128(sp)
+    80200836:	6298                	ld	a4,0(a3)
+    80200838:	00e78463          	beq	a5,a4,80200840 <payload_main+0x5a>
+    8020083c:	4940106f          	j	80201cd0 <payload_main+0x14ea>
+    80200840:	00001517          	auipc	a0,0x1
+    80200844:	53050513          	addi	a0,a0,1328 # 80201d70 <payload_main+0x158a>
+    80200848:	00000097          	auipc	ra,0x0
+    8020084c:	81a080e7          	jalr	-2022(ra) # 80200062 <puts>
+    80200850:	00001517          	auipc	a0,0x1
+    80200854:	7b850513          	addi	a0,a0,1976 # 80202008 <payload_main+0x1822>
+    80200858:	00000097          	auipc	ra,0x0
+    8020085c:	80a080e7          	jalr	-2038(ra) # 80200062 <puts>
+    80200860:	00001517          	auipc	a0,0x1
+    80200864:	52850513          	addi	a0,a0,1320 # 80201d88 <payload_main+0x15a2>
+    80200868:	fffff097          	auipc	ra,0xfffff
+    8020086c:	7fa080e7          	jalr	2042(ra) # 80200062 <puts>
+    80200870:	37ab77b7          	lui	a5,0x37ab7
+    80200874:	078a                	slli	a5,a5,0x2
+    80200876:	020016b7          	lui	a3,0x2001
+    8020087a:	eef78793          	addi	a5,a5,-273 # 37ab6eef <_start-0x48749111>
+    8020087e:	069a                	slli	a3,a3,0x6
+    80200880:	00003617          	auipc	a2,0x3
+    80200884:	77060613          	addi	a2,a2,1904 # 80203ff0 <fault_count>
+    80200888:	6218                	ld	a4,0(a2)
+    8020088a:	e29c                	sd	a5,0(a3)
+    8020088c:	6214                	ld	a3,0(a2)
+    8020088e:	00170793          	addi	a5,a4,1
+    80200892:	00d78463          	beq	a5,a3,8020089a <payload_main+0xb4>
+    80200896:	3f40106f          	j	80201c8a <payload_main+0x14a4>
+    8020089a:	00001517          	auipc	a0,0x1
+    8020089e:	4d650513          	addi	a0,a0,1238 # 80201d70 <payload_main+0x158a>
+    802008a2:	fffff097          	auipc	ra,0xfffff
+    802008a6:	7c0080e7          	jalr	1984(ra) # 80200062 <puts>
+    802008aa:	00001517          	auipc	a0,0x1
+    802008ae:	77e50513          	addi	a0,a0,1918 # 80202028 <payload_main+0x1842>
+    802008b2:	fffff097          	auipc	ra,0xfffff
+    802008b6:	7b0080e7          	jalr	1968(ra) # 80200062 <puts>
+    802008ba:	00001517          	auipc	a0,0x1
+    802008be:	4ce50513          	addi	a0,a0,1230 # 80201d88 <payload_main+0x15a2>
+    802008c2:	fffff097          	auipc	ra,0xfffff
+    802008c6:	7a0080e7          	jalr	1952(ra) # 80200062 <puts>
+    802008ca:	7ff00713          	li	a4,2047
+    802008ce:	0756                	slli	a4,a4,0x15
+    802008d0:	00003697          	auipc	a3,0x3
+    802008d4:	72068693          	addi	a3,a3,1824 # 80203ff0 <fault_count>
+    802008d8:	629c                	ld	a5,0(a3)
+    802008da:	00073023          	sd	zero,0(a4)
+    802008de:	6298                	ld	a4,0(a3)
+    802008e0:	0785                	addi	a5,a5,1
+    802008e2:	00e78463          	beq	a5,a4,802008ea <payload_main+0x104>
+    802008e6:	35e0106f          	j	80201c44 <payload_main+0x145e>
+    802008ea:	00001517          	auipc	a0,0x1
+    802008ee:	48650513          	addi	a0,a0,1158 # 80201d70 <payload_main+0x158a>
+    802008f2:	fffff097          	auipc	ra,0xfffff
+    802008f6:	770080e7          	jalr	1904(ra) # 80200062 <puts>
+    802008fa:	00001517          	auipc	a0,0x1
+    802008fe:	74e50513          	addi	a0,a0,1870 # 80202048 <payload_main+0x1862>
+    80200902:	fffff097          	auipc	ra,0xfffff
+    80200906:	760080e7          	jalr	1888(ra) # 80200062 <puts>
+    8020090a:	00001517          	auipc	a0,0x1
+    8020090e:	47e50513          	addi	a0,a0,1150 # 80201d88 <payload_main+0x15a2>
+    80200912:	fffff097          	auipc	ra,0xfffff
+    80200916:	750080e7          	jalr	1872(ra) # 80200062 <puts>
+    8020091a:	01ffd737          	lui	a4,0x1ffd
+    8020091e:	00003697          	auipc	a3,0x3
+    80200922:	6d268693          	addi	a3,a3,1746 # 80203ff0 <fault_count>
+    80200926:	071e                	slli	a4,a4,0x7
+    80200928:	629c                	ld	a5,0(a3)
+    8020092a:	6318                	ld	a4,0(a4)
+    8020092c:	0785                	addi	a5,a5,1
+    8020092e:	e13a                	sd	a4,128(sp)
+    80200930:	6298                	ld	a4,0(a3)
+    80200932:	00e78463          	beq	a5,a4,8020093a <payload_main+0x154>
+    80200936:	2c80106f          	j	80201bfe <payload_main+0x1418>
     8020093a:	00001517          	auipc	a0,0x1
-    8020093e:	8b650513          	addi	a0,a0,-1866 # 802011f0 <payload_main+0xb88>
+    8020093e:	43650513          	addi	a0,a0,1078 # 80201d70 <payload_main+0x158a>
     80200942:	fffff097          	auipc	ra,0xfffff
     80200946:	720080e7          	jalr	1824(ra) # 80200062 <puts>
-    8020094a:	00002797          	auipc	a5,0x2
-    8020094e:	6b67a783          	lw	a5,1718(a5) # 80203000 <failures>
-    80200952:	2785                	addiw	a5,a5,1
-    80200954:	00002717          	auipc	a4,0x2
-    80200958:	6af72623          	sw	a5,1708(a4) # 80203000 <failures>
-    8020095c:	080008b7          	lui	a7,0x8000
-    80200960:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
-    80200962:	00001517          	auipc	a0,0x1
-    80200966:	69e50513          	addi	a0,a0,1694 # 80202000 <shared_page>
-    8020096a:	4581                	li	a1,0
-    8020096c:	4801                	li	a6,0
-    8020096e:	00000073          	ecall
-    80200972:	5e050b63          	beqz	a0,80200f68 <payload_main+0x900>
-    80200976:	00001517          	auipc	a0,0x1
-    8020097a:	88250513          	addi	a0,a0,-1918 # 802011f8 <payload_main+0xb90>
-    8020097e:	fffff097          	auipc	ra,0xfffff
-    80200982:	6e4080e7          	jalr	1764(ra) # 80200062 <puts>
-    80200986:	00001517          	auipc	a0,0x1
-    8020098a:	c0250513          	addi	a0,a0,-1022 # 80201588 <payload_main+0xf20>
-    8020098e:	fffff097          	auipc	ra,0xfffff
-    80200992:	6d4080e7          	jalr	1748(ra) # 80200062 <puts>
-    80200996:	00001517          	auipc	a0,0x1
-    8020099a:	85a50513          	addi	a0,a0,-1958 # 802011f0 <payload_main+0xb88>
-    8020099e:	fffff097          	auipc	ra,0xfffff
-    802009a2:	6c4080e7          	jalr	1732(ra) # 80200062 <puts>
-    802009a6:	00002797          	auipc	a5,0x2
-    802009aa:	65a7a783          	lw	a5,1626(a5) # 80203000 <failures>
-    802009ae:	2785                	addiw	a5,a5,1
-    802009b0:	00002717          	auipc	a4,0x2
-    802009b4:	64f72823          	sw	a5,1616(a4) # 80203000 <failures>
-    802009b8:	4785                	li	a5,1
-    802009ba:	863e                	mv	a2,a5
-    802009bc:	4701                	li	a4,0
-    802009be:	4681                	li	a3,0
-    802009c0:	4581                	li	a1,0
-    802009c2:	00001517          	auipc	a0,0x1
-    802009c6:	bf650513          	addi	a0,a0,-1034 # 802015b8 <payload_main+0xf50>
-    802009ca:	00000097          	auipc	ra,0x0
-    802009ce:	846080e7          	jalr	-1978(ra) # 80200210 <send.constprop.0>
-    802009d2:	c01026f3          	rdtime	a3
-    802009d6:	0007a737          	lui	a4,0x7a
-    802009da:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    802009de:	c01027f3          	rdtime	a5
-    802009e2:	8f95                	sub	a5,a5,a3
-    802009e4:	fef77de3          	bgeu	a4,a5,802009de <payload_main+0x376>
-    802009e8:	4789                	li	a5,2
-    802009ea:	863e                	mv	a2,a5
-    802009ec:	4701                	li	a4,0
-    802009ee:	04b00693          	li	a3,75
-    802009f2:	4581                	li	a1,0
-    802009f4:	00001517          	auipc	a0,0x1
-    802009f8:	be450513          	addi	a0,a0,-1052 # 802015d8 <payload_main+0xf70>
-    802009fc:	00000097          	auipc	ra,0x0
-    80200a00:	814080e7          	jalr	-2028(ra) # 80200210 <send.constprop.0>
-    80200a04:	c01026f3          	rdtime	a3
-    80200a08:	0007a737          	lui	a4,0x7a
-    80200a0c:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    80200a10:	c01027f3          	rdtime	a5
-    80200a14:	8f95                	sub	a5,a5,a3
-    80200a16:	fef77de3          	bgeu	a4,a5,80200a10 <payload_main+0x3a8>
-    80200a1a:	4789                	li	a5,2
-    80200a1c:	4701                	li	a4,0
-    80200a1e:	09600693          	li	a3,150
-    80200a22:	460d                	li	a2,3
-    80200a24:	4581                	li	a1,0
-    80200a26:	00001517          	auipc	a0,0x1
-    80200a2a:	bd250513          	addi	a0,a0,-1070 # 802015f8 <payload_main+0xf90>
-    80200a2e:	fffff097          	auipc	ra,0xfffff
-    80200a32:	7e2080e7          	jalr	2018(ra) # 80200210 <send.constprop.0>
-    80200a36:	080008b7          	lui	a7,0x8000
-    80200a3a:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
-    80200a3c:	4501                	li	a0,0
-    80200a3e:	4581                	li	a1,0
-    80200a40:	4805                	li	a6,1
-    80200a42:	00000073          	ecall
-    80200a46:	478d                	li	a5,3
-    80200a48:	4ef58763          	beq	a1,a5,80200f36 <payload_main+0x8ce>
-    80200a4c:	00000517          	auipc	a0,0x0
-    80200a50:	7ac50513          	addi	a0,a0,1964 # 802011f8 <payload_main+0xb90>
-    80200a54:	fffff097          	auipc	ra,0xfffff
-    80200a58:	60e080e7          	jalr	1550(ra) # 80200062 <puts>
-    80200a5c:	00001517          	auipc	a0,0x1
-    80200a60:	bbc50513          	addi	a0,a0,-1092 # 80201618 <payload_main+0xfb0>
-    80200a64:	fffff097          	auipc	ra,0xfffff
-    80200a68:	5fe080e7          	jalr	1534(ra) # 80200062 <puts>
-    80200a6c:	00000517          	auipc	a0,0x0
-    80200a70:	78450513          	addi	a0,a0,1924 # 802011f0 <payload_main+0xb88>
-    80200a74:	fffff097          	auipc	ra,0xfffff
-    80200a78:	5ee080e7          	jalr	1518(ra) # 80200062 <puts>
-    80200a7c:	00002797          	auipc	a5,0x2
-    80200a80:	5847a783          	lw	a5,1412(a5) # 80203000 <failures>
-    80200a84:	2785                	addiw	a5,a5,1
-    80200a86:	00002717          	auipc	a4,0x2
-    80200a8a:	56f72d23          	sw	a5,1402(a4) # 80203000 <failures>
-    80200a8e:	c01026f3          	rdtime	a3
-    80200a92:	0007a737          	lui	a4,0x7a
-    80200a96:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    80200a9a:	c01027f3          	rdtime	a5
-    80200a9e:	8f95                	sub	a5,a5,a3
-    80200aa0:	fef77de3          	bgeu	a4,a5,80200a9a <payload_main+0x432>
-    80200aa4:	4789                	li	a5,2
-    80200aa6:	863e                	mv	a2,a5
-    80200aa8:	4701                	li	a4,0
-    80200aaa:	0e100693          	li	a3,225
-    80200aae:	4585                	li	a1,1
-    80200ab0:	00001517          	auipc	a0,0x1
-    80200ab4:	b9050513          	addi	a0,a0,-1136 # 80201640 <payload_main+0xfd8>
-    80200ab8:	fffff097          	auipc	ra,0xfffff
-    80200abc:	758080e7          	jalr	1880(ra) # 80200210 <send.constprop.0>
-    80200ac0:	4611                	li	a2,4
-    80200ac2:	6685                	lui	a3,0x1
-    80200ac4:	85b2                	mv	a1,a2
-    80200ac6:	38868693          	addi	a3,a3,904 # 1388 <_start-0x801fec78>
-    80200aca:	4789                	li	a5,2
-    80200acc:	4701                	li	a4,0
-    80200ace:	00001517          	auipc	a0,0x1
-    80200ad2:	b9250513          	addi	a0,a0,-1134 # 80201660 <payload_main+0xff8>
-    80200ad6:	fffff097          	auipc	ra,0xfffff
-    80200ada:	73a080e7          	jalr	1850(ra) # 80200210 <send.constprop.0>
-    80200ade:	6685                	lui	a3,0x1
-    80200ae0:	f3c68693          	addi	a3,a3,-196 # f3c <_start-0x801ff0c4>
-    80200ae4:	4789                	li	a5,2
-    80200ae6:	4701                	li	a4,0
-    80200ae8:	4611                	li	a2,4
-    80200aea:	4595                	li	a1,5
-    80200aec:	00001517          	auipc	a0,0x1
-    80200af0:	b9450513          	addi	a0,a0,-1132 # 80201680 <payload_main+0x1018>
-    80200af4:	fffff097          	auipc	ra,0xfffff
-    80200af8:	71c080e7          	jalr	1820(ra) # 80200210 <send.constprop.0>
-    80200afc:	4789                	li	a5,2
-    80200afe:	4701                	li	a4,0
-    80200b00:	1c200693          	li	a3,450
-    80200b04:	4611                	li	a2,4
-    80200b06:	4599                	li	a1,6
-    80200b08:	00001517          	auipc	a0,0x1
-    80200b0c:	b9850513          	addi	a0,a0,-1128 # 802016a0 <payload_main+0x1038>
-    80200b10:	fffff097          	auipc	ra,0xfffff
-    80200b14:	700080e7          	jalr	1792(ra) # 80200210 <send.constprop.0>
-    80200b18:	4781                	li	a5,0
-    80200b1a:	4701                	li	a4,0
-    80200b1c:	0e100693          	li	a3,225
-    80200b20:	4611                	li	a2,4
-    80200b22:	458d                	li	a1,3
-    80200b24:	00001517          	auipc	a0,0x1
-    80200b28:	b9c50513          	addi	a0,a0,-1124 # 802016c0 <payload_main+0x1058>
-    80200b2c:	fffff097          	auipc	ra,0xfffff
-    80200b30:	6e4080e7          	jalr	1764(ra) # 80200210 <send.constprop.0>
-    80200b34:	04d00793          	li	a5,77
-    80200b38:	4701                	li	a4,0
-    80200b3a:	0e100693          	li	a3,225
-    80200b3e:	4611                	li	a2,4
-    80200b40:	458d                	li	a1,3
-    80200b42:	00001517          	auipc	a0,0x1
-    80200b46:	b9e50513          	addi	a0,a0,-1122 # 802016e0 <payload_main+0x1078>
-    80200b4a:	fffff097          	auipc	ra,0xfffff
-    80200b4e:	6c6080e7          	jalr	1734(ra) # 80200210 <send.constprop.0>
-    80200b52:	4789                	li	a5,2
-    80200b54:	4701                	li	a4,0
-    80200b56:	0e100693          	li	a3,225
-    80200b5a:	4611                	li	a2,4
-    80200b5c:	4581                	li	a1,0
-    80200b5e:	00001517          	auipc	a0,0x1
-    80200b62:	ba250513          	addi	a0,a0,-1118 # 80201700 <payload_main+0x1098>
-    80200b66:	fffff097          	auipc	ra,0xfffff
-    80200b6a:	6aa080e7          	jalr	1706(ra) # 80200210 <send.constprop.0>
-    80200b6e:	4789                	li	a5,2
-    80200b70:	85be                	mv	a1,a5
-    80200b72:	4701                	li	a4,0
-    80200b74:	0eb00693          	li	a3,235
-    80200b78:	4615                	li	a2,5
-    80200b7a:	00001517          	auipc	a0,0x1
-    80200b7e:	ba650513          	addi	a0,a0,-1114 # 80201720 <payload_main+0x10b8>
-    80200b82:	fffff097          	auipc	ra,0xfffff
-    80200b86:	68e080e7          	jalr	1678(ra) # 80200210 <send.constprop.0>
-    80200b8a:	080008b7          	lui	a7,0x8000
-    80200b8e:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
-    80200b90:	4501                	li	a0,0
-    80200b92:	4581                	li	a1,0
-    80200b94:	4805                	li	a6,1
-    80200b96:	00000073          	ecall
-    80200b9a:	4791                	li	a5,4
-    80200b9c:	36f58463          	beq	a1,a5,80200f04 <payload_main+0x89c>
-    80200ba0:	00000517          	auipc	a0,0x0
-    80200ba4:	65850513          	addi	a0,a0,1624 # 802011f8 <payload_main+0xb90>
+    8020094a:	00001517          	auipc	a0,0x1
+    8020094e:	71e50513          	addi	a0,a0,1822 # 80202068 <payload_main+0x1882>
+    80200952:	fffff097          	auipc	ra,0xfffff
+    80200956:	710080e7          	jalr	1808(ra) # 80200062 <puts>
+    8020095a:	00001517          	auipc	a0,0x1
+    8020095e:	42e50513          	addi	a0,a0,1070 # 80201d88 <payload_main+0x15a2>
+    80200962:	fffff097          	auipc	ra,0xfffff
+    80200966:	700080e7          	jalr	1792(ra) # 80200062 <puts>
+    8020096a:	00fff737          	lui	a4,0xfff
+    8020096e:	6685                	lui	a3,0x1
+    80200970:	0722                	slli	a4,a4,0x8
+    80200972:	00003617          	auipc	a2,0x3
+    80200976:	67e60613          	addi	a2,a2,1662 # 80203ff0 <fault_count>
+    8020097a:	23468693          	addi	a3,a3,564 # 1234 <_start-0x801fedcc>
+    8020097e:	621c                	ld	a5,0(a2)
+    80200980:	e314                	sd	a3,0(a4)
+    80200982:	6218                	ld	a4,0(a2)
+    80200984:	0785                	addi	a5,a5,1
+    80200986:	00e78463          	beq	a5,a4,8020098e <payload_main+0x1a8>
+    8020098a:	22e0106f          	j	80201bb8 <payload_main+0x13d2>
+    8020098e:	00001517          	auipc	a0,0x1
+    80200992:	3e250513          	addi	a0,a0,994 # 80201d70 <payload_main+0x158a>
+    80200996:	fffff097          	auipc	ra,0xfffff
+    8020099a:	6cc080e7          	jalr	1740(ra) # 80200062 <puts>
+    8020099e:	00001517          	auipc	a0,0x1
+    802009a2:	6ea50513          	addi	a0,a0,1770 # 80202088 <payload_main+0x18a2>
+    802009a6:	fffff097          	auipc	ra,0xfffff
+    802009aa:	6bc080e7          	jalr	1724(ra) # 80200062 <puts>
+    802009ae:	00001517          	auipc	a0,0x1
+    802009b2:	3da50513          	addi	a0,a0,986 # 80201d88 <payload_main+0x15a2>
+    802009b6:	fffff097          	auipc	ra,0xfffff
+    802009ba:	6ac080e7          	jalr	1708(ra) # 80200062 <puts>
+    802009be:	02a00793          	li	a5,42
+    802009c2:	00003617          	auipc	a2,0x3
+    802009c6:	62e60613          	addi	a2,a2,1582 # 80203ff0 <fault_count>
+    802009ca:	6218                	ld	a4,0(a2)
+    802009cc:	00003697          	auipc	a3,0x3
+    802009d0:	62f6b623          	sd	a5,1580(a3) # 80203ff8 <own_memory>
+    802009d4:	621c                	ld	a5,0(a2)
+    802009d6:	00f70463          	beq	a4,a5,802009de <payload_main+0x1f8>
+    802009da:	1980106f          	j	80201b72 <payload_main+0x138c>
+    802009de:	00001517          	auipc	a0,0x1
+    802009e2:	39250513          	addi	a0,a0,914 # 80201d70 <payload_main+0x158a>
+    802009e6:	fffff097          	auipc	ra,0xfffff
+    802009ea:	67c080e7          	jalr	1660(ra) # 80200062 <puts>
+    802009ee:	00001517          	auipc	a0,0x1
+    802009f2:	6ca50513          	addi	a0,a0,1738 # 802020b8 <payload_main+0x18d2>
+    802009f6:	fffff097          	auipc	ra,0xfffff
+    802009fa:	66c080e7          	jalr	1644(ra) # 80200062 <puts>
+    802009fe:	00001517          	auipc	a0,0x1
+    80200a02:	38a50513          	addi	a0,a0,906 # 80201d88 <payload_main+0x15a2>
+    80200a06:	fffff097          	auipc	ra,0xfffff
+    80200a0a:	65c080e7          	jalr	1628(ra) # 80200062 <puts>
+    80200a0e:	678a                	ld	a5,128(sp)
+    80200a10:	00001517          	auipc	a0,0x1
+    80200a14:	6c850513          	addi	a0,a0,1736 # 802020d8 <payload_main+0x18f2>
+    80200a18:	fffff097          	auipc	ra,0xfffff
+    80200a1c:	64a080e7          	jalr	1610(ra) # 80200062 <puts>
+    80200a20:	080008b7          	lui	a7,0x8000
+    80200a24:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80200a26:	4501                	li	a0,0
+    80200a28:	4581                	li	a1,0
+    80200a2a:	4805                	li	a6,1
+    80200a2c:	00000073          	ecall
+    80200a30:	57f1                	li	a5,-4
+    80200a32:	00f51463          	bne	a0,a5,80200a3a <payload_main+0x254>
+    80200a36:	1080106f          	j	80201b3e <payload_main+0x1358>
+    80200a3a:	00001517          	auipc	a0,0x1
+    80200a3e:	35650513          	addi	a0,a0,854 # 80201d90 <payload_main+0x15aa>
+    80200a42:	fffff097          	auipc	ra,0xfffff
+    80200a46:	620080e7          	jalr	1568(ra) # 80200062 <puts>
+    80200a4a:	00001517          	auipc	a0,0x1
+    80200a4e:	6ae50513          	addi	a0,a0,1710 # 802020f8 <payload_main+0x1912>
+    80200a52:	fffff097          	auipc	ra,0xfffff
+    80200a56:	610080e7          	jalr	1552(ra) # 80200062 <puts>
+    80200a5a:	00001517          	auipc	a0,0x1
+    80200a5e:	32e50513          	addi	a0,a0,814 # 80201d88 <payload_main+0x15a2>
+    80200a62:	fffff097          	auipc	ra,0xfffff
+    80200a66:	600080e7          	jalr	1536(ra) # 80200062 <puts>
+    80200a6a:	00003797          	auipc	a5,0x3
+    80200a6e:	5967a783          	lw	a5,1430(a5) # 80204000 <failures>
+    80200a72:	2785                	addiw	a5,a5,1
+    80200a74:	00003717          	auipc	a4,0x3
+    80200a78:	58f72623          	sw	a5,1420(a4) # 80204000 <failures>
+    80200a7c:	02001537          	lui	a0,0x2001
+    80200a80:	080008b7          	lui	a7,0x8000
+    80200a84:	051a                	slli	a0,a0,0x6
+    80200a86:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80200a88:	4581                	li	a1,0
+    80200a8a:	4801                	li	a6,0
+    80200a8c:	00000073          	ecall
+    80200a90:	57f5                	li	a5,-3
+    80200a92:	00f51463          	bne	a0,a5,80200a9a <payload_main+0x2b4>
+    80200a96:	0740106f          	j	80201b0a <payload_main+0x1324>
+    80200a9a:	00001517          	auipc	a0,0x1
+    80200a9e:	2f650513          	addi	a0,a0,758 # 80201d90 <payload_main+0x15aa>
+    80200aa2:	fffff097          	auipc	ra,0xfffff
+    80200aa6:	5c0080e7          	jalr	1472(ra) # 80200062 <puts>
+    80200aaa:	00001517          	auipc	a0,0x1
+    80200aae:	67650513          	addi	a0,a0,1654 # 80202120 <payload_main+0x193a>
+    80200ab2:	fffff097          	auipc	ra,0xfffff
+    80200ab6:	5b0080e7          	jalr	1456(ra) # 80200062 <puts>
+    80200aba:	00001517          	auipc	a0,0x1
+    80200abe:	2ce50513          	addi	a0,a0,718 # 80201d88 <payload_main+0x15a2>
+    80200ac2:	fffff097          	auipc	ra,0xfffff
+    80200ac6:	5a0080e7          	jalr	1440(ra) # 80200062 <puts>
+    80200aca:	00003797          	auipc	a5,0x3
+    80200ace:	5367a783          	lw	a5,1334(a5) # 80204000 <failures>
+    80200ad2:	2785                	addiw	a5,a5,1
+    80200ad4:	00003717          	auipc	a4,0x3
+    80200ad8:	52f72623          	sw	a5,1324(a4) # 80204000 <failures>
+    80200adc:	01ffd537          	lui	a0,0x1ffd
+    80200ae0:	080008b7          	lui	a7,0x8000
+    80200ae4:	051e                	slli	a0,a0,0x7
+    80200ae6:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80200ae8:	4581                	li	a1,0
+    80200aea:	4801                	li	a6,0
+    80200aec:	00000073          	ecall
+    80200af0:	57f5                	li	a5,-3
+    80200af2:	7ef502e3          	beq	a0,a5,80201ad6 <payload_main+0x12f0>
+    80200af6:	00001517          	auipc	a0,0x1
+    80200afa:	29a50513          	addi	a0,a0,666 # 80201d90 <payload_main+0x15aa>
+    80200afe:	fffff097          	auipc	ra,0xfffff
+    80200b02:	564080e7          	jalr	1380(ra) # 80200062 <puts>
+    80200b06:	00001517          	auipc	a0,0x1
+    80200b0a:	64250513          	addi	a0,a0,1602 # 80202148 <payload_main+0x1962>
+    80200b0e:	fffff097          	auipc	ra,0xfffff
+    80200b12:	554080e7          	jalr	1364(ra) # 80200062 <puts>
+    80200b16:	00001517          	auipc	a0,0x1
+    80200b1a:	27250513          	addi	a0,a0,626 # 80201d88 <payload_main+0x15a2>
+    80200b1e:	fffff097          	auipc	ra,0xfffff
+    80200b22:	544080e7          	jalr	1348(ra) # 80200062 <puts>
+    80200b26:	00003797          	auipc	a5,0x3
+    80200b2a:	4da7a783          	lw	a5,1242(a5) # 80204000 <failures>
+    80200b2e:	2785                	addiw	a5,a5,1
+    80200b30:	00003717          	auipc	a4,0x3
+    80200b34:	4cf72823          	sw	a5,1232(a4) # 80204000 <failures>
+    80200b38:	00002417          	auipc	s0,0x2
+    80200b3c:	4c840413          	addi	s0,s0,1224 # 80203000 <shared_page>
+    80200b40:	080008b7          	lui	a7,0x8000
+    80200b44:	8522                	mv	a0,s0
+    80200b46:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80200b48:	4581                	li	a1,0
+    80200b4a:	4801                	li	a6,0
+    80200b4c:	00000073          	ecall
+    80200b50:	740509e3          	beqz	a0,80201aa2 <payload_main+0x12bc>
+    80200b54:	00001517          	auipc	a0,0x1
+    80200b58:	23c50513          	addi	a0,a0,572 # 80201d90 <payload_main+0x15aa>
+    80200b5c:	fffff097          	auipc	ra,0xfffff
+    80200b60:	506080e7          	jalr	1286(ra) # 80200062 <puts>
+    80200b64:	00001517          	auipc	a0,0x1
+    80200b68:	60c50513          	addi	a0,a0,1548 # 80202170 <payload_main+0x198a>
+    80200b6c:	fffff097          	auipc	ra,0xfffff
+    80200b70:	4f6080e7          	jalr	1270(ra) # 80200062 <puts>
+    80200b74:	00001517          	auipc	a0,0x1
+    80200b78:	21450513          	addi	a0,a0,532 # 80201d88 <payload_main+0x15a2>
+    80200b7c:	fffff097          	auipc	ra,0xfffff
+    80200b80:	4e6080e7          	jalr	1254(ra) # 80200062 <puts>
+    80200b84:	00003797          	auipc	a5,0x3
+    80200b88:	47c7a783          	lw	a5,1148(a5) # 80204000 <failures>
+    80200b8c:	2785                	addiw	a5,a5,1
+    80200b8e:	00003717          	auipc	a4,0x3
+    80200b92:	46f72923          	sw	a5,1138(a4) # 80204000 <failures>
+    80200b96:	4785                	li	a5,1
+    80200b98:	863e                	mv	a2,a5
+    80200b9a:	4701                	li	a4,0
+    80200b9c:	4681                	li	a3,0
+    80200b9e:	4581                	li	a1,0
+    80200ba0:	00001517          	auipc	a0,0x1
+    80200ba4:	60050513          	addi	a0,a0,1536 # 802021a0 <payload_main+0x19ba>
     80200ba8:	fffff097          	auipc	ra,0xfffff
-    80200bac:	4ba080e7          	jalr	1210(ra) # 80200062 <puts>
-    80200bb0:	00001517          	auipc	a0,0x1
-    80200bb4:	b9050513          	addi	a0,a0,-1136 # 80201740 <payload_main+0x10d8>
-    80200bb8:	fffff097          	auipc	ra,0xfffff
-    80200bbc:	4aa080e7          	jalr	1194(ra) # 80200062 <puts>
-    80200bc0:	00000517          	auipc	a0,0x0
-    80200bc4:	63050513          	addi	a0,a0,1584 # 802011f0 <payload_main+0xb88>
-    80200bc8:	fffff097          	auipc	ra,0xfffff
-    80200bcc:	49a080e7          	jalr	1178(ra) # 80200062 <puts>
-    80200bd0:	00002797          	auipc	a5,0x2
-    80200bd4:	4307a783          	lw	a5,1072(a5) # 80203000 <failures>
-    80200bd8:	2785                	addiw	a5,a5,1
-    80200bda:	00002717          	auipc	a4,0x2
-    80200bde:	42f72323          	sw	a5,1062(a4) # 80203000 <failures>
+    80200bac:	7e6080e7          	jalr	2022(ra) # 8020038e <send.constprop.0>
+    80200bb0:	c01026f3          	rdtime	a3
+    80200bb4:	0007a737          	lui	a4,0x7a
+    80200bb8:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200bbc:	c01027f3          	rdtime	a5
+    80200bc0:	8f95                	sub	a5,a5,a3
+    80200bc2:	fef77de3          	bgeu	a4,a5,80200bbc <payload_main+0x3d6>
+    80200bc6:	4789                	li	a5,2
+    80200bc8:	863e                	mv	a2,a5
+    80200bca:	4701                	li	a4,0
+    80200bcc:	04b00693          	li	a3,75
+    80200bd0:	4581                	li	a1,0
+    80200bd2:	00001517          	auipc	a0,0x1
+    80200bd6:	5ee50513          	addi	a0,a0,1518 # 802021c0 <payload_main+0x19da>
+    80200bda:	fffff097          	auipc	ra,0xfffff
+    80200bde:	7b4080e7          	jalr	1972(ra) # 8020038e <send.constprop.0>
     80200be2:	c01026f3          	rdtime	a3
     80200be6:	0007a737          	lui	a4,0x7a
     80200bea:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
     80200bee:	c01027f3          	rdtime	a5
     80200bf2:	8f95                	sub	a5,a5,a3
-    80200bf4:	fef77de3          	bgeu	a4,a5,80200bee <payload_main+0x586>
-    80200bf8:	67b9                	lui	a5,0xe
-    80200bfa:	ead78793          	addi	a5,a5,-339 # dead <_start-0x801f2153>
-    80200bfe:	4701                	li	a4,0
-    80200c00:	0e100693          	li	a3,225
-    80200c04:	4619                	li	a2,6
-    80200c06:	459d                	li	a1,7
-    80200c08:	00001517          	auipc	a0,0x1
-    80200c0c:	b6850513          	addi	a0,a0,-1176 # 80201770 <payload_main+0x1108>
-    80200c10:	fffff097          	auipc	ra,0xfffff
-    80200c14:	600080e7          	jalr	1536(ra) # 80200210 <send.constprop.0>
-    80200c18:	080008b7          	lui	a7,0x8000
-    80200c1c:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
-    80200c1e:	4501                	li	a0,0
-    80200c20:	4581                	li	a1,0
-    80200c22:	4809                	li	a6,2
-    80200c24:	00000073          	ecall
-    80200c28:	4785                	li	a5,1
-    80200c2a:	2af58463          	beq	a1,a5,80200ed2 <payload_main+0x86a>
-    80200c2e:	00000517          	auipc	a0,0x0
-    80200c32:	5ca50513          	addi	a0,a0,1482 # 802011f8 <payload_main+0xb90>
-    80200c36:	fffff097          	auipc	ra,0xfffff
-    80200c3a:	42c080e7          	jalr	1068(ra) # 80200062 <puts>
-    80200c3e:	00001517          	auipc	a0,0x1
-    80200c42:	b5250513          	addi	a0,a0,-1198 # 80201790 <payload_main+0x1128>
-    80200c46:	fffff097          	auipc	ra,0xfffff
-    80200c4a:	41c080e7          	jalr	1052(ra) # 80200062 <puts>
-    80200c4e:	00000517          	auipc	a0,0x0
-    80200c52:	5a250513          	addi	a0,a0,1442 # 802011f0 <payload_main+0xb88>
-    80200c56:	fffff097          	auipc	ra,0xfffff
-    80200c5a:	40c080e7          	jalr	1036(ra) # 80200062 <puts>
-    80200c5e:	00002797          	auipc	a5,0x2
-    80200c62:	3a27a783          	lw	a5,930(a5) # 80203000 <failures>
-    80200c66:	2785                	addiw	a5,a5,1
-    80200c68:	00002717          	auipc	a4,0x2
-    80200c6c:	38f72c23          	sw	a5,920(a4) # 80203000 <failures>
-    80200c70:	6785                	lui	a5,0x1
-    80200c72:	bad78793          	addi	a5,a5,-1107 # bad <_start-0x801ff453>
-    80200c76:	4701                	li	a4,0
-    80200c78:	0e100693          	li	a3,225
-    80200c7c:	4619                	li	a2,6
-    80200c7e:	45a1                	li	a1,8
-    80200c80:	00001517          	auipc	a0,0x1
-    80200c84:	b3050513          	addi	a0,a0,-1232 # 802017b0 <payload_main+0x1148>
-    80200c88:	fffff097          	auipc	ra,0xfffff
-    80200c8c:	588080e7          	jalr	1416(ra) # 80200210 <send.constprop.0>
-    80200c90:	080008b7          	lui	a7,0x8000
-    80200c94:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
-    80200c96:	4501                	li	a0,0
-    80200c98:	4581                	li	a1,0
-    80200c9a:	4809                	li	a6,2
-    80200c9c:	00000073          	ecall
-    80200ca0:	21058063          	beq	a1,a6,80200ea0 <payload_main+0x838>
-    80200ca4:	00000517          	auipc	a0,0x0
-    80200ca8:	55450513          	addi	a0,a0,1364 # 802011f8 <payload_main+0xb90>
-    80200cac:	fffff097          	auipc	ra,0xfffff
-    80200cb0:	3b6080e7          	jalr	950(ra) # 80200062 <puts>
-    80200cb4:	00001517          	auipc	a0,0x1
-    80200cb8:	b1c50513          	addi	a0,a0,-1252 # 802017d0 <payload_main+0x1168>
-    80200cbc:	fffff097          	auipc	ra,0xfffff
-    80200cc0:	3a6080e7          	jalr	934(ra) # 80200062 <puts>
-    80200cc4:	00000517          	auipc	a0,0x0
-    80200cc8:	52c50513          	addi	a0,a0,1324 # 802011f0 <payload_main+0xb88>
-    80200ccc:	fffff097          	auipc	ra,0xfffff
-    80200cd0:	396080e7          	jalr	918(ra) # 80200062 <puts>
-    80200cd4:	00002797          	auipc	a5,0x2
-    80200cd8:	32c7a783          	lw	a5,812(a5) # 80203000 <failures>
-    80200cdc:	2785                	addiw	a5,a5,1
-    80200cde:	00002717          	auipc	a4,0x2
-    80200ce2:	32f72123          	sw	a5,802(a4) # 80203000 <failures>
-    80200ce6:	4789                	li	a5,2
-    80200ce8:	4701                	li	a4,0
-    80200cea:	0e100693          	li	a3,225
-    80200cee:	4619                	li	a2,6
-    80200cf0:	458d                	li	a1,3
-    80200cf2:	00001517          	auipc	a0,0x1
-    80200cf6:	afe50513          	addi	a0,a0,-1282 # 802017f0 <payload_main+0x1188>
-    80200cfa:	fffff097          	auipc	ra,0xfffff
-    80200cfe:	516080e7          	jalr	1302(ra) # 80200210 <send.constprop.0>
-    80200d02:	c01026f3          	rdtime	a3
-    80200d06:	0007a737          	lui	a4,0x7a
-    80200d0a:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    80200d0e:	c01027f3          	rdtime	a5
-    80200d12:	8f95                	sub	a5,a5,a3
-    80200d14:	fef77de3          	bgeu	a4,a5,80200d0e <payload_main+0x6a6>
-    80200d18:	4781                	li	a5,0
-    80200d1a:	4701                	li	a4,0
-    80200d1c:	0e100693          	li	a3,225
-    80200d20:	4619                	li	a2,6
-    80200d22:	4581                	li	a1,0
-    80200d24:	00001517          	auipc	a0,0x1
-    80200d28:	aec50513          	addi	a0,a0,-1300 # 80201810 <payload_main+0x11a8>
-    80200d2c:	fffff097          	auipc	ra,0xfffff
-    80200d30:	4e4080e7          	jalr	1252(ra) # 80200210 <send.constprop.0>
-    80200d34:	c01026f3          	rdtime	a3
-    80200d38:	0007a737          	lui	a4,0x7a
-    80200d3c:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    80200d40:	c01027f3          	rdtime	a5
-    80200d44:	8f95                	sub	a5,a5,a3
-    80200d46:	fef77de3          	bgeu	a4,a5,80200d40 <payload_main+0x6d8>
-    80200d4a:	4785                	li	a5,1
-    80200d4c:	4701                	li	a4,0
-    80200d4e:	0e100693          	li	a3,225
-    80200d52:	461d                	li	a2,7
-    80200d54:	4581                	li	a1,0
-    80200d56:	00001517          	auipc	a0,0x1
-    80200d5a:	ada50513          	addi	a0,a0,-1318 # 80201830 <payload_main+0x11c8>
-    80200d5e:	fffff097          	auipc	ra,0xfffff
-    80200d62:	4b2080e7          	jalr	1202(ra) # 80200210 <send.constprop.0>
-    80200d66:	c01026f3          	rdtime	a3
-    80200d6a:	0007a737          	lui	a4,0x7a
-    80200d6e:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
-    80200d72:	c01027f3          	rdtime	a5
-    80200d76:	8f95                	sub	a5,a5,a3
-    80200d78:	fef77de3          	bgeu	a4,a5,80200d72 <payload_main+0x70a>
-    80200d7c:	4789                	li	a5,2
-    80200d7e:	4701                	li	a4,0
-    80200d80:	0e100693          	li	a3,225
-    80200d84:	4621                	li	a2,8
-    80200d86:	4581                	li	a1,0
-    80200d88:	00001517          	auipc	a0,0x1
-    80200d8c:	ac850513          	addi	a0,a0,-1336 # 80201850 <payload_main+0x11e8>
-    80200d90:	fffff097          	auipc	ra,0xfffff
-    80200d94:	480080e7          	jalr	1152(ra) # 80200210 <send.constprop.0>
-    80200d98:	c01026f3          	rdtime	a3
-    80200d9c:	005b9737          	lui	a4,0x5b9
-    80200da0:	d7f70713          	addi	a4,a4,-641 # 5b8d7f <_start-0x7fc47281>
-    80200da4:	c01027f3          	rdtime	a5
-    80200da8:	8f95                	sub	a5,a5,a3
-    80200daa:	fef77de3          	bgeu	a4,a5,80200da4 <payload_main+0x73c>
-    80200dae:	080008b7          	lui	a7,0x8000
-    80200db2:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
-    80200db4:	4501                	li	a0,0
-    80200db6:	4581                	li	a1,0
-    80200db8:	4809                	li	a6,2
-    80200dba:	00000073          	ecall
-    80200dbe:	478d                	li	a5,3
-    80200dc0:	0af58763          	beq	a1,a5,80200e6e <payload_main+0x806>
-    80200dc4:	00000517          	auipc	a0,0x0
-    80200dc8:	43450513          	addi	a0,a0,1076 # 802011f8 <payload_main+0xb90>
-    80200dcc:	fffff097          	auipc	ra,0xfffff
-    80200dd0:	296080e7          	jalr	662(ra) # 80200062 <puts>
-    80200dd4:	00001517          	auipc	a0,0x1
-    80200dd8:	a9c50513          	addi	a0,a0,-1380 # 80201870 <payload_main+0x1208>
-    80200ddc:	fffff097          	auipc	ra,0xfffff
-    80200de0:	286080e7          	jalr	646(ra) # 80200062 <puts>
-    80200de4:	00000517          	auipc	a0,0x0
-    80200de8:	40c50513          	addi	a0,a0,1036 # 802011f0 <payload_main+0xb88>
-    80200dec:	fffff097          	auipc	ra,0xfffff
-    80200df0:	276080e7          	jalr	630(ra) # 80200062 <puts>
-    80200df4:	00002797          	auipc	a5,0x2
-    80200df8:	20c7a783          	lw	a5,524(a5) # 80203000 <failures>
-    80200dfc:	2785                	addiw	a5,a5,1
-    80200dfe:	00002717          	auipc	a4,0x2
-    80200e02:	20f72123          	sw	a5,514(a4) # 80203000 <failures>
-    80200e06:	4789                	li	a5,2
-    80200e08:	4701                	li	a4,0
-    80200e0a:	0e100693          	li	a3,225
-    80200e0e:	4625                	li	a2,9
-    80200e10:	458d                	li	a1,3
-    80200e12:	00001517          	auipc	a0,0x1
-    80200e16:	a8650513          	addi	a0,a0,-1402 # 80201898 <payload_main+0x1230>
-    80200e1a:	fffff097          	auipc	ra,0xfffff
-    80200e1e:	3f6080e7          	jalr	1014(ra) # 80200210 <send.constprop.0>
-    80200e22:	478d                	li	a5,3
-    80200e24:	00001517          	auipc	a0,0x1
-    80200e28:	a9450513          	addi	a0,a0,-1388 # 802018b8 <payload_main+0x1250>
-    80200e2c:	4701                	li	a4,0
-    80200e2e:	0e100693          	li	a3,225
-    80200e32:	4625                	li	a2,9
-    80200e34:	4581                	li	a1,0
-    80200e36:	fffff097          	auipc	ra,0xfffff
-    80200e3a:	3da080e7          	jalr	986(ra) # 80200210 <send.constprop.0>
-    80200e3e:	fffff097          	auipc	ra,0xfffff
-    80200e42:	560080e7          	jalr	1376(ra) # 8020039e <mission_corridor_tests>
-    80200e46:	00002797          	auipc	a5,0x2
-    80200e4a:	1ba7a783          	lw	a5,442(a5) # 80203000 <failures>
-    80200e4e:	00000517          	auipc	a0,0x0
-    80200e52:	57250513          	addi	a0,a0,1394 # 802013c0 <payload_main+0xd58>
-    80200e56:	e789                	bnez	a5,80200e60 <payload_main+0x7f8>
-    80200e58:	00000517          	auipc	a0,0x0
-    80200e5c:	54850513          	addi	a0,a0,1352 # 802013a0 <payload_main+0xd38>
-    80200e60:	6442                	ld	s0,16(sp)
-    80200e62:	60e2                	ld	ra,24(sp)
-    80200e64:	6105                	addi	sp,sp,32
-    80200e66:	fffff317          	auipc	t1,0xfffff
-    80200e6a:	1fc30067          	jr	508(t1) # 80200062 <puts>
-    80200e6e:	00000517          	auipc	a0,0x0
-    80200e72:	36a50513          	addi	a0,a0,874 # 802011d8 <payload_main+0xb70>
-    80200e76:	fffff097          	auipc	ra,0xfffff
-    80200e7a:	1ec080e7          	jalr	492(ra) # 80200062 <puts>
-    80200e7e:	00001517          	auipc	a0,0x1
-    80200e82:	9f250513          	addi	a0,a0,-1550 # 80201870 <payload_main+0x1208>
-    80200e86:	fffff097          	auipc	ra,0xfffff
-    80200e8a:	1dc080e7          	jalr	476(ra) # 80200062 <puts>
-    80200e8e:	00000517          	auipc	a0,0x0
-    80200e92:	36250513          	addi	a0,a0,866 # 802011f0 <payload_main+0xb88>
-    80200e96:	fffff097          	auipc	ra,0xfffff
-    80200e9a:	1cc080e7          	jalr	460(ra) # 80200062 <puts>
-    80200e9e:	b7a5                	j	80200e06 <payload_main+0x79e>
-    80200ea0:	00000517          	auipc	a0,0x0
-    80200ea4:	33850513          	addi	a0,a0,824 # 802011d8 <payload_main+0xb70>
-    80200ea8:	fffff097          	auipc	ra,0xfffff
-    80200eac:	1ba080e7          	jalr	442(ra) # 80200062 <puts>
-    80200eb0:	00001517          	auipc	a0,0x1
-    80200eb4:	92050513          	addi	a0,a0,-1760 # 802017d0 <payload_main+0x1168>
-    80200eb8:	fffff097          	auipc	ra,0xfffff
-    80200ebc:	1aa080e7          	jalr	426(ra) # 80200062 <puts>
-    80200ec0:	00000517          	auipc	a0,0x0
-    80200ec4:	33050513          	addi	a0,a0,816 # 802011f0 <payload_main+0xb88>
-    80200ec8:	fffff097          	auipc	ra,0xfffff
-    80200ecc:	19a080e7          	jalr	410(ra) # 80200062 <puts>
-    80200ed0:	bd19                	j	80200ce6 <payload_main+0x67e>
-    80200ed2:	00000517          	auipc	a0,0x0
-    80200ed6:	30650513          	addi	a0,a0,774 # 802011d8 <payload_main+0xb70>
-    80200eda:	fffff097          	auipc	ra,0xfffff
-    80200ede:	188080e7          	jalr	392(ra) # 80200062 <puts>
-    80200ee2:	00001517          	auipc	a0,0x1
-    80200ee6:	8ae50513          	addi	a0,a0,-1874 # 80201790 <payload_main+0x1128>
-    80200eea:	fffff097          	auipc	ra,0xfffff
-    80200eee:	178080e7          	jalr	376(ra) # 80200062 <puts>
-    80200ef2:	00000517          	auipc	a0,0x0
-    80200ef6:	2fe50513          	addi	a0,a0,766 # 802011f0 <payload_main+0xb88>
-    80200efa:	fffff097          	auipc	ra,0xfffff
-    80200efe:	168080e7          	jalr	360(ra) # 80200062 <puts>
-    80200f02:	b3bd                	j	80200c70 <payload_main+0x608>
-    80200f04:	00000517          	auipc	a0,0x0
-    80200f08:	2d450513          	addi	a0,a0,724 # 802011d8 <payload_main+0xb70>
-    80200f0c:	fffff097          	auipc	ra,0xfffff
-    80200f10:	156080e7          	jalr	342(ra) # 80200062 <puts>
-    80200f14:	00001517          	auipc	a0,0x1
-    80200f18:	82c50513          	addi	a0,a0,-2004 # 80201740 <payload_main+0x10d8>
-    80200f1c:	fffff097          	auipc	ra,0xfffff
-    80200f20:	146080e7          	jalr	326(ra) # 80200062 <puts>
-    80200f24:	00000517          	auipc	a0,0x0
-    80200f28:	2cc50513          	addi	a0,a0,716 # 802011f0 <payload_main+0xb88>
-    80200f2c:	fffff097          	auipc	ra,0xfffff
-    80200f30:	136080e7          	jalr	310(ra) # 80200062 <puts>
-    80200f34:	b17d                	j	80200be2 <payload_main+0x57a>
-    80200f36:	00000517          	auipc	a0,0x0
-    80200f3a:	2a250513          	addi	a0,a0,674 # 802011d8 <payload_main+0xb70>
-    80200f3e:	fffff097          	auipc	ra,0xfffff
-    80200f42:	124080e7          	jalr	292(ra) # 80200062 <puts>
-    80200f46:	00000517          	auipc	a0,0x0
-    80200f4a:	6d250513          	addi	a0,a0,1746 # 80201618 <payload_main+0xfb0>
-    80200f4e:	fffff097          	auipc	ra,0xfffff
-    80200f52:	114080e7          	jalr	276(ra) # 80200062 <puts>
-    80200f56:	00000517          	auipc	a0,0x0
-    80200f5a:	29a50513          	addi	a0,a0,666 # 802011f0 <payload_main+0xb88>
-    80200f5e:	fffff097          	auipc	ra,0xfffff
-    80200f62:	104080e7          	jalr	260(ra) # 80200062 <puts>
-    80200f66:	b625                	j	80200a8e <payload_main+0x426>
-    80200f68:	00000517          	auipc	a0,0x0
-    80200f6c:	27050513          	addi	a0,a0,624 # 802011d8 <payload_main+0xb70>
-    80200f70:	fffff097          	auipc	ra,0xfffff
-    80200f74:	0f2080e7          	jalr	242(ra) # 80200062 <puts>
-    80200f78:	00000517          	auipc	a0,0x0
-    80200f7c:	61050513          	addi	a0,a0,1552 # 80201588 <payload_main+0xf20>
-    80200f80:	fffff097          	auipc	ra,0xfffff
-    80200f84:	0e2080e7          	jalr	226(ra) # 80200062 <puts>
-    80200f88:	00000517          	auipc	a0,0x0
-    80200f8c:	26850513          	addi	a0,a0,616 # 802011f0 <payload_main+0xb88>
-    80200f90:	fffff097          	auipc	ra,0xfffff
-    80200f94:	0d2080e7          	jalr	210(ra) # 80200062 <puts>
-    80200f98:	b405                	j	802009b8 <payload_main+0x350>
-    80200f9a:	00000517          	auipc	a0,0x0
-    80200f9e:	23e50513          	addi	a0,a0,574 # 802011d8 <payload_main+0xb70>
-    80200fa2:	fffff097          	auipc	ra,0xfffff
-    80200fa6:	0c0080e7          	jalr	192(ra) # 80200062 <puts>
-    80200faa:	00000517          	auipc	a0,0x0
-    80200fae:	5b650513          	addi	a0,a0,1462 # 80201560 <payload_main+0xef8>
-    80200fb2:	fffff097          	auipc	ra,0xfffff
-    80200fb6:	0b0080e7          	jalr	176(ra) # 80200062 <puts>
-    80200fba:	00000517          	auipc	a0,0x0
-    80200fbe:	23650513          	addi	a0,a0,566 # 802011f0 <payload_main+0xb88>
-    80200fc2:	fffff097          	auipc	ra,0xfffff
-    80200fc6:	0a0080e7          	jalr	160(ra) # 80200062 <puts>
-    80200fca:	ba49                	j	8020095c <payload_main+0x2f4>
-    80200fcc:	00000517          	auipc	a0,0x0
-    80200fd0:	20c50513          	addi	a0,a0,524 # 802011d8 <payload_main+0xb70>
-    80200fd4:	fffff097          	auipc	ra,0xfffff
-    80200fd8:	08e080e7          	jalr	142(ra) # 80200062 <puts>
-    80200fdc:	00000517          	auipc	a0,0x0
-    80200fe0:	55c50513          	addi	a0,a0,1372 # 80201538 <payload_main+0xed0>
-    80200fe4:	fffff097          	auipc	ra,0xfffff
-    80200fe8:	07e080e7          	jalr	126(ra) # 80200062 <puts>
-    80200fec:	00000517          	auipc	a0,0x0
-    80200ff0:	20450513          	addi	a0,a0,516 # 802011f0 <payload_main+0xb88>
-    80200ff4:	fffff097          	auipc	ra,0xfffff
-    80200ff8:	06e080e7          	jalr	110(ra) # 80200062 <puts>
-    80200ffc:	b211                	j	80200900 <payload_main+0x298>
-    80200ffe:	00000517          	auipc	a0,0x0
-    80201002:	1da50513          	addi	a0,a0,474 # 802011d8 <payload_main+0xb70>
-    80201006:	fffff097          	auipc	ra,0xfffff
-    8020100a:	05c080e7          	jalr	92(ra) # 80200062 <puts>
-    8020100e:	00000517          	auipc	a0,0x0
-    80201012:	50250513          	addi	a0,a0,1282 # 80201510 <payload_main+0xea8>
-    80201016:	fffff097          	auipc	ra,0xfffff
-    8020101a:	04c080e7          	jalr	76(ra) # 80200062 <puts>
-    8020101e:	00000517          	auipc	a0,0x0
-    80201022:	1d250513          	addi	a0,a0,466 # 802011f0 <payload_main+0xb88>
-    80201026:	fffff097          	auipc	ra,0xfffff
-    8020102a:	03c080e7          	jalr	60(ra) # 80200062 <puts>
-    8020102e:	b89d                	j	802008a4 <payload_main+0x23c>
-    80201030:	00000517          	auipc	a0,0x0
-    80201034:	1c850513          	addi	a0,a0,456 # 802011f8 <payload_main+0xb90>
-    80201038:	fffff097          	auipc	ra,0xfffff
-    8020103c:	02a080e7          	jalr	42(ra) # 80200062 <puts>
-    80201040:	00000517          	auipc	a0,0x0
-    80201044:	49050513          	addi	a0,a0,1168 # 802014d0 <payload_main+0xe68>
-    80201048:	fffff097          	auipc	ra,0xfffff
-    8020104c:	01a080e7          	jalr	26(ra) # 80200062 <puts>
-    80201050:	00000517          	auipc	a0,0x0
-    80201054:	1a050513          	addi	a0,a0,416 # 802011f0 <payload_main+0xb88>
-    80201058:	fffff097          	auipc	ra,0xfffff
-    8020105c:	00a080e7          	jalr	10(ra) # 80200062 <puts>
-    80201060:	00002797          	auipc	a5,0x2
-    80201064:	fa07a783          	lw	a5,-96(a5) # 80203000 <failures>
-    80201068:	2785                	addiw	a5,a5,1
-    8020106a:	00002717          	auipc	a4,0x2
-    8020106e:	f8f72b23          	sw	a5,-106(a4) # 80203000 <failures>
-    80201072:	fc8ff06f          	j	8020083a <payload_main+0x1d2>
-    80201076:	00000517          	auipc	a0,0x0
-    8020107a:	18250513          	addi	a0,a0,386 # 802011f8 <payload_main+0xb90>
-    8020107e:	fffff097          	auipc	ra,0xfffff
-    80201082:	fe4080e7          	jalr	-28(ra) # 80200062 <puts>
-    80201086:	00000517          	auipc	a0,0x0
-    8020108a:	41a50513          	addi	a0,a0,1050 # 802014a0 <payload_main+0xe38>
-    8020108e:	fffff097          	auipc	ra,0xfffff
-    80201092:	fd4080e7          	jalr	-44(ra) # 80200062 <puts>
-    80201096:	00000517          	auipc	a0,0x0
-    8020109a:	15a50513          	addi	a0,a0,346 # 802011f0 <payload_main+0xb88>
-    8020109e:	fffff097          	auipc	ra,0xfffff
-    802010a2:	fc4080e7          	jalr	-60(ra) # 80200062 <puts>
-    802010a6:	00002797          	auipc	a5,0x2
-    802010aa:	f5a7a783          	lw	a5,-166(a5) # 80203000 <failures>
-    802010ae:	2785                	addiw	a5,a5,1
-    802010b0:	00002717          	auipc	a4,0x2
-    802010b4:	f4f72823          	sw	a5,-176(a4) # 80203000 <failures>
-    802010b8:	f3eff06f          	j	802007f6 <payload_main+0x18e>
-    802010bc:	00000517          	auipc	a0,0x0
-    802010c0:	13c50513          	addi	a0,a0,316 # 802011f8 <payload_main+0xb90>
-    802010c4:	fffff097          	auipc	ra,0xfffff
-    802010c8:	f9e080e7          	jalr	-98(ra) # 80200062 <puts>
-    802010cc:	00000517          	auipc	a0,0x0
-    802010d0:	3b450513          	addi	a0,a0,948 # 80201480 <payload_main+0xe18>
-    802010d4:	fffff097          	auipc	ra,0xfffff
-    802010d8:	f8e080e7          	jalr	-114(ra) # 80200062 <puts>
-    802010dc:	00000517          	auipc	a0,0x0
-    802010e0:	11450513          	addi	a0,a0,276 # 802011f0 <payload_main+0xb88>
-    802010e4:	fffff097          	auipc	ra,0xfffff
-    802010e8:	f7e080e7          	jalr	-130(ra) # 80200062 <puts>
-    802010ec:	00002797          	auipc	a5,0x2
-    802010f0:	f147a783          	lw	a5,-236(a5) # 80203000 <failures>
-    802010f4:	2785                	addiw	a5,a5,1
-    802010f6:	00002717          	auipc	a4,0x2
-    802010fa:	f0f72523          	sw	a5,-246(a4) # 80203000 <failures>
-    802010fe:	eb0ff06f          	j	802007ae <payload_main+0x146>
-    80201102:	00000517          	auipc	a0,0x0
-    80201106:	0f650513          	addi	a0,a0,246 # 802011f8 <payload_main+0xb90>
-    8020110a:	fffff097          	auipc	ra,0xfffff
-    8020110e:	f58080e7          	jalr	-168(ra) # 80200062 <puts>
-    80201112:	00000517          	auipc	a0,0x0
-    80201116:	34e50513          	addi	a0,a0,846 # 80201460 <payload_main+0xdf8>
-    8020111a:	fffff097          	auipc	ra,0xfffff
-    8020111e:	f48080e7          	jalr	-184(ra) # 80200062 <puts>
-    80201122:	00000517          	auipc	a0,0x0
-    80201126:	0ce50513          	addi	a0,a0,206 # 802011f0 <payload_main+0xb88>
-    8020112a:	fffff097          	auipc	ra,0xfffff
-    8020112e:	f38080e7          	jalr	-200(ra) # 80200062 <puts>
-    80201132:	00002797          	auipc	a5,0x2
-    80201136:	ece7a783          	lw	a5,-306(a5) # 80203000 <failures>
-    8020113a:	2785                	addiw	a5,a5,1
-    8020113c:	00002717          	auipc	a4,0x2
-    80201140:	ecf72223          	sw	a5,-316(a4) # 80203000 <failures>
-    80201144:	e26ff06f          	j	8020076a <payload_main+0x102>
-    80201148:	00000517          	auipc	a0,0x0
-    8020114c:	0b050513          	addi	a0,a0,176 # 802011f8 <payload_main+0xb90>
-    80201150:	fffff097          	auipc	ra,0xfffff
-    80201154:	f12080e7          	jalr	-238(ra) # 80200062 <puts>
-    80201158:	00000517          	auipc	a0,0x0
-    8020115c:	2e850513          	addi	a0,a0,744 # 80201440 <payload_main+0xdd8>
-    80201160:	fffff097          	auipc	ra,0xfffff
-    80201164:	f02080e7          	jalr	-254(ra) # 80200062 <puts>
-    80201168:	00000517          	auipc	a0,0x0
-    8020116c:	08850513          	addi	a0,a0,136 # 802011f0 <payload_main+0xb88>
-    80201170:	fffff097          	auipc	ra,0xfffff
-    80201174:	ef2080e7          	jalr	-270(ra) # 80200062 <puts>
-    80201178:	00002797          	auipc	a5,0x2
-    8020117c:	e887a783          	lw	a5,-376(a5) # 80203000 <failures>
-    80201180:	2785                	addiw	a5,a5,1
-    80201182:	00002717          	auipc	a4,0x2
-    80201186:	e6f72f23          	sw	a5,-386(a4) # 80203000 <failures>
-    8020118a:	d9cff06f          	j	80200726 <payload_main+0xbe>
-    8020118e:	00000517          	auipc	a0,0x0
-    80201192:	06a50513          	addi	a0,a0,106 # 802011f8 <payload_main+0xb90>
+    80200bf4:	fef77de3          	bgeu	a4,a5,80200bee <payload_main+0x408>
+    80200bf8:	4789                	li	a5,2
+    80200bfa:	4701                	li	a4,0
+    80200bfc:	09600693          	li	a3,150
+    80200c00:	460d                	li	a2,3
+    80200c02:	4581                	li	a1,0
+    80200c04:	00001517          	auipc	a0,0x1
+    80200c08:	5dc50513          	addi	a0,a0,1500 # 802021e0 <payload_main+0x19fa>
+    80200c0c:	fffff097          	auipc	ra,0xfffff
+    80200c10:	782080e7          	jalr	1922(ra) # 8020038e <send.constprop.0>
+    80200c14:	080008b7          	lui	a7,0x8000
+    80200c18:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    80200c1a:	4501                	li	a0,0
+    80200c1c:	4581                	li	a1,0
+    80200c1e:	4805                	li	a6,1
+    80200c20:	00000073          	ecall
+    80200c24:	478d                	li	a5,3
+    80200c26:	64f584e3          	beq	a1,a5,80201a6e <payload_main+0x1288>
+    80200c2a:	00001517          	auipc	a0,0x1
+    80200c2e:	16650513          	addi	a0,a0,358 # 80201d90 <payload_main+0x15aa>
+    80200c32:	fffff097          	auipc	ra,0xfffff
+    80200c36:	430080e7          	jalr	1072(ra) # 80200062 <puts>
+    80200c3a:	00001517          	auipc	a0,0x1
+    80200c3e:	5c650513          	addi	a0,a0,1478 # 80202200 <payload_main+0x1a1a>
+    80200c42:	fffff097          	auipc	ra,0xfffff
+    80200c46:	420080e7          	jalr	1056(ra) # 80200062 <puts>
+    80200c4a:	00001517          	auipc	a0,0x1
+    80200c4e:	13e50513          	addi	a0,a0,318 # 80201d88 <payload_main+0x15a2>
+    80200c52:	fffff097          	auipc	ra,0xfffff
+    80200c56:	410080e7          	jalr	1040(ra) # 80200062 <puts>
+    80200c5a:	00003797          	auipc	a5,0x3
+    80200c5e:	3a67a783          	lw	a5,934(a5) # 80204000 <failures>
+    80200c62:	2785                	addiw	a5,a5,1
+    80200c64:	00003717          	auipc	a4,0x3
+    80200c68:	38f72e23          	sw	a5,924(a4) # 80204000 <failures>
+    80200c6c:	c01026f3          	rdtime	a3
+    80200c70:	0007a737          	lui	a4,0x7a
+    80200c74:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200c78:	c01027f3          	rdtime	a5
+    80200c7c:	8f95                	sub	a5,a5,a3
+    80200c7e:	fef77de3          	bgeu	a4,a5,80200c78 <payload_main+0x492>
+    80200c82:	4789                	li	a5,2
+    80200c84:	863e                	mv	a2,a5
+    80200c86:	4701                	li	a4,0
+    80200c88:	0e100693          	li	a3,225
+    80200c8c:	4585                	li	a1,1
+    80200c8e:	00001517          	auipc	a0,0x1
+    80200c92:	59a50513          	addi	a0,a0,1434 # 80202228 <payload_main+0x1a42>
+    80200c96:	fffff097          	auipc	ra,0xfffff
+    80200c9a:	6f8080e7          	jalr	1784(ra) # 8020038e <send.constprop.0>
+    80200c9e:	4611                	li	a2,4
+    80200ca0:	6685                	lui	a3,0x1
+    80200ca2:	85b2                	mv	a1,a2
+    80200ca4:	38868693          	addi	a3,a3,904 # 1388 <_start-0x801fec78>
+    80200ca8:	4789                	li	a5,2
+    80200caa:	4701                	li	a4,0
+    80200cac:	00001517          	auipc	a0,0x1
+    80200cb0:	59c50513          	addi	a0,a0,1436 # 80202248 <payload_main+0x1a62>
+    80200cb4:	fffff097          	auipc	ra,0xfffff
+    80200cb8:	6da080e7          	jalr	1754(ra) # 8020038e <send.constprop.0>
+    80200cbc:	6685                	lui	a3,0x1
+    80200cbe:	f3c68693          	addi	a3,a3,-196 # f3c <_start-0x801ff0c4>
+    80200cc2:	4789                	li	a5,2
+    80200cc4:	4701                	li	a4,0
+    80200cc6:	4611                	li	a2,4
+    80200cc8:	4595                	li	a1,5
+    80200cca:	00001517          	auipc	a0,0x1
+    80200cce:	59e50513          	addi	a0,a0,1438 # 80202268 <payload_main+0x1a82>
+    80200cd2:	fffff097          	auipc	ra,0xfffff
+    80200cd6:	6bc080e7          	jalr	1724(ra) # 8020038e <send.constprop.0>
+    80200cda:	4789                	li	a5,2
+    80200cdc:	4701                	li	a4,0
+    80200cde:	1c200693          	li	a3,450
+    80200ce2:	4611                	li	a2,4
+    80200ce4:	4599                	li	a1,6
+    80200ce6:	00001517          	auipc	a0,0x1
+    80200cea:	5a250513          	addi	a0,a0,1442 # 80202288 <payload_main+0x1aa2>
+    80200cee:	fffff097          	auipc	ra,0xfffff
+    80200cf2:	6a0080e7          	jalr	1696(ra) # 8020038e <send.constprop.0>
+    80200cf6:	4781                	li	a5,0
+    80200cf8:	4701                	li	a4,0
+    80200cfa:	0e100693          	li	a3,225
+    80200cfe:	4611                	li	a2,4
+    80200d00:	458d                	li	a1,3
+    80200d02:	00001517          	auipc	a0,0x1
+    80200d06:	5a650513          	addi	a0,a0,1446 # 802022a8 <payload_main+0x1ac2>
+    80200d0a:	fffff097          	auipc	ra,0xfffff
+    80200d0e:	684080e7          	jalr	1668(ra) # 8020038e <send.constprop.0>
+    80200d12:	04d00793          	li	a5,77
+    80200d16:	4701                	li	a4,0
+    80200d18:	0e100693          	li	a3,225
+    80200d1c:	4611                	li	a2,4
+    80200d1e:	458d                	li	a1,3
+    80200d20:	00001517          	auipc	a0,0x1
+    80200d24:	5a850513          	addi	a0,a0,1448 # 802022c8 <payload_main+0x1ae2>
+    80200d28:	fffff097          	auipc	ra,0xfffff
+    80200d2c:	666080e7          	jalr	1638(ra) # 8020038e <send.constprop.0>
+    80200d30:	4789                	li	a5,2
+    80200d32:	4701                	li	a4,0
+    80200d34:	0e100693          	li	a3,225
+    80200d38:	4611                	li	a2,4
+    80200d3a:	4581                	li	a1,0
+    80200d3c:	00001517          	auipc	a0,0x1
+    80200d40:	5ac50513          	addi	a0,a0,1452 # 802022e8 <payload_main+0x1b02>
+    80200d44:	fffff097          	auipc	ra,0xfffff
+    80200d48:	64a080e7          	jalr	1610(ra) # 8020038e <send.constprop.0>
+    80200d4c:	4789                	li	a5,2
+    80200d4e:	85be                	mv	a1,a5
+    80200d50:	4701                	li	a4,0
+    80200d52:	0eb00693          	li	a3,235
+    80200d56:	4615                	li	a2,5
+    80200d58:	00001517          	auipc	a0,0x1
+    80200d5c:	5b050513          	addi	a0,a0,1456 # 80202308 <payload_main+0x1b22>
+    80200d60:	fffff097          	auipc	ra,0xfffff
+    80200d64:	62e080e7          	jalr	1582(ra) # 8020038e <send.constprop.0>
+    80200d68:	080008b7          	lui	a7,0x8000
+    80200d6c:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    80200d6e:	4501                	li	a0,0
+    80200d70:	4581                	li	a1,0
+    80200d72:	4805                	li	a6,1
+    80200d74:	00000073          	ecall
+    80200d78:	4791                	li	a5,4
+    80200d7a:	4cf580e3          	beq	a1,a5,80201a3a <payload_main+0x1254>
+    80200d7e:	00001517          	auipc	a0,0x1
+    80200d82:	01250513          	addi	a0,a0,18 # 80201d90 <payload_main+0x15aa>
+    80200d86:	fffff097          	auipc	ra,0xfffff
+    80200d8a:	2dc080e7          	jalr	732(ra) # 80200062 <puts>
+    80200d8e:	00001517          	auipc	a0,0x1
+    80200d92:	59a50513          	addi	a0,a0,1434 # 80202328 <payload_main+0x1b42>
+    80200d96:	fffff097          	auipc	ra,0xfffff
+    80200d9a:	2cc080e7          	jalr	716(ra) # 80200062 <puts>
+    80200d9e:	00001517          	auipc	a0,0x1
+    80200da2:	fea50513          	addi	a0,a0,-22 # 80201d88 <payload_main+0x15a2>
+    80200da6:	fffff097          	auipc	ra,0xfffff
+    80200daa:	2bc080e7          	jalr	700(ra) # 80200062 <puts>
+    80200dae:	00003797          	auipc	a5,0x3
+    80200db2:	2527a783          	lw	a5,594(a5) # 80204000 <failures>
+    80200db6:	2785                	addiw	a5,a5,1
+    80200db8:	00003717          	auipc	a4,0x3
+    80200dbc:	24f72423          	sw	a5,584(a4) # 80204000 <failures>
+    80200dc0:	c01026f3          	rdtime	a3
+    80200dc4:	0007a737          	lui	a4,0x7a
+    80200dc8:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200dcc:	c01027f3          	rdtime	a5
+    80200dd0:	8f95                	sub	a5,a5,a3
+    80200dd2:	fef77de3          	bgeu	a4,a5,80200dcc <payload_main+0x5e6>
+    80200dd6:	67b9                	lui	a5,0xe
+    80200dd8:	ead78793          	addi	a5,a5,-339 # dead <_start-0x801f2153>
+    80200ddc:	4701                	li	a4,0
+    80200dde:	0e100693          	li	a3,225
+    80200de2:	4619                	li	a2,6
+    80200de4:	459d                	li	a1,7
+    80200de6:	00001517          	auipc	a0,0x1
+    80200dea:	57250513          	addi	a0,a0,1394 # 80202358 <payload_main+0x1b72>
+    80200dee:	fffff097          	auipc	ra,0xfffff
+    80200df2:	5a0080e7          	jalr	1440(ra) # 8020038e <send.constprop.0>
+    80200df6:	080008b7          	lui	a7,0x8000
+    80200dfa:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    80200dfc:	4501                	li	a0,0
+    80200dfe:	4581                	li	a1,0
+    80200e00:	4809                	li	a6,2
+    80200e02:	00000073          	ecall
+    80200e06:	4785                	li	a5,1
+    80200e08:	3ef58fe3          	beq	a1,a5,80201a06 <payload_main+0x1220>
+    80200e0c:	00001517          	auipc	a0,0x1
+    80200e10:	f8450513          	addi	a0,a0,-124 # 80201d90 <payload_main+0x15aa>
+    80200e14:	fffff097          	auipc	ra,0xfffff
+    80200e18:	24e080e7          	jalr	590(ra) # 80200062 <puts>
+    80200e1c:	00001517          	auipc	a0,0x1
+    80200e20:	55c50513          	addi	a0,a0,1372 # 80202378 <payload_main+0x1b92>
+    80200e24:	fffff097          	auipc	ra,0xfffff
+    80200e28:	23e080e7          	jalr	574(ra) # 80200062 <puts>
+    80200e2c:	00001517          	auipc	a0,0x1
+    80200e30:	f5c50513          	addi	a0,a0,-164 # 80201d88 <payload_main+0x15a2>
+    80200e34:	fffff097          	auipc	ra,0xfffff
+    80200e38:	22e080e7          	jalr	558(ra) # 80200062 <puts>
+    80200e3c:	00003797          	auipc	a5,0x3
+    80200e40:	1c47a783          	lw	a5,452(a5) # 80204000 <failures>
+    80200e44:	2785                	addiw	a5,a5,1
+    80200e46:	00003717          	auipc	a4,0x3
+    80200e4a:	1af72d23          	sw	a5,442(a4) # 80204000 <failures>
+    80200e4e:	6785                	lui	a5,0x1
+    80200e50:	bad78793          	addi	a5,a5,-1107 # bad <_start-0x801ff453>
+    80200e54:	4701                	li	a4,0
+    80200e56:	0e100693          	li	a3,225
+    80200e5a:	4619                	li	a2,6
+    80200e5c:	45a1                	li	a1,8
+    80200e5e:	00001517          	auipc	a0,0x1
+    80200e62:	53a50513          	addi	a0,a0,1338 # 80202398 <payload_main+0x1bb2>
+    80200e66:	fffff097          	auipc	ra,0xfffff
+    80200e6a:	528080e7          	jalr	1320(ra) # 8020038e <send.constprop.0>
+    80200e6e:	080008b7          	lui	a7,0x8000
+    80200e72:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    80200e74:	4501                	li	a0,0
+    80200e76:	4581                	li	a1,0
+    80200e78:	4809                	li	a6,2
+    80200e7a:	00000073          	ecall
+    80200e7e:	35058ae3          	beq	a1,a6,802019d2 <payload_main+0x11ec>
+    80200e82:	00001517          	auipc	a0,0x1
+    80200e86:	f0e50513          	addi	a0,a0,-242 # 80201d90 <payload_main+0x15aa>
+    80200e8a:	fffff097          	auipc	ra,0xfffff
+    80200e8e:	1d8080e7          	jalr	472(ra) # 80200062 <puts>
+    80200e92:	00001517          	auipc	a0,0x1
+    80200e96:	52650513          	addi	a0,a0,1318 # 802023b8 <payload_main+0x1bd2>
+    80200e9a:	fffff097          	auipc	ra,0xfffff
+    80200e9e:	1c8080e7          	jalr	456(ra) # 80200062 <puts>
+    80200ea2:	00001517          	auipc	a0,0x1
+    80200ea6:	ee650513          	addi	a0,a0,-282 # 80201d88 <payload_main+0x15a2>
+    80200eaa:	fffff097          	auipc	ra,0xfffff
+    80200eae:	1b8080e7          	jalr	440(ra) # 80200062 <puts>
+    80200eb2:	00003797          	auipc	a5,0x3
+    80200eb6:	14e7a783          	lw	a5,334(a5) # 80204000 <failures>
+    80200eba:	2785                	addiw	a5,a5,1
+    80200ebc:	00003717          	auipc	a4,0x3
+    80200ec0:	14f72223          	sw	a5,324(a4) # 80204000 <failures>
+    80200ec4:	4789                	li	a5,2
+    80200ec6:	4701                	li	a4,0
+    80200ec8:	0e100693          	li	a3,225
+    80200ecc:	4619                	li	a2,6
+    80200ece:	458d                	li	a1,3
+    80200ed0:	00001517          	auipc	a0,0x1
+    80200ed4:	50850513          	addi	a0,a0,1288 # 802023d8 <payload_main+0x1bf2>
+    80200ed8:	fffff097          	auipc	ra,0xfffff
+    80200edc:	4b6080e7          	jalr	1206(ra) # 8020038e <send.constprop.0>
+    80200ee0:	c01026f3          	rdtime	a3
+    80200ee4:	0007a737          	lui	a4,0x7a
+    80200ee8:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200eec:	c01027f3          	rdtime	a5
+    80200ef0:	8f95                	sub	a5,a5,a3
+    80200ef2:	fef77de3          	bgeu	a4,a5,80200eec <payload_main+0x706>
+    80200ef6:	4781                	li	a5,0
+    80200ef8:	4701                	li	a4,0
+    80200efa:	0e100693          	li	a3,225
+    80200efe:	4619                	li	a2,6
+    80200f00:	4581                	li	a1,0
+    80200f02:	00001517          	auipc	a0,0x1
+    80200f06:	4f650513          	addi	a0,a0,1270 # 802023f8 <payload_main+0x1c12>
+    80200f0a:	fffff097          	auipc	ra,0xfffff
+    80200f0e:	484080e7          	jalr	1156(ra) # 8020038e <send.constprop.0>
+    80200f12:	c01026f3          	rdtime	a3
+    80200f16:	0007a737          	lui	a4,0x7a
+    80200f1a:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200f1e:	c01027f3          	rdtime	a5
+    80200f22:	8f95                	sub	a5,a5,a3
+    80200f24:	fef77de3          	bgeu	a4,a5,80200f1e <payload_main+0x738>
+    80200f28:	4785                	li	a5,1
+    80200f2a:	4701                	li	a4,0
+    80200f2c:	0e100693          	li	a3,225
+    80200f30:	461d                	li	a2,7
+    80200f32:	4581                	li	a1,0
+    80200f34:	00001517          	auipc	a0,0x1
+    80200f38:	4e450513          	addi	a0,a0,1252 # 80202418 <payload_main+0x1c32>
+    80200f3c:	fffff097          	auipc	ra,0xfffff
+    80200f40:	452080e7          	jalr	1106(ra) # 8020038e <send.constprop.0>
+    80200f44:	c01026f3          	rdtime	a3
+    80200f48:	0007a737          	lui	a4,0x7a
+    80200f4c:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80200f50:	c01027f3          	rdtime	a5
+    80200f54:	8f95                	sub	a5,a5,a3
+    80200f56:	fef77de3          	bgeu	a4,a5,80200f50 <payload_main+0x76a>
+    80200f5a:	4789                	li	a5,2
+    80200f5c:	4701                	li	a4,0
+    80200f5e:	0e100693          	li	a3,225
+    80200f62:	4621                	li	a2,8
+    80200f64:	4581                	li	a1,0
+    80200f66:	00001517          	auipc	a0,0x1
+    80200f6a:	4d250513          	addi	a0,a0,1234 # 80202438 <payload_main+0x1c52>
+    80200f6e:	fffff097          	auipc	ra,0xfffff
+    80200f72:	420080e7          	jalr	1056(ra) # 8020038e <send.constprop.0>
+    80200f76:	c01026f3          	rdtime	a3
+    80200f7a:	005b9737          	lui	a4,0x5b9
+    80200f7e:	d7f70713          	addi	a4,a4,-641 # 5b8d7f <_start-0x7fc47281>
+    80200f82:	c01027f3          	rdtime	a5
+    80200f86:	8f95                	sub	a5,a5,a3
+    80200f88:	fef77de3          	bgeu	a4,a5,80200f82 <payload_main+0x79c>
+    80200f8c:	080008b7          	lui	a7,0x8000
+    80200f90:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    80200f92:	4501                	li	a0,0
+    80200f94:	4581                	li	a1,0
+    80200f96:	4809                	li	a6,2
+    80200f98:	00000073          	ecall
+    80200f9c:	478d                	li	a5,3
+    80200f9e:	1cf582e3          	beq	a1,a5,80201962 <payload_main+0x117c>
+    80200fa2:	00001517          	auipc	a0,0x1
+    80200fa6:	dee50513          	addi	a0,a0,-530 # 80201d90 <payload_main+0x15aa>
+    80200faa:	fffff097          	auipc	ra,0xfffff
+    80200fae:	0b8080e7          	jalr	184(ra) # 80200062 <puts>
+    80200fb2:	00001517          	auipc	a0,0x1
+    80200fb6:	4a650513          	addi	a0,a0,1190 # 80202458 <payload_main+0x1c72>
+    80200fba:	fffff097          	auipc	ra,0xfffff
+    80200fbe:	0a8080e7          	jalr	168(ra) # 80200062 <puts>
+    80200fc2:	00001517          	auipc	a0,0x1
+    80200fc6:	dc650513          	addi	a0,a0,-570 # 80201d88 <payload_main+0x15a2>
+    80200fca:	fffff097          	auipc	ra,0xfffff
+    80200fce:	098080e7          	jalr	152(ra) # 80200062 <puts>
+    80200fd2:	00003797          	auipc	a5,0x3
+    80200fd6:	02e7a783          	lw	a5,46(a5) # 80204000 <failures>
+    80200fda:	2785                	addiw	a5,a5,1
+    80200fdc:	00003717          	auipc	a4,0x3
+    80200fe0:	02f72223          	sw	a5,36(a4) # 80204000 <failures>
+    80200fe4:	4789                	li	a5,2
+    80200fe6:	4701                	li	a4,0
+    80200fe8:	0e100693          	li	a3,225
+    80200fec:	4625                	li	a2,9
+    80200fee:	458d                	li	a1,3
+    80200ff0:	00001517          	auipc	a0,0x1
+    80200ff4:	49050513          	addi	a0,a0,1168 # 80202480 <payload_main+0x1c9a>
+    80200ff8:	fffff097          	auipc	ra,0xfffff
+    80200ffc:	396080e7          	jalr	918(ra) # 8020038e <send.constprop.0>
+    80201000:	0e100693          	li	a3,225
+    80201004:	478d                	li	a5,3
+    80201006:	4701                	li	a4,0
+    80201008:	4625                	li	a2,9
+    8020100a:	4581                	li	a1,0
+    8020100c:	00001517          	auipc	a0,0x1
+    80201010:	49450513          	addi	a0,a0,1172 # 802024a0 <payload_main+0x1cba>
+    80201014:	fffff097          	auipc	ra,0xfffff
+    80201018:	37a080e7          	jalr	890(ra) # 8020038e <send.constprop.0>
+    8020101c:	fffff097          	auipc	ra,0xfffff
+    80201020:	500080e7          	jalr	1280(ra) # 8020051c <mission_corridor_tests>
+    80201024:	00001517          	auipc	a0,0x1
+    80201028:	49c50513          	addi	a0,a0,1180 # 802024c0 <payload_main+0x1cda>
+    8020102c:	fffff097          	auipc	ra,0xfffff
+    80201030:	036080e7          	jalr	54(ra) # 80200062 <puts>
+    80201034:	e502                	sd	zero,136(sp)
+    80201036:	e902                	sd	zero,144(sp)
+    80201038:	ed02                	sd	zero,152(sp)
+    8020103a:	f102                	sd	zero,160(sp)
+    8020103c:	f502                	sd	zero,168(sp)
+    8020103e:	4685                	li	a3,1
+    80201040:	f902                	sd	zero,176(sp)
+    80201042:	8e36                	mv	t3,a3
+    80201044:	4a81                	li	s5,0
+    80201046:	4c01                	li	s8,0
+    80201048:	4301                	li	t1,0
+    8020104a:	4981                	li	s3,0
+    8020104c:	4c81                	li	s9,0
+    8020104e:	4b01                	li	s6,0
+    80201050:	06400893          	li	a7,100
+    80201054:	3e800813          	li	a6,1000
+    80201058:	4509                	li	a0,2
+    8020105a:	03300e93          	li	t4,51
+    8020105e:	c00025f3          	rdcycle	a1
+    80201062:	c0102673          	rdtime	a2
+    80201066:	e536                	sd	a3,136(sp)
+    80201068:	c946                	sw	a7,144(sp)
+    8020106a:	cb02                	sw	zero,148(sp)
+    8020106c:	cd42                	sw	a6,152(sp)
+    8020106e:	cf02                	sw	zero,156(sp)
+    80201070:	d12a                	sw	a0,160(sp)
+    80201072:	77aa                	ld	a5,168(sp)
+    80201074:	0785                	addi	a5,a5,1
+    80201076:	f53e                	sd	a5,168(sp)
+    80201078:	c0002773          	rdcycle	a4
+    8020107c:	c01027f3          	rdtime	a5
+    80201080:	8f0d                	sub	a4,a4,a1
+    80201082:	99ba                	add	s3,s3,a4
+    80201084:	8f91                	sub	a5,a5,a2
+    80201086:	45c68f63          	beq	a3,t3,802014e4 <payload_main+0xcfe>
+    8020108a:	49677f63          	bgeu	a4,s6,80201528 <payload_main+0xd42>
+    8020108e:	00ecf363          	bgeu	s9,a4,80201094 <payload_main+0x8ae>
+    80201092:	8cba                	mv	s9,a4
+    80201094:	8b3a                	mv	s6,a4
+    80201096:	0067f363          	bgeu	a5,t1,8020109c <payload_main+0x8b6>
+    8020109a:	833e                	mv	t1,a5
+    8020109c:	00fc7363          	bgeu	s8,a5,802010a2 <payload_main+0x8bc>
+    802010a0:	8c3e                	mv	s8,a5
+    802010a2:	0685                	addi	a3,a3,1
+    802010a4:	9abe                	add	s5,s5,a5
+    802010a6:	fbd69ce3          	bne	a3,t4,8020105e <payload_main+0x878>
+    802010aa:	772a                	ld	a4,168(sp)
+    802010ac:	03200793          	li	a5,50
+    802010b0:	e41a                	sd	t1,8(sp)
+    802010b2:	06f70de3          	beq	a4,a5,8020192c <payload_main+0x1146>
+    802010b6:	00001517          	auipc	a0,0x1
+    802010ba:	cda50513          	addi	a0,a0,-806 # 80201d90 <payload_main+0x15aa>
+    802010be:	fffff097          	auipc	ra,0xfffff
+    802010c2:	fa4080e7          	jalr	-92(ra) # 80200062 <puts>
+    802010c6:	00001517          	auipc	a0,0x1
+    802010ca:	42a50513          	addi	a0,a0,1066 # 802024f0 <payload_main+0x1d0a>
+    802010ce:	fffff097          	auipc	ra,0xfffff
+    802010d2:	f94080e7          	jalr	-108(ra) # 80200062 <puts>
+    802010d6:	00001517          	auipc	a0,0x1
+    802010da:	cb250513          	addi	a0,a0,-846 # 80201d88 <payload_main+0x15a2>
+    802010de:	fffff097          	auipc	ra,0xfffff
+    802010e2:	f84080e7          	jalr	-124(ra) # 80200062 <puts>
+    802010e6:	00003797          	auipc	a5,0x3
+    802010ea:	f1a7a783          	lw	a5,-230(a5) # 80204000 <failures>
+    802010ee:	6322                	ld	t1,8(sp)
+    802010f0:	2785                	addiw	a5,a5,1
+    802010f2:	00003717          	auipc	a4,0x3
+    802010f6:	f0f72723          	sw	a5,-242(a4) # 80204000 <failures>
+    802010fa:	c01026f3          	rdtime	a3
+    802010fe:	001e8737          	lui	a4,0x1e8
+    80201102:	47f70713          	addi	a4,a4,1151 # 1e847f <_start-0x80017b81>
+    80201106:	c01027f3          	rdtime	a5
+    8020110a:	8f95                	sub	a5,a5,a3
+    8020110c:	fef77de3          	bgeu	a4,a5,80201106 <payload_main+0x920>
+    80201110:	06400693          	li	a3,100
+    80201114:	8636                	mv	a2,a3
+    80201116:	4781                	li	a5,0
+    80201118:	4701                	li	a4,0
+    8020111a:	4581                	li	a1,0
+    8020111c:	00001517          	auipc	a0,0x1
+    80201120:	40450513          	addi	a0,a0,1028 # 80202520 <payload_main+0x1d3a>
+    80201124:	e41a                	sd	t1,8(sp)
+    80201126:	fffff097          	auipc	ra,0xfffff
+    8020112a:	268080e7          	jalr	616(ra) # 8020038e <send.constprop.0>
+    8020112e:	c01026f3          	rdtime	a3
+    80201132:	6322                	ld	t1,8(sp)
+    80201134:	0007a737          	lui	a4,0x7a
+    80201138:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    8020113c:	c01027f3          	rdtime	a5
+    80201140:	8f95                	sub	a5,a5,a3
+    80201142:	fef77de3          	bgeu	a4,a5,8020113c <payload_main+0x956>
+    80201146:	4785                	li	a5,1
+    80201148:	4701                	li	a4,0
+    8020114a:	06400693          	li	a3,100
+    8020114e:	06500613          	li	a2,101
+    80201152:	4581                	li	a1,0
+    80201154:	00001517          	auipc	a0,0x1
+    80201158:	3ec50513          	addi	a0,a0,1004 # 80202540 <payload_main+0x1d5a>
+    8020115c:	e41a                	sd	t1,8(sp)
+    8020115e:	fffff097          	auipc	ra,0xfffff
+    80201162:	230080e7          	jalr	560(ra) # 8020038e <send.constprop.0>
+    80201166:	c01026f3          	rdtime	a3
+    8020116a:	6322                	ld	t1,8(sp)
+    8020116c:	0007a737          	lui	a4,0x7a
+    80201170:	11f70713          	addi	a4,a4,287 # 7a11f <_start-0x80185ee1>
+    80201174:	c01027f3          	rdtime	a5
+    80201178:	8f95                	sub	a5,a5,a3
+    8020117a:	fef77de3          	bgeu	a4,a5,80201174 <payload_main+0x98e>
+    8020117e:	06400693          	li	a3,100
+    80201182:	06600613          	li	a2,102
+    80201186:	4789                	li	a5,2
+    80201188:	4701                	li	a4,0
+    8020118a:	4581                	li	a1,0
+    8020118c:	00001517          	auipc	a0,0x1
+    80201190:	3d450513          	addi	a0,a0,980 # 80202560 <payload_main+0x1d7a>
+    80201194:	e41a                	sd	t1,8(sp)
     80201196:	fffff097          	auipc	ra,0xfffff
-    8020119a:	ecc080e7          	jalr	-308(ra) # 80200062 <puts>
-    8020119e:	00000517          	auipc	a0,0x0
-    802011a2:	28250513          	addi	a0,a0,642 # 80201420 <payload_main+0xdb8>
-    802011a6:	fffff097          	auipc	ra,0xfffff
-    802011aa:	ebc080e7          	jalr	-324(ra) # 80200062 <puts>
-    802011ae:	00000517          	auipc	a0,0x0
-    802011b2:	04250513          	addi	a0,a0,66 # 802011f0 <payload_main+0xb88>
-    802011b6:	fffff097          	auipc	ra,0xfffff
-    802011ba:	eac080e7          	jalr	-340(ra) # 80200062 <puts>
-    802011be:	00002797          	auipc	a5,0x2
-    802011c2:	e427a783          	lw	a5,-446(a5) # 80203000 <failures>
-    802011c6:	2785                	addiw	a5,a5,1
-    802011c8:	00002717          	auipc	a4,0x2
-    802011cc:	e2f72c23          	sw	a5,-456(a4) # 80203000 <failures>
-    802011d0:	d08ff06f          	j	802006d8 <payload_main+0x70>
+    8020119a:	1f8080e7          	jalr	504(ra) # 8020038e <send.constprop.0>
+    8020119e:	6322                	ld	t1,8(sp)
+    802011a0:	0003d637          	lui	a2,0x3d
+    802011a4:	08f60613          	addi	a2,a2,143 # 3d08f <_start-0x801c2f71>
+    802011a8:	4a01                	li	s4,0
+    802011aa:	4b81                	li	s7,0
+    802011ac:	4e01                	li	t3,0
+    802011ae:	4901                	li	s2,0
+    802011b0:	4d01                	li	s10,0
+    802011b2:	4d81                	li	s11,0
+    802011b4:	4681                	li	a3,0
+    802011b6:	4281                	li	t0,0
+    802011b8:	3e800f13          	li	t5,1000
+    802011bc:	4e89                	li	t4,2
+    802011be:	03200f93          	li	t6,50
+    802011c2:	8736                	mv	a4,a3
+    802011c4:	06768513          	addi	a0,a3,103
+    802011c8:	c01025f3          	rdtime	a1
+    802011cc:	c01027f3          	rdtime	a5
+    802011d0:	8f8d                	sub	a5,a5,a1
+    802011d2:	fef67de3          	bgeu	a2,a5,802011cc <payload_main+0x9e6>
+    802011d6:	00002797          	auipc	a5,0x2
+    802011da:	e207b923          	sd	zero,-462(a5) # 80203008 <shared_page+0x8>
+    802011de:	00177793          	andi	a5,a4,1
+    802011e2:	e008                	sd	a0,0(s0)
+    802011e4:	06400713          	li	a4,100
+    802011e8:	c399                	beqz	a5,802011ee <payload_main+0xa08>
+    802011ea:	07800713          	li	a4,120
+    802011ee:	c818                	sw	a4,16(s0)
+    802011f0:	00002797          	auipc	a5,0x2
+    802011f4:	e207a223          	sw	zero,-476(a5) # 80203014 <shared_page+0x14>
+    802011f8:	01e43c23          	sd	t5,24(s0)
+    802011fc:	03d42023          	sw	t4,32(s0)
+    80201200:	c00024f3          	rdcycle	s1
+    80201204:	c01023f3          	rdtime	t2
+    80201208:	080008b7          	lui	a7,0x8000
+    8020120c:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    8020120e:	4501                	li	a0,0
+    80201210:	4581                	li	a1,0
+    80201212:	4805                	li	a6,1
+    80201214:	00000073          	ecall
+    80201218:	c0002773          	rdcycle	a4
+    8020121c:	c01027f3          	rdtime	a5
+    80201220:	8f05                	sub	a4,a4,s1
+    80201222:	993a                	add	s2,s2,a4
+    80201224:	407787b3          	sub	a5,a5,t2
+    80201228:	2a068063          	beqz	a3,802014c8 <payload_main+0xce2>
+    8020122c:	2fb77a63          	bgeu	a4,s11,80201520 <payload_main+0xd3a>
+    80201230:	00ed7363          	bgeu	s10,a4,80201236 <payload_main+0xa50>
+    80201234:	8d3a                	mv	s10,a4
+    80201236:	8dba                	mv	s11,a4
+    80201238:	01c7f363          	bgeu	a5,t3,8020123e <payload_main+0xa58>
+    8020123c:	8e3e                	mv	t3,a5
+    8020123e:	00fbf363          	bgeu	s7,a5,80201244 <payload_main+0xa5e>
+    80201242:	8bbe                	mv	s7,a5
+    80201244:	8d4d                	or	a0,a0,a1
+    80201246:	9a3e                	add	s4,s4,a5
+    80201248:	0685                	addi	a3,a3,1
+    8020124a:	26050763          	beqz	a0,802014b8 <payload_main+0xcd2>
+    8020124e:	f7f69ae3          	bne	a3,t6,802011c2 <payload_main+0x9dc>
+    80201252:	e81a                	sd	t1,16(sp)
+    80201254:	e472                	sd	t3,8(sp)
+    80201256:	6ad28063          	beq	t0,a3,802018f6 <payload_main+0x1110>
+    8020125a:	00001517          	auipc	a0,0x1
+    8020125e:	b3650513          	addi	a0,a0,-1226 # 80201d90 <payload_main+0x15aa>
+    80201262:	fffff097          	auipc	ra,0xfffff
+    80201266:	e00080e7          	jalr	-512(ra) # 80200062 <puts>
+    8020126a:	00001517          	auipc	a0,0x1
+    8020126e:	31650513          	addi	a0,a0,790 # 80202580 <payload_main+0x1d9a>
+    80201272:	fffff097          	auipc	ra,0xfffff
+    80201276:	df0080e7          	jalr	-528(ra) # 80200062 <puts>
+    8020127a:	00001517          	auipc	a0,0x1
+    8020127e:	b0e50513          	addi	a0,a0,-1266 # 80201d88 <payload_main+0x15a2>
+    80201282:	fffff097          	auipc	ra,0xfffff
+    80201286:	de0080e7          	jalr	-544(ra) # 80200062 <puts>
+    8020128a:	00003797          	auipc	a5,0x3
+    8020128e:	d767a783          	lw	a5,-650(a5) # 80204000 <failures>
+    80201292:	6e22                	ld	t3,8(sp)
+    80201294:	6342                	ld	t1,16(sp)
+    80201296:	2785                	addiw	a5,a5,1
+    80201298:	00003717          	auipc	a4,0x3
+    8020129c:	d6f72423          	sw	a5,-664(a4) # 80204000 <failures>
+    802012a0:	00002497          	auipc	s1,0x2
+    802012a4:	e7048493          	addi	s1,s1,-400 # 80203110 <shared_page+0x110>
+    802012a8:	00002797          	auipc	a5,0x2
+    802012ac:	d5878793          	addi	a5,a5,-680 # 80203000 <shared_page>
+    802012b0:	00078023          	sb	zero,0(a5)
+    802012b4:	0785                	addi	a5,a5,1
+    802012b6:	fe979de3          	bne	a5,s1,802012b0 <payload_main+0xaca>
+    802012ba:	06300793          	li	a5,99
+    802012be:	e01c                	sd	a5,0(s0)
+    802012c0:	77fd                	lui	a5,0xfffff
+    802012c2:	06078793          	addi	a5,a5,96 # fffffffffffff060 <__payload_stack_top+0xffffffff7fdf7050>
+    802012c6:	c41c                	sw	a5,8(s0)
+    802012c8:	6785                	lui	a5,0x1
+    802012ca:	fa078793          	addi	a5,a5,-96 # fa0 <_start-0x801ff060>
+    802012ce:	c45c                	sw	a5,12(s0)
+    802012d0:	77fd                	lui	a5,0xfffff
+    802012d2:	63c78793          	addi	a5,a5,1596 # fffffffffffff63c <__payload_stack_top+0xffffffff7fdf762c>
+    802012d6:	c81c                	sw	a5,16(s0)
+    802012d8:	6785                	lui	a5,0x1
+    802012da:	9c478793          	addi	a5,a5,-1596 # 9c4 <_start-0x801ff63c>
+    802012de:	c85c                	sw	a5,20(s0)
+    802012e0:	ed400793          	li	a5,-300
+    802012e4:	cc1c                	sw	a5,24(s0)
+    802012e6:	6785                	lui	a5,0x1
+    802012e8:	8fc78793          	addi	a5,a5,-1796 # 8fc <_start-0x801ff704>
+    802012ec:	cc5c                	sw	a5,28(s0)
+    802012ee:	4789                	li	a5,2
+    802012f0:	d41c                	sw	a5,40(s0)
+    802012f2:	4e81                	li	t4,0
+    802012f4:	4781                	li	a5,0
+    802012f6:	4281                	li	t0,0
+    802012f8:	e802                	sd	zero,16(sp)
+    802012fa:	4f01                	li	t5,0
+    802012fc:	4381                	li	t2,0
+    802012fe:	e402                	sd	zero,8(sp)
+    80201300:	4701                	li	a4,0
+    80201302:	4fa9                	li	t6,10
+    80201304:	c0002673          	rdcycle	a2
+    80201308:	c01026f3          	rdtime	a3
+    8020130c:	080008b7          	lui	a7,0x8000
+    80201310:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80201312:	4501                	li	a0,0
+    80201314:	4581                	li	a1,0
+    80201316:	4809                	li	a6,2
+    80201318:	00000073          	ecall
+    8020131c:	c00028f3          	rdcycle	a7
+    80201320:	c0102873          	rdtime	a6
+    80201324:	40c88633          	sub	a2,a7,a2
+    80201328:	9f32                	add	t5,t5,a2
+    8020132a:	40d806b3          	sub	a3,a6,a3
+    8020132e:	4e078d63          	beqz	a5,80201828 <payload_main+0x1042>
+    80201332:	6822                	ld	a6,8(sp)
+    80201334:	53067763          	bgeu	a2,a6,80201862 <payload_main+0x107c>
+    80201338:	00c3f363          	bgeu	t2,a2,8020133e <payload_main+0xb58>
+    8020133c:	83b2                	mv	t2,a2
+    8020133e:	e432                	sd	a2,8(sp)
+    80201340:	6642                	ld	a2,16(sp)
+    80201342:	00c6f363          	bgeu	a3,a2,80201348 <payload_main+0xb62>
+    80201346:	e836                	sd	a3,16(sp)
+    80201348:	00d2f363          	bgeu	t0,a3,8020134e <payload_main+0xb68>
+    8020134c:	82b6                	mv	t0,a3
+    8020134e:	15dd                	addi	a1,a1,-9
+    80201350:	0015b593          	seqz	a1,a1
+    80201354:	00153613          	seqz	a2,a0
+    80201358:	8e6d                	and	a2,a2,a1
+    8020135a:	0785                	addi	a5,a5,1
+    8020135c:	9f31                	addw	a4,a4,a2
+    8020135e:	9eb6                	add	t4,t4,a3
+    80201360:	fbf792e3          	bne	a5,t6,80201304 <payload_main+0xb1e>
+    80201364:	ec9e                	sd	t2,88(sp)
+    80201366:	fc1a                	sd	t1,56(sp)
+    80201368:	f87a                	sd	t5,48(sp)
+    8020136a:	f416                	sd	t0,40(sp)
+    8020136c:	f076                	sd	t4,32(sp)
+    8020136e:	ec72                	sd	t3,24(sp)
+    80201370:	62f70363          	beq	a4,a5,80201996 <payload_main+0x11b0>
+    80201374:	00001517          	auipc	a0,0x1
+    80201378:	a1c50513          	addi	a0,a0,-1508 # 80201d90 <payload_main+0x15aa>
+    8020137c:	fffff097          	auipc	ra,0xfffff
+    80201380:	ce6080e7          	jalr	-794(ra) # 80200062 <puts>
+    80201384:	00001517          	auipc	a0,0x1
+    80201388:	22450513          	addi	a0,a0,548 # 802025a8 <payload_main+0x1dc2>
+    8020138c:	fffff097          	auipc	ra,0xfffff
+    80201390:	cd6080e7          	jalr	-810(ra) # 80200062 <puts>
+    80201394:	00001517          	auipc	a0,0x1
+    80201398:	9f450513          	addi	a0,a0,-1548 # 80201d88 <payload_main+0x15a2>
+    8020139c:	fffff097          	auipc	ra,0xfffff
+    802013a0:	cc6080e7          	jalr	-826(ra) # 80200062 <puts>
+    802013a4:	00003797          	auipc	a5,0x3
+    802013a8:	c5c7a783          	lw	a5,-932(a5) # 80204000 <failures>
+    802013ac:	6e62                	ld	t3,24(sp)
+    802013ae:	7e82                	ld	t4,32(sp)
+    802013b0:	72a2                	ld	t0,40(sp)
+    802013b2:	7f42                	ld	t5,48(sp)
+    802013b4:	7362                	ld	t1,56(sp)
+    802013b6:	2785                	addiw	a5,a5,1
+    802013b8:	00003717          	auipc	a4,0x3
+    802013bc:	c4f72423          	sw	a5,-952(a4) # 80204000 <failures>
+    802013c0:	080008b7          	lui	a7,0x8000
+    802013c4:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    802013c6:	4501                	li	a0,0
+    802013c8:	4581                	li	a1,0
+    802013ca:	4805                	li	a6,1
+    802013cc:	00000073          	ecall
+    802013d0:	4765                	li	a4,25
+    802013d2:	1712                	slli	a4,a4,0x24
+    802013d4:	06470713          	addi	a4,a4,100
+    802013d8:	f43a                	sd	a4,40(sp)
+    802013da:	777d                	lui	a4,0xfffff
+    802013dc:	06070713          	addi	a4,a4,96 # fffffffffffff060 <__payload_stack_top+0xffffffff7fdf7050>
+    802013e0:	f83a                	sd	a4,48(sp)
+    802013e2:	6705                	lui	a4,0x1
+    802013e4:	fa070713          	addi	a4,a4,-96 # fa0 <_start-0x801ff060>
+    802013e8:	fc3a                	sd	a4,56(sp)
+    802013ea:	777d                	lui	a4,0xfffff
+    802013ec:	63c70713          	addi	a4,a4,1596 # fffffffffffff63c <__payload_stack_top+0xffffffff7fdf762c>
+    802013f0:	e0ba                	sd	a4,64(sp)
+    802013f2:	6705                	lui	a4,0x1
+    802013f4:	9c470713          	addi	a4,a4,-1596 # 9c4 <_start-0x801ff63c>
+    802013f8:	e4ba                	sd	a4,72(sp)
+    802013fa:	6705                	lui	a4,0x1
+    802013fc:	8fc70713          	addi	a4,a4,-1796 # 8fc <_start-0x801ff704>
+    80201400:	0003d7b7          	lui	a5,0x3d
+    80201404:	e8ba                	sd	a4,80(sp)
+    80201406:	f4ae                	sd	a1,104(sp)
+    80201408:	ec42                	sd	a6,24(sp)
+    8020140a:	08f78793          	addi	a5,a5,143 # 3d08f <_start-0x801c2f71>
+    8020140e:	4681                	li	a3,0
+    80201410:	f002                	sd	zero,32(sp)
+    80201412:	4701                	li	a4,0
+    80201414:	09900613          	li	a2,153
+    80201418:	3e800393          	li	t2,1000
+    8020141c:	4f89                	li	t6,2
+    8020141e:	f0d6                	sd	s5,96(sp)
+    80201420:	c0102573          	rdtime	a0
+    80201424:	c01025f3          	rdtime	a1
+    80201428:	8d89                	sub	a1,a1,a0
+    8020142a:	feb7fde3          	bgeu	a5,a1,80201424 <payload_main+0xc3e>
+    8020142e:	00002597          	auipc	a1,0x2
+    80201432:	bc05bd23          	sd	zero,-1062(a1) # 80203008 <shared_page+0x8>
+    80201436:	e010                	sd	a2,0(s0)
+    80201438:	00177593          	andi	a1,a4,1
+    8020143c:	00160a93          	addi	s5,a2,1
+    80201440:	06400513          	li	a0,100
+    80201444:	c199                	beqz	a1,8020144a <payload_main+0xc64>
+    80201446:	07800513          	li	a0,120
+    8020144a:	00002597          	auipc	a1,0x2
+    8020144e:	bc05a523          	sw	zero,-1078(a1) # 80203014 <shared_page+0x14>
+    80201452:	080008b7          	lui	a7,0x8000
+    80201456:	c808                	sw	a0,16(s0)
+    80201458:	00743c23          	sd	t2,24(s0)
+    8020145c:	03f42023          	sw	t6,32(s0)
+    80201460:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80201462:	4501                	li	a0,0
+    80201464:	4581                	li	a1,0
+    80201466:	4805                	li	a6,1
+    80201468:	00000073          	ecall
+    8020146c:	8d4d                	or	a0,a0,a1
+    8020146e:	c929                	beqz	a0,802014c0 <payload_main+0xcda>
+    80201470:	c0102573          	rdtime	a0
+    80201474:	c01025f3          	rdtime	a1
+    80201478:	8d89                	sub	a1,a1,a0
+    8020147a:	feb7fde3          	bgeu	a5,a1,80201474 <payload_main+0xc8e>
+    8020147e:	00377593          	andi	a1,a4,3
+    80201482:	e5dd                	bnez	a1,80201530 <payload_main+0xd4a>
+    80201484:	75a2                	ld	a1,40(sp)
+    80201486:	080008b7          	lui	a7,0x8000
+    8020148a:	01543023          	sd	s5,0(s0)
+    8020148e:	e80c                	sd	a1,16(s0)
+    80201490:	0609                	addi	a2,a2,2
+    80201492:	00742c23          	sw	t2,24(s0)
+    80201496:	03f42023          	sw	t6,32(s0)
+    8020149a:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    8020149c:	4501                	li	a0,0
+    8020149e:	4581                	li	a1,0
+    802014a0:	4805                	li	a6,1
+    802014a2:	00000073          	ecall
+    802014a6:	15f1                	addi	a1,a1,-4
+    802014a8:	0015b593          	seqz	a1,a1
+    802014ac:	00153513          	seqz	a0,a0
+    802014b0:	8de9                	and	a1,a1,a0
+    802014b2:	9ead                	addw	a3,a3,a1
+    802014b4:	2705                	addiw	a4,a4,1
+    802014b6:	b7ad                	j	80201420 <payload_main+0xc3a>
+    802014b8:	2285                	addiw	t0,t0,1
+    802014ba:	d1f694e3          	bne	a3,t6,802011c2 <payload_main+0x9dc>
+    802014be:	bb51                	j	80201252 <payload_main+0xa6c>
+    802014c0:	7582                	ld	a1,32(sp)
+    802014c2:	2585                	addiw	a1,a1,1
+    802014c4:	f02e                	sd	a1,32(sp)
+    802014c6:	b76d                	j	80201470 <payload_main+0xc8a>
+    802014c8:	04ed7163          	bgeu	s10,a4,8020150a <payload_main+0xd24>
+    802014cc:	00fbf363          	bgeu	s7,a5,802014d2 <payload_main+0xcec>
+    802014d0:	8bbe                	mv	s7,a5
+    802014d2:	8dc9                	or	a1,a1,a0
+    802014d4:	9a3e                	add	s4,s4,a5
+    802014d6:	8dba                	mv	s11,a4
+    802014d8:	38058063          	beqz	a1,80201858 <payload_main+0x1072>
+    802014dc:	8e3e                	mv	t3,a5
+    802014de:	8d3a                	mv	s10,a4
+    802014e0:	4685                	li	a3,1
+    802014e2:	b1c5                	j	802011c2 <payload_main+0x9dc>
+    802014e4:	00ecea63          	bltu	s9,a4,802014f8 <payload_main+0xd12>
+    802014e8:	00fc7363          	bgeu	s8,a5,802014ee <payload_main+0xd08>
+    802014ec:	8c3e                	mv	s8,a5
+    802014ee:	9abe                	add	s5,s5,a5
+    802014f0:	8b3a                	mv	s6,a4
+    802014f2:	833e                	mv	t1,a5
+    802014f4:	4689                	li	a3,2
+    802014f6:	b6a5                	j	8020105e <payload_main+0x878>
+    802014f8:	00fc7363          	bgeu	s8,a5,802014fe <payload_main+0xd18>
+    802014fc:	8c3e                	mv	s8,a5
+    802014fe:	8b3a                	mv	s6,a4
+    80201500:	9abe                	add	s5,s5,a5
+    80201502:	833e                	mv	t1,a5
+    80201504:	8cba                	mv	s9,a4
+    80201506:	4689                	li	a3,2
+    80201508:	be99                	j	8020105e <payload_main+0x878>
+    8020150a:	00fbf363          	bgeu	s7,a5,80201510 <payload_main+0xd2a>
+    8020150e:	8bbe                	mv	s7,a5
+    80201510:	8dc9                	or	a1,a1,a0
+    80201512:	9a3e                	add	s4,s4,a5
+    80201514:	32058d63          	beqz	a1,8020184e <payload_main+0x1068>
+    80201518:	8dba                	mv	s11,a4
+    8020151a:	8e3e                	mv	t3,a5
+    8020151c:	4685                	li	a3,1
+    8020151e:	b155                	j	802011c2 <payload_main+0x9dc>
+    80201520:	d0ed7ce3          	bgeu	s10,a4,80201238 <payload_main+0xa52>
+    80201524:	8d3a                	mv	s10,a4
+    80201526:	bb09                	j	80201238 <payload_main+0xa52>
+    80201528:	b6ecf7e3          	bgeu	s9,a4,80201096 <payload_main+0x8b0>
+    8020152c:	8cba                	mv	s9,a4
+    8020152e:	b6a5                	j	80201096 <payload_main+0x8b0>
+    80201530:	6562                	ld	a0,24(sp)
+    80201532:	32a58c63          	beq	a1,a0,8020186a <payload_main+0x1084>
+    80201536:	37f59463          	bne	a1,t6,8020189e <payload_main+0x10b8>
+    8020153a:	06400593          	li	a1,100
+    8020153e:	e80c                	sd	a1,16(s0)
+    80201540:	080008b7          	lui	a7,0x8000
+    80201544:	00002597          	auipc	a1,0x2
+    80201548:	ac05ae23          	sw	zero,-1316(a1) # 80203020 <shared_page+0x20>
+    8020154c:	01543023          	sd	s5,0(s0)
+    80201550:	0609                	addi	a2,a2,2
+    80201552:	00742c23          	sw	t2,24(s0)
+    80201556:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80201558:	4501                	li	a0,0
+    8020155a:	4581                	li	a1,0
+    8020155c:	4805                	li	a6,1
+    8020155e:	00000073          	ecall
+    80201562:	15f5                	addi	a1,a1,-3
+    80201564:	0015b593          	seqz	a1,a1
+    80201568:	00153513          	seqz	a0,a0
+    8020156c:	8de9                	and	a1,a1,a0
+    8020156e:	9ead                	addw	a3,a3,a1
+    80201570:	2705                	addiw	a4,a4,1
+    80201572:	45a9                	li	a1,10
+    80201574:	eab716e3          	bne	a4,a1,80201420 <payload_main+0xc3a>
+    80201578:	7782                	ld	a5,32(sp)
+    8020157a:	7a86                	ld	s5,96(sp)
+    8020157c:	17d9                	addi	a5,a5,-10
+    8020157e:	ef99                	bnez	a5,8020159c <payload_main+0xdb6>
+    80201580:	16d9                	addi	a3,a3,-10
+    80201582:	ee89                	bnez	a3,8020159c <payload_main+0xdb6>
+    80201584:	080008b7          	lui	a7,0x8000
+    80201588:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    8020158a:	4501                	li	a0,0
+    8020158c:	4581                	li	a1,0
+    8020158e:	4805                	li	a6,1
+    80201590:	00000073          	ecall
+    80201594:	77a6                	ld	a5,104(sp)
+    80201596:	97ba                	add	a5,a5,a4
+    80201598:	24f58363          	beq	a1,a5,802017de <payload_main+0xff8>
+    8020159c:	00000517          	auipc	a0,0x0
+    802015a0:	7f450513          	addi	a0,a0,2036 # 80201d90 <payload_main+0x15aa>
+    802015a4:	e0b2                	sd	a2,64(sp)
+    802015a6:	fc1a                	sd	t1,56(sp)
+    802015a8:	f87a                	sd	t5,48(sp)
+    802015aa:	f416                	sd	t0,40(sp)
+    802015ac:	f076                	sd	t4,32(sp)
+    802015ae:	ec72                	sd	t3,24(sp)
+    802015b0:	fffff097          	auipc	ra,0xfffff
+    802015b4:	ab2080e7          	jalr	-1358(ra) # 80200062 <puts>
+    802015b8:	00001517          	auipc	a0,0x1
+    802015bc:	02050513          	addi	a0,a0,32 # 802025d8 <payload_main+0x1df2>
+    802015c0:	fffff097          	auipc	ra,0xfffff
+    802015c4:	aa2080e7          	jalr	-1374(ra) # 80200062 <puts>
+    802015c8:	00000517          	auipc	a0,0x0
+    802015cc:	7c050513          	addi	a0,a0,1984 # 80201d88 <payload_main+0x15a2>
+    802015d0:	fffff097          	auipc	ra,0xfffff
+    802015d4:	a92080e7          	jalr	-1390(ra) # 80200062 <puts>
+    802015d8:	00003797          	auipc	a5,0x3
+    802015dc:	a287a783          	lw	a5,-1496(a5) # 80204000 <failures>
+    802015e0:	6606                	ld	a2,64(sp)
+    802015e2:	7362                	ld	t1,56(sp)
+    802015e4:	7f42                	ld	t5,48(sp)
+    802015e6:	72a2                	ld	t0,40(sp)
+    802015e8:	7e82                	ld	t4,32(sp)
+    802015ea:	6e62                	ld	t3,24(sp)
+    802015ec:	2785                	addiw	a5,a5,1
+    802015ee:	00003717          	auipc	a4,0x3
+    802015f2:	a0f72923          	sw	a5,-1518(a4) # 80204000 <failures>
+    802015f6:	080008b7          	lui	a7,0x8000
+    802015fa:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    802015fc:	4501                	li	a0,0
+    802015fe:	4581                	li	a1,0
+    80201600:	4805                	li	a6,1
+    80201602:	00000073          	ecall
+    80201606:	00003417          	auipc	s0,0x3
+    8020160a:	9ea40413          	addi	s0,s0,-1558 # 80203ff0 <fault_count>
+    8020160e:	6008                	ld	a0,0(s0)
+    80201610:	01f81793          	slli	a5,a6,0x1f
+    80201614:	fc82                	sd	zero,120(sp)
+    80201616:	639c                	ld	a5,0(a5)
+    80201618:	76e6                	ld	a3,120(sp)
+    8020161a:	37ab7737          	lui	a4,0x37ab7
+    8020161e:	070a                	slli	a4,a4,0x2
+    80201620:	97b6                	add	a5,a5,a3
+    80201622:	fcbe                	sd	a5,120(sp)
+    80201624:	020017b7          	lui	a5,0x2001
+    80201628:	eef70713          	addi	a4,a4,-273 # 37ab6eef <_start-0x48749111>
+    8020162c:	079a                	slli	a5,a5,0x6
+    8020162e:	e398                	sd	a4,0(a5)
+    80201630:	7ff00793          	li	a5,2047
+    80201634:	07d6                	slli	a5,a5,0x15
+    80201636:	6398                	ld	a4,0(a5)
+    80201638:	7fe6                	ld	t6,120(sp)
+    8020163a:	86ae                	mv	a3,a1
+    8020163c:	0521                	addi	a0,a0,8
+    8020163e:	977e                	add	a4,a4,t6
+    80201640:	fcba                	sd	a4,120(sp)
+    80201642:	01ffd737          	lui	a4,0x1ffd
+    80201646:	0007b023          	sd	zero,0(a5) # 2001000 <_start-0x7e1ff000>
+    8020164a:	071e                	slli	a4,a4,0x7
+    8020164c:	630c                	ld	a1,0(a4)
+    8020164e:	7fe6                	ld	t6,120(sp)
+    80201650:	00fff7b7          	lui	a5,0xfff
+    80201654:	07a2                	slli	a5,a5,0x8
+    80201656:	95fe                	add	a1,a1,t6
+    80201658:	fcae                	sd	a1,120(sp)
+    8020165a:	00073023          	sd	zero,0(a4) # 1ffd000 <_start-0x7e203000>
+    8020165e:	638c                	ld	a1,0(a5)
+    80201660:	7fe6                	ld	t6,120(sp)
+    80201662:	6705                	lui	a4,0x1
+    80201664:	23470713          	addi	a4,a4,564 # 1234 <_start-0x801fedcc>
+    80201668:	95fe                	add	a1,a1,t6
+    8020166a:	fcae                	sd	a1,120(sp)
+    8020166c:	e398                	sd	a4,0(a5)
+    8020166e:	77e6                	ld	a5,120(sp)
+    80201670:	601c                	ld	a5,0(s0)
+    80201672:	6af50263          	beq	a0,a5,80201d16 <payload_main+0x1530>
+    80201676:	00000517          	auipc	a0,0x0
+    8020167a:	71a50513          	addi	a0,a0,1818 # 80201d90 <payload_main+0x15aa>
+    8020167e:	e0b2                	sd	a2,64(sp)
+    80201680:	fc1a                	sd	t1,56(sp)
+    80201682:	f87a                	sd	t5,48(sp)
+    80201684:	f416                	sd	t0,40(sp)
+    80201686:	f076                	sd	t4,32(sp)
+    80201688:	ec72                	sd	t3,24(sp)
+    8020168a:	fffff097          	auipc	ra,0xfffff
+    8020168e:	9d8080e7          	jalr	-1576(ra) # 80200062 <puts>
+    80201692:	00001517          	auipc	a0,0x1
+    80201696:	f8650513          	addi	a0,a0,-122 # 80202618 <payload_main+0x1e32>
+    8020169a:	fffff097          	auipc	ra,0xfffff
+    8020169e:	9c8080e7          	jalr	-1592(ra) # 80200062 <puts>
+    802016a2:	00000517          	auipc	a0,0x0
+    802016a6:	6e650513          	addi	a0,a0,1766 # 80201d88 <payload_main+0x15a2>
+    802016aa:	fffff097          	auipc	ra,0xfffff
+    802016ae:	9b8080e7          	jalr	-1608(ra) # 80200062 <puts>
+    802016b2:	00003797          	auipc	a5,0x3
+    802016b6:	94e7a783          	lw	a5,-1714(a5) # 80204000 <failures>
+    802016ba:	6606                	ld	a2,64(sp)
+    802016bc:	7362                	ld	t1,56(sp)
+    802016be:	7f42                	ld	t5,48(sp)
+    802016c0:	72a2                	ld	t0,40(sp)
+    802016c2:	7e82                	ld	t4,32(sp)
+    802016c4:	6e62                	ld	t3,24(sp)
+    802016c6:	2785                	addiw	a5,a5,1
+    802016c8:	00003717          	auipc	a4,0x3
+    802016cc:	92f72c23          	sw	a5,-1736(a4) # 80204000 <failures>
+    802016d0:	c01026f3          	rdtime	a3
+    802016d4:	0003d737          	lui	a4,0x3d
+    802016d8:	08f70713          	addi	a4,a4,143 # 3d08f <_start-0x801c2f71>
+    802016dc:	c01027f3          	rdtime	a5
+    802016e0:	8f95                	sub	a5,a5,a3
+    802016e2:	fef77de3          	bgeu	a4,a5,802016dc <payload_main+0xef6>
+    802016e6:	06400693          	li	a3,100
+    802016ea:	478d                	li	a5,3
+    802016ec:	4701                	li	a4,0
+    802016ee:	4581                	li	a1,0
+    802016f0:	00001517          	auipc	a0,0x1
+    802016f4:	f6050513          	addi	a0,a0,-160 # 80202650 <payload_main+0x1e6a>
+    802016f8:	f876                	sd	t4,48(sp)
+    802016fa:	f416                	sd	t0,40(sp)
+    802016fc:	f07a                	sd	t5,32(sp)
+    802016fe:	fc72                	sd	t3,56(sp)
+    80201700:	ec1a                	sd	t1,24(sp)
+    80201702:	fffff097          	auipc	ra,0xfffff
+    80201706:	c8c080e7          	jalr	-884(ra) # 8020038e <send.constprop.0>
+    8020170a:	00001517          	auipc	a0,0x1
+    8020170e:	f6650513          	addi	a0,a0,-154 # 80202670 <payload_main+0x1e8a>
+    80201712:	fffff097          	auipc	ra,0xfffff
+    80201716:	950080e7          	jalr	-1712(ra) # 80200062 <puts>
+    8020171a:	6362                	ld	t1,24(sp)
+    8020171c:	192c                	addi	a1,sp,184
+    8020171e:	03200413          	li	s0,50
+    80201722:	00001517          	auipc	a0,0x1
+    80201726:	f7e50513          	addi	a0,a0,-130 # 802026a0 <payload_main+0x1eba>
+    8020172a:	ed9a                	sd	t1,216(sp)
+    8020172c:	e1da                	sd	s6,192(sp)
+    8020172e:	e5e6                	sd	s9,200(sp)
+    80201730:	e9ce                	sd	s3,208(sp)
+    80201732:	f1e2                	sd	s8,224(sp)
+    80201734:	f5d6                	sd	s5,232(sp)
+    80201736:	fd22                	sd	s0,184(sp)
+    80201738:	fffff097          	auipc	ra,0xfffff
+    8020173c:	b52080e7          	jalr	-1198(ra) # 8020028a <bench_print>
+    80201740:	7e62                	ld	t3,56(sp)
+    80201742:	198c                	addi	a1,sp,240
+    80201744:	00001517          	auipc	a0,0x1
+    80201748:	f7450513          	addi	a0,a0,-140 # 802026b8 <payload_main+0x1ed2>
+    8020174c:	ea72                	sd	t3,272(sp)
+    8020174e:	f9a2                	sd	s0,240(sp)
+    80201750:	fdee                	sd	s11,248(sp)
+    80201752:	e26a                	sd	s10,256(sp)
+    80201754:	e64a                	sd	s2,264(sp)
+    80201756:	ee5e                	sd	s7,280(sp)
+    80201758:	f252                	sd	s4,288(sp)
+    8020175a:	fffff097          	auipc	ra,0xfffff
+    8020175e:	b30080e7          	jalr	-1232(ra) # 8020028a <bench_print>
+    80201762:	6722                	ld	a4,8(sp)
+    80201764:	7f02                	ld	t5,32(sp)
+    80201766:	72a2                	ld	t0,40(sp)
+    80201768:	fa3a                	sd	a4,304(sp)
+    8020176a:	6766                	ld	a4,88(sp)
+    8020176c:	7ec2                	ld	t4,48(sp)
+    8020176e:	47a9                	li	a5,10
+    80201770:	fe3a                	sd	a4,312(sp)
+    80201772:	6742                	ld	a4,16(sp)
+    80201774:	122c                	addi	a1,sp,296
+    80201776:	00001517          	auipc	a0,0x1
+    8020177a:	f5a50513          	addi	a0,a0,-166 # 802026d0 <payload_main+0x1eea>
+    8020177e:	e2fa                	sd	t5,320(sp)
+    80201780:	e6ba                	sd	a4,328(sp)
+    80201782:	ea96                	sd	t0,336(sp)
+    80201784:	eef6                	sd	t4,344(sp)
+    80201786:	f63e                	sd	a5,296(sp)
+    80201788:	fffff097          	auipc	ra,0xfffff
+    8020178c:	b02080e7          	jalr	-1278(ra) # 8020028a <bench_print>
+    80201790:	080008b7          	lui	a7,0x8000
+    80201794:	0889                	addi	a7,a7,2 # 8000002 <_start-0x781ffffe>
+    80201796:	4501                	li	a0,0
+    80201798:	4581                	li	a1,0
+    8020179a:	480d                	li	a6,3
+    8020179c:	00000073          	ecall
+    802017a0:	00003797          	auipc	a5,0x3
+    802017a4:	8607a783          	lw	a5,-1952(a5) # 80204000 <failures>
+    802017a8:	00001517          	auipc	a0,0x1
+    802017ac:	80050513          	addi	a0,a0,-2048 # 80201fa8 <payload_main+0x17c2>
+    802017b0:	e789                	bnez	a5,802017ba <payload_main+0xfd4>
+    802017b2:	00000517          	auipc	a0,0x0
+    802017b6:	7d650513          	addi	a0,a0,2006 # 80201f88 <payload_main+0x17a2>
+    802017ba:	641e                	ld	s0,448(sp)
+    802017bc:	60be                	ld	ra,456(sp)
+    802017be:	74fa                	ld	s1,440(sp)
+    802017c0:	795a                	ld	s2,432(sp)
+    802017c2:	79ba                	ld	s3,424(sp)
+    802017c4:	7a1a                	ld	s4,416(sp)
+    802017c6:	6afa                	ld	s5,408(sp)
+    802017c8:	6b5a                	ld	s6,400(sp)
+    802017ca:	6bba                	ld	s7,392(sp)
+    802017cc:	6c1a                	ld	s8,384(sp)
+    802017ce:	7cf6                	ld	s9,376(sp)
+    802017d0:	7d56                	ld	s10,368(sp)
+    802017d2:	7db6                	ld	s11,360(sp)
+    802017d4:	6179                	addi	sp,sp,464
+    802017d6:	fffff317          	auipc	t1,0xfffff
+    802017da:	88c30067          	jr	-1908(t1) # 80200062 <puts>
+    802017de:	00000517          	auipc	a0,0x0
+    802017e2:	59250513          	addi	a0,a0,1426 # 80201d70 <payload_main+0x158a>
+    802017e6:	e0b2                	sd	a2,64(sp)
+    802017e8:	fc1a                	sd	t1,56(sp)
+    802017ea:	f87a                	sd	t5,48(sp)
+    802017ec:	f416                	sd	t0,40(sp)
+    802017ee:	f076                	sd	t4,32(sp)
+    802017f0:	ec72                	sd	t3,24(sp)
+    802017f2:	fffff097          	auipc	ra,0xfffff
+    802017f6:	870080e7          	jalr	-1936(ra) # 80200062 <puts>
+    802017fa:	00001517          	auipc	a0,0x1
+    802017fe:	dde50513          	addi	a0,a0,-546 # 802025d8 <payload_main+0x1df2>
+    80201802:	fffff097          	auipc	ra,0xfffff
+    80201806:	860080e7          	jalr	-1952(ra) # 80200062 <puts>
+    8020180a:	00000517          	auipc	a0,0x0
+    8020180e:	57e50513          	addi	a0,a0,1406 # 80201d88 <payload_main+0x15a2>
+    80201812:	fffff097          	auipc	ra,0xfffff
+    80201816:	850080e7          	jalr	-1968(ra) # 80200062 <puts>
+    8020181a:	6e62                	ld	t3,24(sp)
+    8020181c:	7e82                	ld	t4,32(sp)
+    8020181e:	72a2                	ld	t0,40(sp)
+    80201820:	7f42                	ld	t5,48(sp)
+    80201822:	7362                	ld	t1,56(sp)
+    80201824:	6606                	ld	a2,64(sp)
+    80201826:	bbc1                	j	802015f6 <payload_main+0xe10>
+    80201828:	00c3f363          	bgeu	t2,a2,8020182e <payload_main+0x1048>
+    8020182c:	83b2                	mv	t2,a2
+    8020182e:	00d2f363          	bgeu	t0,a3,80201834 <payload_main+0x104e>
+    80201832:	82b6                	mv	t0,a3
+    80201834:	ff758793          	addi	a5,a1,-9
+    80201838:	0017b793          	seqz	a5,a5
+    8020183c:	00153513          	seqz	a0,a0
+    80201840:	8fe9                	and	a5,a5,a0
+    80201842:	9f3d                	addw	a4,a4,a5
+    80201844:	9eb6                	add	t4,t4,a3
+    80201846:	e432                	sd	a2,8(sp)
+    80201848:	e836                	sd	a3,16(sp)
+    8020184a:	4785                	li	a5,1
+    8020184c:	bc65                	j	80201304 <payload_main+0xb1e>
+    8020184e:	2285                	addiw	t0,t0,1
+    80201850:	8dba                	mv	s11,a4
+    80201852:	8e3e                	mv	t3,a5
+    80201854:	4685                	li	a3,1
+    80201856:	b2b5                	j	802011c2 <payload_main+0x9dc>
+    80201858:	2285                	addiw	t0,t0,1
+    8020185a:	8e3e                	mv	t3,a5
+    8020185c:	8d3a                	mv	s10,a4
+    8020185e:	4685                	li	a3,1
+    80201860:	b28d                	j	802011c2 <payload_main+0x9dc>
+    80201862:	acc3ffe3          	bgeu	t2,a2,80201340 <payload_main+0xb5a>
+    80201866:	83b2                	mv	t2,a2
+    80201868:	bce1                	j	80201340 <payload_main+0xb5a>
+    8020186a:	19000593          	li	a1,400
+    8020186e:	080008b7          	lui	a7,0x8000
+    80201872:	e80c                	sd	a1,16(s0)
+    80201874:	6862                	ld	a6,24(sp)
+    80201876:	01543023          	sd	s5,0(s0)
+    8020187a:	0609                	addi	a2,a2,2
+    8020187c:	00742c23          	sw	t2,24(s0)
+    80201880:	03f42023          	sw	t6,32(s0)
+    80201884:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    80201886:	4501                	li	a0,0
+    80201888:	4581                	li	a1,0
+    8020188a:	00000073          	ecall
+    8020188e:	15e9                	addi	a1,a1,-6
+    80201890:	0015b593          	seqz	a1,a1
+    80201894:	00153513          	seqz	a0,a0
+    80201898:	8de9                	and	a1,a1,a0
+    8020189a:	9ead                	addw	a3,a3,a1
+    8020189c:	b9d1                	j	80201570 <payload_main+0xd8a>
+    8020189e:	00001617          	auipc	a2,0x1
+    802018a2:	76260613          	addi	a2,a2,1890 # 80203000 <shared_page>
+    802018a6:	00060023          	sb	zero,0(a2)
+    802018aa:	0605                	addi	a2,a2,1
+    802018ac:	fe961de3          	bne	a2,s1,802018a6 <payload_main+0x10c0>
+    802018b0:	06300613          	li	a2,99
+    802018b4:	e010                	sd	a2,0(s0)
+    802018b6:	7642                	ld	a2,48(sp)
+    802018b8:	080008b7          	lui	a7,0x8000
+    802018bc:	0885                	addi	a7,a7,1 # 8000001 <_start-0x781fffff>
+    802018be:	c410                	sw	a2,8(s0)
+    802018c0:	7662                	ld	a2,56(sp)
+    802018c2:	4501                	li	a0,0
+    802018c4:	4581                	li	a1,0
+    802018c6:	c450                	sw	a2,12(s0)
+    802018c8:	6606                	ld	a2,64(sp)
+    802018ca:	4809                	li	a6,2
+    802018cc:	c810                	sw	a2,16(s0)
+    802018ce:	6626                	ld	a2,72(sp)
+    802018d0:	c850                	sw	a2,20(s0)
+    802018d2:	ed400613          	li	a2,-300
+    802018d6:	cc10                	sw	a2,24(s0)
+    802018d8:	6646                	ld	a2,80(sp)
+    802018da:	cc50                	sw	a2,28(s0)
+    802018dc:	00000073          	ecall
+    802018e0:	ff758613          	addi	a2,a1,-9
+    802018e4:	00163593          	seqz	a1,a2
+    802018e8:	00153613          	seqz	a2,a0
+    802018ec:	8e6d                	and	a2,a2,a1
+    802018ee:	9eb1                	addw	a3,a3,a2
+    802018f0:	2705                	addiw	a4,a4,1
+    802018f2:	8656                	mv	a2,s5
+    802018f4:	b635                	j	80201420 <payload_main+0xc3a>
+    802018f6:	00000517          	auipc	a0,0x0
+    802018fa:	47a50513          	addi	a0,a0,1146 # 80201d70 <payload_main+0x158a>
+    802018fe:	ffffe097          	auipc	ra,0xffffe
+    80201902:	764080e7          	jalr	1892(ra) # 80200062 <puts>
+    80201906:	00001517          	auipc	a0,0x1
+    8020190a:	c7a50513          	addi	a0,a0,-902 # 80202580 <payload_main+0x1d9a>
+    8020190e:	ffffe097          	auipc	ra,0xffffe
+    80201912:	754080e7          	jalr	1876(ra) # 80200062 <puts>
+    80201916:	00000517          	auipc	a0,0x0
+    8020191a:	47250513          	addi	a0,a0,1138 # 80201d88 <payload_main+0x15a2>
+    8020191e:	ffffe097          	auipc	ra,0xffffe
+    80201922:	744080e7          	jalr	1860(ra) # 80200062 <puts>
+    80201926:	6342                	ld	t1,16(sp)
+    80201928:	6e22                	ld	t3,8(sp)
+    8020192a:	ba9d                	j	802012a0 <payload_main+0xaba>
+    8020192c:	00000517          	auipc	a0,0x0
+    80201930:	44450513          	addi	a0,a0,1092 # 80201d70 <payload_main+0x158a>
+    80201934:	ffffe097          	auipc	ra,0xffffe
+    80201938:	72e080e7          	jalr	1838(ra) # 80200062 <puts>
+    8020193c:	00001517          	auipc	a0,0x1
+    80201940:	bb450513          	addi	a0,a0,-1100 # 802024f0 <payload_main+0x1d0a>
+    80201944:	ffffe097          	auipc	ra,0xffffe
+    80201948:	71e080e7          	jalr	1822(ra) # 80200062 <puts>
+    8020194c:	00000517          	auipc	a0,0x0
+    80201950:	43c50513          	addi	a0,a0,1084 # 80201d88 <payload_main+0x15a2>
+    80201954:	ffffe097          	auipc	ra,0xffffe
+    80201958:	70e080e7          	jalr	1806(ra) # 80200062 <puts>
+    8020195c:	6322                	ld	t1,8(sp)
+    8020195e:	f9cff06f          	j	802010fa <payload_main+0x914>
+    80201962:	00000517          	auipc	a0,0x0
+    80201966:	40e50513          	addi	a0,a0,1038 # 80201d70 <payload_main+0x158a>
+    8020196a:	ffffe097          	auipc	ra,0xffffe
+    8020196e:	6f8080e7          	jalr	1784(ra) # 80200062 <puts>
+    80201972:	00001517          	auipc	a0,0x1
+    80201976:	ae650513          	addi	a0,a0,-1306 # 80202458 <payload_main+0x1c72>
+    8020197a:	ffffe097          	auipc	ra,0xffffe
+    8020197e:	6e8080e7          	jalr	1768(ra) # 80200062 <puts>
+    80201982:	00000517          	auipc	a0,0x0
+    80201986:	40650513          	addi	a0,a0,1030 # 80201d88 <payload_main+0x15a2>
+    8020198a:	ffffe097          	auipc	ra,0xffffe
+    8020198e:	6d8080e7          	jalr	1752(ra) # 80200062 <puts>
+    80201992:	e52ff06f          	j	80200fe4 <payload_main+0x7fe>
+    80201996:	00000517          	auipc	a0,0x0
+    8020199a:	3da50513          	addi	a0,a0,986 # 80201d70 <payload_main+0x158a>
+    8020199e:	ffffe097          	auipc	ra,0xffffe
+    802019a2:	6c4080e7          	jalr	1732(ra) # 80200062 <puts>
+    802019a6:	00001517          	auipc	a0,0x1
+    802019aa:	c0250513          	addi	a0,a0,-1022 # 802025a8 <payload_main+0x1dc2>
+    802019ae:	ffffe097          	auipc	ra,0xffffe
+    802019b2:	6b4080e7          	jalr	1716(ra) # 80200062 <puts>
+    802019b6:	00000517          	auipc	a0,0x0
+    802019ba:	3d250513          	addi	a0,a0,978 # 80201d88 <payload_main+0x15a2>
+    802019be:	ffffe097          	auipc	ra,0xffffe
+    802019c2:	6a4080e7          	jalr	1700(ra) # 80200062 <puts>
+    802019c6:	7362                	ld	t1,56(sp)
+    802019c8:	7f42                	ld	t5,48(sp)
+    802019ca:	72a2                	ld	t0,40(sp)
+    802019cc:	7e82                	ld	t4,32(sp)
+    802019ce:	6e62                	ld	t3,24(sp)
+    802019d0:	bac5                	j	802013c0 <payload_main+0xbda>
+    802019d2:	00000517          	auipc	a0,0x0
+    802019d6:	39e50513          	addi	a0,a0,926 # 80201d70 <payload_main+0x158a>
+    802019da:	ffffe097          	auipc	ra,0xffffe
+    802019de:	688080e7          	jalr	1672(ra) # 80200062 <puts>
+    802019e2:	00001517          	auipc	a0,0x1
+    802019e6:	9d650513          	addi	a0,a0,-1578 # 802023b8 <payload_main+0x1bd2>
+    802019ea:	ffffe097          	auipc	ra,0xffffe
+    802019ee:	678080e7          	jalr	1656(ra) # 80200062 <puts>
+    802019f2:	00000517          	auipc	a0,0x0
+    802019f6:	39650513          	addi	a0,a0,918 # 80201d88 <payload_main+0x15a2>
+    802019fa:	ffffe097          	auipc	ra,0xffffe
+    802019fe:	668080e7          	jalr	1640(ra) # 80200062 <puts>
+    80201a02:	cc2ff06f          	j	80200ec4 <payload_main+0x6de>
+    80201a06:	00000517          	auipc	a0,0x0
+    80201a0a:	36a50513          	addi	a0,a0,874 # 80201d70 <payload_main+0x158a>
+    80201a0e:	ffffe097          	auipc	ra,0xffffe
+    80201a12:	654080e7          	jalr	1620(ra) # 80200062 <puts>
+    80201a16:	00001517          	auipc	a0,0x1
+    80201a1a:	96250513          	addi	a0,a0,-1694 # 80202378 <payload_main+0x1b92>
+    80201a1e:	ffffe097          	auipc	ra,0xffffe
+    80201a22:	644080e7          	jalr	1604(ra) # 80200062 <puts>
+    80201a26:	00000517          	auipc	a0,0x0
+    80201a2a:	36250513          	addi	a0,a0,866 # 80201d88 <payload_main+0x15a2>
+    80201a2e:	ffffe097          	auipc	ra,0xffffe
+    80201a32:	634080e7          	jalr	1588(ra) # 80200062 <puts>
+    80201a36:	c18ff06f          	j	80200e4e <payload_main+0x668>
+    80201a3a:	00000517          	auipc	a0,0x0
+    80201a3e:	33650513          	addi	a0,a0,822 # 80201d70 <payload_main+0x158a>
+    80201a42:	ffffe097          	auipc	ra,0xffffe
+    80201a46:	620080e7          	jalr	1568(ra) # 80200062 <puts>
+    80201a4a:	00001517          	auipc	a0,0x1
+    80201a4e:	8de50513          	addi	a0,a0,-1826 # 80202328 <payload_main+0x1b42>
+    80201a52:	ffffe097          	auipc	ra,0xffffe
+    80201a56:	610080e7          	jalr	1552(ra) # 80200062 <puts>
+    80201a5a:	00000517          	auipc	a0,0x0
+    80201a5e:	32e50513          	addi	a0,a0,814 # 80201d88 <payload_main+0x15a2>
+    80201a62:	ffffe097          	auipc	ra,0xffffe
+    80201a66:	600080e7          	jalr	1536(ra) # 80200062 <puts>
+    80201a6a:	b56ff06f          	j	80200dc0 <payload_main+0x5da>
+    80201a6e:	00000517          	auipc	a0,0x0
+    80201a72:	30250513          	addi	a0,a0,770 # 80201d70 <payload_main+0x158a>
+    80201a76:	ffffe097          	auipc	ra,0xffffe
+    80201a7a:	5ec080e7          	jalr	1516(ra) # 80200062 <puts>
+    80201a7e:	00000517          	auipc	a0,0x0
+    80201a82:	78250513          	addi	a0,a0,1922 # 80202200 <payload_main+0x1a1a>
+    80201a86:	ffffe097          	auipc	ra,0xffffe
+    80201a8a:	5dc080e7          	jalr	1500(ra) # 80200062 <puts>
+    80201a8e:	00000517          	auipc	a0,0x0
+    80201a92:	2fa50513          	addi	a0,a0,762 # 80201d88 <payload_main+0x15a2>
+    80201a96:	ffffe097          	auipc	ra,0xffffe
+    80201a9a:	5cc080e7          	jalr	1484(ra) # 80200062 <puts>
+    80201a9e:	9ceff06f          	j	80200c6c <payload_main+0x486>
+    80201aa2:	00000517          	auipc	a0,0x0
+    80201aa6:	2ce50513          	addi	a0,a0,718 # 80201d70 <payload_main+0x158a>
+    80201aaa:	ffffe097          	auipc	ra,0xffffe
+    80201aae:	5b8080e7          	jalr	1464(ra) # 80200062 <puts>
+    80201ab2:	00000517          	auipc	a0,0x0
+    80201ab6:	6be50513          	addi	a0,a0,1726 # 80202170 <payload_main+0x198a>
+    80201aba:	ffffe097          	auipc	ra,0xffffe
+    80201abe:	5a8080e7          	jalr	1448(ra) # 80200062 <puts>
+    80201ac2:	00000517          	auipc	a0,0x0
+    80201ac6:	2c650513          	addi	a0,a0,710 # 80201d88 <payload_main+0x15a2>
+    80201aca:	ffffe097          	auipc	ra,0xffffe
+    80201ace:	598080e7          	jalr	1432(ra) # 80200062 <puts>
+    80201ad2:	8c4ff06f          	j	80200b96 <payload_main+0x3b0>
+    80201ad6:	00000517          	auipc	a0,0x0
+    80201ada:	29a50513          	addi	a0,a0,666 # 80201d70 <payload_main+0x158a>
+    80201ade:	ffffe097          	auipc	ra,0xffffe
+    80201ae2:	584080e7          	jalr	1412(ra) # 80200062 <puts>
+    80201ae6:	00000517          	auipc	a0,0x0
+    80201aea:	66250513          	addi	a0,a0,1634 # 80202148 <payload_main+0x1962>
+    80201aee:	ffffe097          	auipc	ra,0xffffe
+    80201af2:	574080e7          	jalr	1396(ra) # 80200062 <puts>
+    80201af6:	00000517          	auipc	a0,0x0
+    80201afa:	29250513          	addi	a0,a0,658 # 80201d88 <payload_main+0x15a2>
+    80201afe:	ffffe097          	auipc	ra,0xffffe
+    80201b02:	564080e7          	jalr	1380(ra) # 80200062 <puts>
+    80201b06:	832ff06f          	j	80200b38 <payload_main+0x352>
+    80201b0a:	00000517          	auipc	a0,0x0
+    80201b0e:	26650513          	addi	a0,a0,614 # 80201d70 <payload_main+0x158a>
+    80201b12:	ffffe097          	auipc	ra,0xffffe
+    80201b16:	550080e7          	jalr	1360(ra) # 80200062 <puts>
+    80201b1a:	00000517          	auipc	a0,0x0
+    80201b1e:	60650513          	addi	a0,a0,1542 # 80202120 <payload_main+0x193a>
+    80201b22:	ffffe097          	auipc	ra,0xffffe
+    80201b26:	540080e7          	jalr	1344(ra) # 80200062 <puts>
+    80201b2a:	00000517          	auipc	a0,0x0
+    80201b2e:	25e50513          	addi	a0,a0,606 # 80201d88 <payload_main+0x15a2>
+    80201b32:	ffffe097          	auipc	ra,0xffffe
+    80201b36:	530080e7          	jalr	1328(ra) # 80200062 <puts>
+    80201b3a:	fa3fe06f          	j	80200adc <payload_main+0x2f6>
+    80201b3e:	00000517          	auipc	a0,0x0
+    80201b42:	23250513          	addi	a0,a0,562 # 80201d70 <payload_main+0x158a>
+    80201b46:	ffffe097          	auipc	ra,0xffffe
+    80201b4a:	51c080e7          	jalr	1308(ra) # 80200062 <puts>
+    80201b4e:	00000517          	auipc	a0,0x0
+    80201b52:	5aa50513          	addi	a0,a0,1450 # 802020f8 <payload_main+0x1912>
+    80201b56:	ffffe097          	auipc	ra,0xffffe
+    80201b5a:	50c080e7          	jalr	1292(ra) # 80200062 <puts>
+    80201b5e:	00000517          	auipc	a0,0x0
+    80201b62:	22a50513          	addi	a0,a0,554 # 80201d88 <payload_main+0x15a2>
+    80201b66:	ffffe097          	auipc	ra,0xffffe
+    80201b6a:	4fc080e7          	jalr	1276(ra) # 80200062 <puts>
+    80201b6e:	f0ffe06f          	j	80200a7c <payload_main+0x296>
+    80201b72:	00000517          	auipc	a0,0x0
+    80201b76:	21e50513          	addi	a0,a0,542 # 80201d90 <payload_main+0x15aa>
+    80201b7a:	ffffe097          	auipc	ra,0xffffe
+    80201b7e:	4e8080e7          	jalr	1256(ra) # 80200062 <puts>
+    80201b82:	00000517          	auipc	a0,0x0
+    80201b86:	53650513          	addi	a0,a0,1334 # 802020b8 <payload_main+0x18d2>
+    80201b8a:	ffffe097          	auipc	ra,0xffffe
+    80201b8e:	4d8080e7          	jalr	1240(ra) # 80200062 <puts>
+    80201b92:	00000517          	auipc	a0,0x0
+    80201b96:	1f650513          	addi	a0,a0,502 # 80201d88 <payload_main+0x15a2>
+    80201b9a:	ffffe097          	auipc	ra,0xffffe
+    80201b9e:	4c8080e7          	jalr	1224(ra) # 80200062 <puts>
+    80201ba2:	00002797          	auipc	a5,0x2
+    80201ba6:	45e7a783          	lw	a5,1118(a5) # 80204000 <failures>
+    80201baa:	2785                	addiw	a5,a5,1
+    80201bac:	00002717          	auipc	a4,0x2
+    80201bb0:	44f72a23          	sw	a5,1108(a4) # 80204000 <failures>
+    80201bb4:	e5bfe06f          	j	80200a0e <payload_main+0x228>
+    80201bb8:	00000517          	auipc	a0,0x0
+    80201bbc:	1d850513          	addi	a0,a0,472 # 80201d90 <payload_main+0x15aa>
+    80201bc0:	ffffe097          	auipc	ra,0xffffe
+    80201bc4:	4a2080e7          	jalr	1186(ra) # 80200062 <puts>
+    80201bc8:	00000517          	auipc	a0,0x0
+    80201bcc:	4c050513          	addi	a0,a0,1216 # 80202088 <payload_main+0x18a2>
+    80201bd0:	ffffe097          	auipc	ra,0xffffe
+    80201bd4:	492080e7          	jalr	1170(ra) # 80200062 <puts>
+    80201bd8:	00000517          	auipc	a0,0x0
+    80201bdc:	1b050513          	addi	a0,a0,432 # 80201d88 <payload_main+0x15a2>
+    80201be0:	ffffe097          	auipc	ra,0xffffe
+    80201be4:	482080e7          	jalr	1154(ra) # 80200062 <puts>
+    80201be8:	00002797          	auipc	a5,0x2
+    80201bec:	4187a783          	lw	a5,1048(a5) # 80204000 <failures>
+    80201bf0:	2785                	addiw	a5,a5,1
+    80201bf2:	00002717          	auipc	a4,0x2
+    80201bf6:	40f72723          	sw	a5,1038(a4) # 80204000 <failures>
+    80201bfa:	dc5fe06f          	j	802009be <payload_main+0x1d8>
+    80201bfe:	00000517          	auipc	a0,0x0
+    80201c02:	19250513          	addi	a0,a0,402 # 80201d90 <payload_main+0x15aa>
+    80201c06:	ffffe097          	auipc	ra,0xffffe
+    80201c0a:	45c080e7          	jalr	1116(ra) # 80200062 <puts>
+    80201c0e:	00000517          	auipc	a0,0x0
+    80201c12:	45a50513          	addi	a0,a0,1114 # 80202068 <payload_main+0x1882>
+    80201c16:	ffffe097          	auipc	ra,0xffffe
+    80201c1a:	44c080e7          	jalr	1100(ra) # 80200062 <puts>
+    80201c1e:	00000517          	auipc	a0,0x0
+    80201c22:	16a50513          	addi	a0,a0,362 # 80201d88 <payload_main+0x15a2>
+    80201c26:	ffffe097          	auipc	ra,0xffffe
+    80201c2a:	43c080e7          	jalr	1084(ra) # 80200062 <puts>
+    80201c2e:	00002797          	auipc	a5,0x2
+    80201c32:	3d27a783          	lw	a5,978(a5) # 80204000 <failures>
+    80201c36:	2785                	addiw	a5,a5,1
+    80201c38:	00002717          	auipc	a4,0x2
+    80201c3c:	3cf72423          	sw	a5,968(a4) # 80204000 <failures>
+    80201c40:	d2bfe06f          	j	8020096a <payload_main+0x184>
+    80201c44:	00000517          	auipc	a0,0x0
+    80201c48:	14c50513          	addi	a0,a0,332 # 80201d90 <payload_main+0x15aa>
+    80201c4c:	ffffe097          	auipc	ra,0xffffe
+    80201c50:	416080e7          	jalr	1046(ra) # 80200062 <puts>
+    80201c54:	00000517          	auipc	a0,0x0
+    80201c58:	3f450513          	addi	a0,a0,1012 # 80202048 <payload_main+0x1862>
+    80201c5c:	ffffe097          	auipc	ra,0xffffe
+    80201c60:	406080e7          	jalr	1030(ra) # 80200062 <puts>
+    80201c64:	00000517          	auipc	a0,0x0
+    80201c68:	12450513          	addi	a0,a0,292 # 80201d88 <payload_main+0x15a2>
+    80201c6c:	ffffe097          	auipc	ra,0xffffe
+    80201c70:	3f6080e7          	jalr	1014(ra) # 80200062 <puts>
+    80201c74:	00002797          	auipc	a5,0x2
+    80201c78:	38c7a783          	lw	a5,908(a5) # 80204000 <failures>
+    80201c7c:	2785                	addiw	a5,a5,1
+    80201c7e:	00002717          	auipc	a4,0x2
+    80201c82:	38f72123          	sw	a5,898(a4) # 80204000 <failures>
+    80201c86:	c95fe06f          	j	8020091a <payload_main+0x134>
+    80201c8a:	00000517          	auipc	a0,0x0
+    80201c8e:	10650513          	addi	a0,a0,262 # 80201d90 <payload_main+0x15aa>
+    80201c92:	ffffe097          	auipc	ra,0xffffe
+    80201c96:	3d0080e7          	jalr	976(ra) # 80200062 <puts>
+    80201c9a:	00000517          	auipc	a0,0x0
+    80201c9e:	38e50513          	addi	a0,a0,910 # 80202028 <payload_main+0x1842>
+    80201ca2:	ffffe097          	auipc	ra,0xffffe
+    80201ca6:	3c0080e7          	jalr	960(ra) # 80200062 <puts>
+    80201caa:	00000517          	auipc	a0,0x0
+    80201cae:	0de50513          	addi	a0,a0,222 # 80201d88 <payload_main+0x15a2>
+    80201cb2:	ffffe097          	auipc	ra,0xffffe
+    80201cb6:	3b0080e7          	jalr	944(ra) # 80200062 <puts>
+    80201cba:	00002797          	auipc	a5,0x2
+    80201cbe:	3467a783          	lw	a5,838(a5) # 80204000 <failures>
+    80201cc2:	2785                	addiw	a5,a5,1
+    80201cc4:	00002717          	auipc	a4,0x2
+    80201cc8:	32f72e23          	sw	a5,828(a4) # 80204000 <failures>
+    80201ccc:	bfffe06f          	j	802008ca <payload_main+0xe4>
+    80201cd0:	00000517          	auipc	a0,0x0
+    80201cd4:	0c050513          	addi	a0,a0,192 # 80201d90 <payload_main+0x15aa>
+    80201cd8:	ffffe097          	auipc	ra,0xffffe
+    80201cdc:	38a080e7          	jalr	906(ra) # 80200062 <puts>
+    80201ce0:	00000517          	auipc	a0,0x0
+    80201ce4:	32850513          	addi	a0,a0,808 # 80202008 <payload_main+0x1822>
+    80201ce8:	ffffe097          	auipc	ra,0xffffe
+    80201cec:	37a080e7          	jalr	890(ra) # 80200062 <puts>
+    80201cf0:	00000517          	auipc	a0,0x0
+    80201cf4:	09850513          	addi	a0,a0,152 # 80201d88 <payload_main+0x15a2>
+    80201cf8:	ffffe097          	auipc	ra,0xffffe
+    80201cfc:	36a080e7          	jalr	874(ra) # 80200062 <puts>
+    80201d00:	00002797          	auipc	a5,0x2
+    80201d04:	3007a783          	lw	a5,768(a5) # 80204000 <failures>
+    80201d08:	2785                	addiw	a5,a5,1
+    80201d0a:	00002717          	auipc	a4,0x2
+    80201d0e:	2ef72b23          	sw	a5,758(a4) # 80204000 <failures>
+    80201d12:	b5ffe06f          	j	80200870 <payload_main+0x8a>
+    80201d16:	4501                	li	a0,0
+    80201d18:	4581                	li	a1,0
+    80201d1a:	00000073          	ecall
+    80201d1e:	94b69ce3          	bne	a3,a1,80201676 <payload_main+0xe90>
+    80201d22:	00000517          	auipc	a0,0x0
+    80201d26:	04e50513          	addi	a0,a0,78 # 80201d70 <payload_main+0x158a>
+    80201d2a:	e0b2                	sd	a2,64(sp)
+    80201d2c:	fc1a                	sd	t1,56(sp)
+    80201d2e:	f87a                	sd	t5,48(sp)
+    80201d30:	f416                	sd	t0,40(sp)
+    80201d32:	f076                	sd	t4,32(sp)
+    80201d34:	ec72                	sd	t3,24(sp)
+    80201d36:	ffffe097          	auipc	ra,0xffffe
+    80201d3a:	32c080e7          	jalr	812(ra) # 80200062 <puts>
+    80201d3e:	00001517          	auipc	a0,0x1
+    80201d42:	8da50513          	addi	a0,a0,-1830 # 80202618 <payload_main+0x1e32>
+    80201d46:	ffffe097          	auipc	ra,0xffffe
+    80201d4a:	31c080e7          	jalr	796(ra) # 80200062 <puts>
+    80201d4e:	00000517          	auipc	a0,0x0
+    80201d52:	03a50513          	addi	a0,a0,58 # 80201d88 <payload_main+0x15a2>
+    80201d56:	ffffe097          	auipc	ra,0xffffe
+    80201d5a:	30c080e7          	jalr	780(ra) # 80200062 <puts>
+    80201d5e:	6e62                	ld	t3,24(sp)
+    80201d60:	7e82                	ld	t4,32(sp)
+    80201d62:	72a2                	ld	t0,40(sp)
+    80201d64:	7f42                	ld	t5,48(sp)
+    80201d66:	7362                	ld	t1,56(sp)
+    80201d68:	6606                	ld	a2,64(sp)
+    80201d6a:	b29d                	j	802016d0 <payload_main+0xeea>

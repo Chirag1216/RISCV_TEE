@@ -31,6 +31,70 @@ static int trusted;                 /* 1 while the verifier is running */
 static int deadman_active;          /* 1 while armed in MODE_FLIGHT */
 static uint64_t deadman_deadline_us;
 
+struct lat_stats {
+    uint64_t count;
+    uint64_t min_cyc;
+    uint64_t max_cyc;
+    uint64_t sum_cyc;
+    uint64_t min_ticks;
+    uint64_t max_ticks;
+    uint64_t sum_ticks;
+};
+
+static struct lat_stats pose_stats;
+static struct lat_stats mission_stats;
+
+static void stats_record(struct lat_stats *st,
+                         uint64_t start_cyc, uint64_t start_ticks,
+                         uint64_t end_cyc, uint64_t end_ticks)
+{
+    uint64_t dcyc   = end_cyc - start_cyc;
+    uint64_t dticks = end_ticks - start_ticks;
+
+    if (st->count == 0 || dcyc < st->min_cyc)
+        st->min_cyc = dcyc;
+    if (dcyc > st->max_cyc)
+        st->max_cyc = dcyc;
+    st->sum_cyc += dcyc;
+
+    if (st->count == 0 || dticks < st->min_ticks)
+        st->min_ticks = dticks;
+    if (dticks > st->max_ticks)
+        st->max_ticks = dticks;
+    st->sum_ticks += dticks;
+
+    st->count++;
+}
+
+static void print_one_stats(const char *kind, const struct lat_stats *st)
+{
+    if (st->count == 0)
+        return;
+    uart_puts("MONITOR_STATS,");
+    uart_puts(kind);
+    uart_puts(",count=");
+    uart_putdec(st->count);
+    uart_puts(",min_cyc=");
+    uart_putdec(st->min_cyc);
+    uart_puts(",avg_cyc=");
+    uart_putdec(st->sum_cyc / st->count);
+    uart_puts(",max_cyc=");
+    uart_putdec(st->max_cyc);
+    uart_puts(",min_ticks=");
+    uart_putdec(st->min_ticks);
+    uart_puts(",avg_ticks=");
+    uart_putdec(st->sum_ticks / st->count);
+    uart_puts(",max_ticks=");
+    uart_putdec(st->max_ticks);
+    uart_puts("\n");
+}
+
+void world_print_stats(void)
+{
+    print_one_stats("pose", &pose_stats);
+    print_one_stats("mission", &mission_stats);
+}
+
 int in_trusted_world(void)
 {
     return trusted;
@@ -97,6 +161,10 @@ static long run_trusted_req(uint32_t req_type, long *verdict)
     if (shared_pa == 0)
         return SBI_ERR_DENIED;
 
+    uint64_t start_cyc   = csr_read(mcycle);
+    uint64_t start_ticks = time_now_ticks();
+    struct lat_stats *st = (req_type == REQ_POSE) ? &pose_stats : &mission_stats;
+
     /* 1. Take a private copy of the request and stamp it with trusted time.
      *    The verifier only ever sees the copy, so the normal world cannot
      *    change the command after it has been checked. */
@@ -113,6 +181,7 @@ static long run_trusted_req(uint32_t req_type, long *verdict)
         deadman_active = 0;
         failsafe();
         *verdict = V_TIMEOUT;
+        stats_record(st, start_cyc, start_ticks, csr_read(mcycle), time_now_ticks());
         return SBI_SUCCESS;
     }
 
@@ -178,6 +247,7 @@ static long run_trusted_req(uint32_t req_type, long *verdict)
     }
 
     *verdict = v;
+    stats_record(st, start_cyc, start_ticks, csr_read(mcycle), time_now_ticks());
     return SBI_SUCCESS;
 }
 
