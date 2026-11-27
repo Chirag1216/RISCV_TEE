@@ -11,13 +11,13 @@ import math
 import os
 import sys
 
-VERDICTS = ["ACCEPT", "SEQ", "RATE", "MODE", "FENCE", "JUMP", "SPEED", "TIMEOUT", "FAULT"]
+VERDICTS = ["ACCEPT", "SEQ", "RATE", "MODE", "FENCE", "JUMP", "SPEED", "TIMEOUT", "FAULT", "AUTH"]
 DT = 0.05
 
 log, labels_file = sys.argv[1], sys.argv[2]
 
 verdicts = {}
-monitor_stats = []
+monitor_stats = {}
 for line in open(log, errors="replace"):
     if line.startswith("R,"):
         _, idx, seq, v = line.strip().split(",")[:4]
@@ -26,7 +26,7 @@ for line in open(log, errors="replace"):
         parts = line.strip().split(",")
         kind = parts[1]
         kv = dict(p.split("=", 1) for p in parts[2:] if "=" in p)
-        monitor_stats.append((kind, kv))
+        monitor_stats[kind] = kv
 
 meta = {}
 labels = {}
@@ -84,7 +84,7 @@ if attack:
             print(f"step     : {step:.0f} mm at frame {first} "
                   f"({'rejected' if verdicts.get(first, 0) else 'accepted'})")
 
-for kind, kv in monitor_stats:
+for kind, kv in monitor_stats.items():
     avg_us = int(kv["avg_ticks"]) / 10.0
     max_us = int(kv["max_ticks"]) / 10.0
     print(f"tee_lat  : {kind} count={kv['count']} "
