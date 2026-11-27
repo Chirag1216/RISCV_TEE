@@ -1,7 +1,7 @@
 monitor: up in M-mode
 pmp    : 0x0000000000000010 entries
 pmp granularity (bytes): 0x0000000000000004
-verifier: loaded, bytes = 0x0000000000000208
+verifier: loaded, bytes = 0x0000000000000d88
 monitor: entering normal world (S-mode) at 0x0000000080200000
 
 
