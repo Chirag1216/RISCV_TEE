@@ -7,5 +7,6 @@ void uart_putc(char c);
 char uart_getc(void);
 void uart_puts(const char *s);
 void uart_puthex(uint64_t v);
+void uart_putdec(uint64_t v);
 
 #endif

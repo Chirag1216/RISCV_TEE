@@ -25,6 +25,7 @@ static void set_timer(uint64_t when)
 
 static void system_reset(uint32_t value)
 {
+    world_print_stats();
     *(volatile uint32_t *)SYSCON_BASE = value;
     for (;;)
         asm volatile ("wfi");
@@ -123,8 +124,11 @@ void sbi_handle(struct trap_frame *tf)
         err = SBI_SUCCESS;
         if (fid == DEBUG_FID_ACCEPTED)
             val = (long)actuator_accepted_count();
-        else if (fid == DEBUG_FID_FAILSAFE)
+        else if (fid == DEBUG_FID_FAILSAFE) {
             val = (long)actuator_failsafe_count();
+            world_print_stats();
+        } else if (fid == DEBUG_FID_PRINT_STATS)
+            world_print_stats();
         else
             err = SBI_ERR_NOT_SUPPORTED;
         break;

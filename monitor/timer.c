@@ -13,6 +13,11 @@ uint64_t time_now_us(void)
     return MTIME / TICKS_PER_US;
 }
 
+uint64_t time_now_ticks(void)
+{
+    return MTIME;
+}
+
 /*
  * The machine timer interrupt cannot be masked by S-mode or U-mode code,
  * so the monitor always regains control when the budget runs out.

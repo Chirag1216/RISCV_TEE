@@ -40,3 +40,20 @@ void uart_puthex(uint64_t v)
     for (int shift = 60; shift >= 0; shift -= 4)
         uart_putc("0123456789abcdef"[(v >> shift) & 0xf]);
 }
+
+void uart_putdec(uint64_t v)
+{
+    char buf[21];
+    int i = 0;
+
+    if (v == 0) {
+        uart_putc('0');
+        return;
+    }
+    while (v > 0) {
+        buf[i++] = (char)('0' + (v % 10));
+        v /= 10;
+    }
+    while (i > 0)
+        uart_putc(buf[--i]);
+}
