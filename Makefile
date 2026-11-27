@@ -20,7 +20,7 @@ VER_OBJ := $(patsubst %,$(BUILD)/ver/%.o,$(VER_SRC))
 VER_CFLAGS := $(CFLAGS) -DVERIFIER_TEST_HOOKS
 
 # The normal-world test payload: runs in S-mode where Linux will run later.
-PAY_SRC := payload/start.S payload/main.c
+PAY_SRC := payload/start.S payload/main.c verifier/hmac_sha256.c
 PAY_OBJ := $(patsubst %,$(BUILD)/%.o,$(PAY_SRC))
 
 QEMU      := qemu-system-riscv64
