@@ -96,19 +96,29 @@ void sbi_handle(struct trap_frame *tf)
         break;
 
     case SBI_EID_SET_TIMER:
-    case SBI_EID_TIME:
         set_timer(arg0);
         err = SBI_SUCCESS;
         break;
 
+    case SBI_EID_TIME:
+        if (fid == 0) {
+            set_timer(arg0);
+            err = SBI_SUCCESS;
+        }
+        break;
+
     case SBI_EID_IPI:                           /* one hart: an IPI goes to ourselves */
-        csr_set(mip, IP_SSIP);
-        err = SBI_SUCCESS;
+        if (fid == 0) {
+            csr_set(mip, IP_SSIP);
+            err = SBI_SUCCESS;
+        }
         break;
 
     case SBI_EID_RFENCE:                        /* one hart: a remote flush is a local flush */
-        asm volatile ("sfence.vma");
-        err = SBI_SUCCESS;
+        if (fid == 0) {
+            asm volatile ("sfence.vma");
+            err = SBI_SUCCESS;
+        }
         break;
 
     case SBI_EID_SHUTDOWN:
@@ -116,9 +126,11 @@ void sbi_handle(struct trap_frame *tf)
         break;
 
     case SBI_EID_SRST:                          /* a0 = 0 shutdown, 1 or 2 = reboot */
-        system_reset(arg0 == 0 ? SYSCON_POWEROFF : SYSCON_REBOOT);
+        if (fid == 0)
+            system_reset(arg0 == 0 ? SYSCON_POWEROFF : SYSCON_REBOOT);
         break;
 
+#ifndef RELEASE_BUILD
     /* ---- Test only ---- */
     case SBI_EID_DEBUG:
         err = SBI_SUCCESS;
@@ -132,6 +144,7 @@ void sbi_handle(struct trap_frame *tf)
         else
             err = SBI_ERR_NOT_SUPPORTED;
         break;
+#endif
     }
 
     tf->regs[REG_A0] = (uint64_t)err;
